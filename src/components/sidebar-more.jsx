@@ -14,23 +14,25 @@ const SidebarMore = () => {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <Button className="justify-start h-[52px] w-full" variant="sidebar">
+      <Button
+        className="lg:justify-start justify-center h-[52px] w-full lg:px-4 lg:py-2 p-0"
+        variant="sidebar"
+      >
         <Image
           src="https://d35aaqx5ub95lt.cloudfront.net/vendor/7159c0b5d4250a5aea4f396d53f17f0c.svg"
           alt="More"
           width={25}
           height={25}
-          className="mr-2"
+          className="lg:mr-2"
         />
-        More
+        <span className="hidden lg:inline">More</span>
       </Button>
 
-      {/* “Bridge” transparan biar hover nggak terputus */}
       {open && (
-        <div className="absolute left-full top-0 ml-0.5 z-40">
-          <div className="absolute -left-2 top-0 w-2 h-full bg-transparent"></div>
+        <div className="absolute left-full bottom-0 ml-0.5 z-40">
+          <div className="absolute -left-2 bottom-0 w-2 h-full"></div>
 
-          <div className="relative w-48 bg-white shadow-lg rounded-2xl border gap-x-2 p-2">
+          <div className="relative w-50 bg-white shadow-lg rounded-2xl border gap-x-2 p-2">
             <Button variant={"sidebar"} className="w-full justify-start">
               <Link href="/settings" className="block px-3 py-2 rounded-md">
                 Settings

@@ -5,20 +5,20 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
-const SidebarItem = ({ label, iconSrc, href }) => {
+const BottombarItem = ({ label, iconSrc, href }) => {
   const pathname = usePathname();
   const active = pathname === href;
   return (
     <Button
-      className="lg:justify-start justify-center h-52px p-0 lg:px-4 lg:py-2"
+      className="justify-center w-11 p-0 lg:px-4 lg:py-2"
       variant={active ? "sidebarOutline" : "sidebar"}
       asChild
     >
       <Link href={href}>
         <Image
           className="lg:mr-2"
-          height={25}
-          width={25}
+          height={30}
+          width={30}
           src={iconSrc}
           alt={label}
         />
@@ -28,4 +28,4 @@ const SidebarItem = ({ label, iconSrc, href }) => {
   );
 };
 
-export default SidebarItem;
+export default BottombarItem;
