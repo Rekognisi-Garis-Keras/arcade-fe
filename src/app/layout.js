@@ -1,7 +1,5 @@
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import Sidebar from "@/components/sidebar";
-import Bottombar from "@/components/Bottombar";
 
 const font = Nunito({
   variable: "--font-nunito-sans",
@@ -16,19 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${font.variable} antialiased`}>
-        <div className="hidden md:block">
-          <Sidebar />
-        </div>
-
-        <main className="lg:pl-64 md:pl-20 h-full pb-20">
-          <div className="h-full max-w-[1056px] mx-auto pt-6">{children}</div>
-        </main>
-
-        <div className="md:hidden fixed bottom-0 left-0 w-full">
-          <Bottombar />
-        </div>
-      </body>
+      <body className={`${font.variable} antialiased`}>{children}</body>
     </html>
   );
 }
