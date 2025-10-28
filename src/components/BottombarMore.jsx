@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const BottomMore = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="relative flex justify-center">
