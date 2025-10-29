@@ -33,7 +33,7 @@ const LandingPage = () => {
           alt="heart"
           width={70}
           height={70}
-          className="absolute animate-pulse left-[20%] top-[10%] -rotate-50 -z-5 drop-shadow-md hidden md:block"
+          className="absolute animate-ping left-[20%] top-[10%] -rotate-50 -z-5 drop-shadow-md hidden md:block"
         />
 
         <div className="flex flex-row gap-x-2">
