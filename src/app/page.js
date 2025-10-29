@@ -26,14 +26,14 @@ const LandingPage = () => {
           alt="calculator"
           width={55}
           height={55}
-          className="absolute right-[7%] top-[50%] rotate-230 -z-5 drop-shadow-md hidden md:block "
+          className="absolute animate-bounce right-[7%] top-[50%] rotate-230 -z-5 drop-shadow-md hidden md:block "
         />
         <Image
           src="/heart.png"
           alt="heart"
           width={70}
           height={70}
-          className="absolute left-[20%] top-[10%] -rotate-50 -z-5 drop-shadow-md hidden md:block"
+          className="absolute animate-pulse left-[20%] top-[10%] -rotate-50 -z-5 drop-shadow-md hidden md:block"
         />
 
         <div className="flex flex-row gap-x-2">
