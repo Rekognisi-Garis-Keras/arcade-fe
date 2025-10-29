@@ -38,9 +38,9 @@ const LandingPage = () => {
 
         <div className="flex flex-row gap-x-2">
           <KbdGroup>
-            <Kbd>Ctrl</Kbd>
+            <Kbd>Alt</Kbd>
             <span>+</span>
-            <Kbd>w</Kbd>
+            <Kbd>Fn 4</Kbd>
           </KbdGroup>
           <p>for better experience!</p>
         </div>
