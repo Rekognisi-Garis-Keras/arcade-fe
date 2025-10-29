@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 const HeaderLanding = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,17 +24,17 @@ const HeaderLanding = () => {
         isScrolled ? "border-b-2 border-steal-200" : "border-b-0"
       }`}
     >
-      <nav className="flex h-16 w-[988px] mx-auto justify-between items-center px-3">
+      <nav className="flex h-16 max-w-[988px] mx-auto justify-between items-center lg:px-3 px-10">
         <Link href="/subjects">
           <div className="justify-center lg:justify-start flex items-center gap-x-2">
             <Image src="/logo.png" height={40} width={40} alt="Logo" />
-            <h1 className="hidden lg:block text-2xl font-extrabold text-blue-950">
+            <h1 className="md:block hidden text-2xl font-extrabold text-blue-950">
               ARcade
             </h1>
           </div>
         </Link>
 
-        <Button className="w-24" variant="primary">
+        <Button size={"sm"} className="w-24" variant="primary">
           <Link href="/login">Login</Link>
         </Button>
       </nav>

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import BottombarItem from "./BottmbarItem";
-import SidebarMore from "./sidebar-more";
+import BottombarItem from "./BottombarItem";
 import BottomMore from "./BottombarMore";
 
 const Bottombar = () => {

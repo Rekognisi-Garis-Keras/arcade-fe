@@ -1,7 +1,7 @@
 import React from "react";
 import { LIST_COURSES } from "@/constants/listCourses";
 import EachUtils from "@/utils/EachUtils";
-import List from "@/components/List";
+import List from "@/components/CardSubjects/List";
 
 const LearnPage = () => {
   return (

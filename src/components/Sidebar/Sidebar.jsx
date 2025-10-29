@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import SidebarItem from "@/components/sidebar-item";
-import SidebarMore from "./sidebar-more";
+import SidebarItem from "@/components/Sidebar/SidebarItem";
+import SidebarMore from "@/components/Sidebar/SidebarMore";
 
 const Sidebar = () => {
   return (

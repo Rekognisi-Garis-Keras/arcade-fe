@@ -2,7 +2,7 @@
 
 import EachUtils from "@/utils/EachUtils";
 import { LIST_COURSES } from "@/constants/listCourses";
-import CourseCard from "@/components/CourseCard";
+import CourseCard from "@/components/CardSubjects/SubjectCard";
 
 const List = () => {
   return (

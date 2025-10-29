@@ -1,5 +1,5 @@
-import StickyWrapper from "@/components/StickyWrapper";
-import ContentWrapper from "@/components/ContentWrapper";
+import StickyWrapper from "@/components/DetailSubject/StickyWrapper";
+import ContentWrapper from "@/components/DetailSubject/ContentWrapper";
 
 const DetailSubject = () => {
   return (

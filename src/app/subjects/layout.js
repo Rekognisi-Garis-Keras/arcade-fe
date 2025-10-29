@@ -1,5 +1,5 @@
-import Bottombar from "@/components/Bottombar";
-import Sidebar from "@/components/sidebar";
+import Bottombar from "@/components/Bottombar/Bottombar";
+import Sidebar from "@/components/Sidebar/Sidebar";
 import React from "react";
 
 const MainLayout = ({ children }) => {

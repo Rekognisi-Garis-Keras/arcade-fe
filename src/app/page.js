@@ -1,4 +1,4 @@
-import HeaderLanding from "@/components/HeaderLanding";
+import HeaderLanding from "@/components/Landing/HeaderLanding";
 import React from "react";
 import { Marquee } from "@/components/ui/marquee";
 import EachUtils from "@/utils/EachUtils";
@@ -6,23 +6,54 @@ import { LIST_COURSES } from "@/constants/listCourses";
 import { LIST_HERO } from "@/constants/listHero";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Kbd, KbdGroup } from "@/components/ui/kbd";
 
 const LandingPage = () => {
   return (
     <div className="pt-16">
       <HeaderLanding />
-      <div className="h-[calc(100vh-144px)] flex flex-col gap-y-2 items-center max-w-[1036px] mx-auto justify-center">
+      <div className="relative h-[calc(100dvh-144px)] px-5 md:px-[50px] lg:px-0 flex flex-col gap-y-2 items-center max-w-[1036px] mx-auto justify-center">
+        <Image
+          src="/astronaut.png"
+          alt="astronaut"
+          width={90}
+          height={90}
+          className="absolute left-10 bottom-50 rotate-250 -z-5 drop-shadow-md"
+        />
+        <Image
+          src="/calculator.png"
+          alt="calculator"
+          width={55}
+          height={55}
+          className="absolute right-20 top-40 rotate-230 -z-5 drop-shadow-md"
+        />
+        <Image
+          src="/heart.png"
+          alt="heart"
+          width={70}
+          height={70}
+          className="absolute left-30 top-25 -rotate-50 -z-5 drop-shadow-md"
+        />
+
+        <div className="flex flex-row gap-x-2">
+          <KbdGroup>
+            <Kbd>Ctrl</Kbd>
+            <span>+</span>
+            <Kbd>w</Kbd>
+          </KbdGroup>
+          <p>for better experience!</p>
+        </div>
         <EachUtils
           of={LIST_HERO}
           render={(item) => (
             <>
-              <h1 className="font-extrabold mb-5 leading-11 text-neutral-700 text-4xl text-center">
+              <h1 className="font-extrabold mb-5 leading-9 lg:leading-11 text-neutral-700 lg:text-4xl text-center md:text-3xl text-2xl">
                 {item.textHero}
               </h1>
-              <Button className="w-55" variant={"primary"}>
+              <Button size={"lg"} className="w-55" variant={"primary"}>
                 {item.signUpBtn}
               </Button>
-              <Button className="w-55" variant={"sidebar"}>
+              <Button size={"lg"} className="w-55" variant={"sidebar"}>
                 {item.loginBtn}
               </Button>
             </>
@@ -30,10 +61,7 @@ const LandingPage = () => {
         />
       </div>
       <div className="h-20 border-2 border-steal-200 flex items-center">
-        <Marquee
-          className="w-[1036px] mx-auto [--gap:4rem] [--duration:10s]"
-          pauseOnHover
-        >
+        <Marquee className="max-w-[1036px] mx-auto [--gap:4rem] [--duration:10s]">
           <div className="flex items-center gap-x-12">
             <EachUtils
               of={LIST_COURSES}
