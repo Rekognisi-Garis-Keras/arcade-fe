@@ -19,7 +19,7 @@ const LandingPage = () => {
           alt="astronaut"
           width={90}
           height={90}
-          className="absolute left-[7%] bottom-[13%] rotate-250 hidden md:block -z-5 drop-shadow-md"
+          className="absolute animate-spin left-[7%] bottom-[13%] rotate-250 hidden md:block -z-5 drop-shadow-md"
         />
         <Image
           src="/calculator.png"
