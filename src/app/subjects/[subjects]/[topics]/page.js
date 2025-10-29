@@ -1,8 +1,27 @@
+import TopicWrapper from "@/components/DetailTopic/TopicWrapper";
+import AsideWrapper from "@/components/DetailTopic/AsideWrapper";
+import NavbarTopic from "@/components/DetailTopic/NavbarTopic";
+import { response } from "@/constants/listMateri";
+
 export default function DetailTopic() {
-   return (
-      <div>
-         <h1>ini halaman detail topic (misal milih mapel tata surya, topic ini isinya matahari)</h1>
-         <p>isinya kaya materi lms biasa</p>
+  return (
+    <div className="flex flex-col gap-12 px-6">
+      <NavbarTopic />
+      <div className="flex gap-6 px-2 material">
+        <TopicWrapper className="material">
+          {response.map((item, index) => (
+            <div
+              key={index}
+              dangerouslySetInnerHTML={{ __html: item.content }}
+            />
+          ))}
+        </TopicWrapper>
+
+        <AsideWrapper>
+          {/* isinya nanti daftar isi, tapi buat test bisa taro placeholder dulu */}
+          <div className="">Sidebar TOC</div>
+        </AsideWrapper>
       </div>
-   );
+    </div>
+  );
 }

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "../ui/button";
+import { Button } from "../UI/button";
 
 const HeaderLanding = () => {
   const [isScrolled, setIsScrolled] = useState(false);

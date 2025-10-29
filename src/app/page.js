@@ -1,10 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import HeaderLanding from "@/components/Landing/HeaderLanding";
-import { Marquee } from "@/components/ui/marquee";
+import { Marquee } from "@/components/UI/marquee";
 import EachUtils from "@/utils/EachUtils";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import { Button } from "@/components/ui/button";
+import { Kbd, KbdGroup } from "@/components/UI/kbd";
+import { Button } from "@/components/UI/button";
 
 import { LIST_COURSES } from "@/constants/listCourses";
 import { LIST_HERO } from "@/constants/listHero";
@@ -38,9 +38,9 @@ const LandingPage = () => {
 
         <div className="flex flex-row gap-x-2">
           <KbdGroup>
-            <Kbd>Alt</Kbd>
+            <Kbd>Fn</Kbd>
             <span>+</span>
-            <Kbd>Fn 4</Kbd>
+            <Kbd>F11</Kbd>
           </KbdGroup>
           <p>for better experience!</p>
         </div>

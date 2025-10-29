@@ -51,19 +51,19 @@ body,
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
-  from {
-    transform: translateX(0);
+    from {
+      transform: translateX(0);
     }
-  to {
-    transform: translateX(calc(-100% - var(--gap)));
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
     }
   }
   @keyframes marquee-vertical {
-  from {
-    transform: translateY(0);
+    from {
+      transform: translateY(0);
     }
-  to {
-    transform: translateY(calc(-100% - var(--gap)));
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
     }
   }
 }
@@ -147,5 +147,100 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  // cihuy nih
+
+  /* 🧩 Container utama */
+  .material {
+    @apply text-gray-800 leading-relaxed;
+  }
+
+  /* 🧠 Heading Styles */
+  .material h1 {
+    @apply text-3xl font-bold mt-6 mb-4 text-gray-900;
+  }
+  .material h2 {
+    @apply text-2xl font-semibold mt-5 mb-3 text-gray-900;
+  }
+  .material h3 {
+    @apply text-xl font-semibold mt-4 mb-2 text-gray-900;
+  }
+  .material h4 {
+    @apply text-lg font-medium mt-3 mb-1 text-gray-800;
+  }
+  .material h5 {
+    @apply text-base font-medium mt-2 mb-1 text-gray-800;
+  }
+  .material h6 {
+    @apply text-sm font-medium mt-2 mb-1 text-gray-700;
+  }
+
+  /* 📖 Paragraph & Text */
+  .material p {
+    @apply mb-4 text-base text-gray-700;
+  }
+
+  .material strong {
+    @apply font-semibold text-gray-900;
+  }
+
+  .material em {
+    @apply italic text-gray-800;
+  }
+
+  .material a {
+    @apply text-blue-600 underline hover:text-blue-800;
+  }
+
+  /* 📋 List */
+  .material ul {
+    @apply list-disc list-inside mb-4;
+  }
+  .material ol {
+    @apply list-decimal list-inside mb-4;
+  }
+  .material li {
+    @apply mb-1;
+  }
+
+  /* 📊 Table */
+  .material table {
+    @apply w-full border border-gray-300 border-collapse my-6;
+  }
+  .material th {
+    @apply bg-gray-100 border border-gray-300 px-3 py-2 text-left font-semibold;
+  }
+  .material td {
+    @apply border border-gray-300 px-3 py-2;
+  }
+
+  /* 🧾 Blockquote */
+  .material blockquote {
+    @apply border-l-4 border-blue-400 pl-4 italic text-gray-700 my-4;
+  }
+
+  /* 💡 Code block */
+  .material pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  .material code {
+    @apply bg-gray-100 text-red-600 px-1 rounded;
+  }
+
+  /* 📷 Image */
+  .material img {
+    @apply my-4 rounded-lg shadow-sm;
+  }
+
+  /* 🧱 Horizontal Line */
+  .material hr {
+    @apply my-6 border-t border-gray-300;
+  }
+
+  /* 🧠 Small text */
+  .material small {
+    @apply text-sm text-gray-600;
   }
 }
