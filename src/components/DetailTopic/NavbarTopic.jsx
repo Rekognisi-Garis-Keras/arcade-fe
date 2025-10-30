@@ -12,7 +12,7 @@ const NavbarTopic = () => {
         <MoveLeft />
       </Link>
       <div>
-        <h5 className="font-bold text-lg">
+        <h5 className="font-bold hidden md:block text-lg">
           Matahari: Sinar panas yang sehat, tapi bisa bikin terbakar?
         </h5>
       </div>

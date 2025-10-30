@@ -19,7 +19,7 @@ export default function DetailTopic() {
 
         <AsideWrapper>
           {/* isinya nanti daftar isi, tapi buat test bisa taro placeholder dulu */}
-          <div className="">Sidebar TOC</div>
+          <div>Sidebar TOC</div>
         </AsideWrapper>
       </div>
     </div>
