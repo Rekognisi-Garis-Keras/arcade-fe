@@ -5,7 +5,7 @@ import { response } from "@/constants/listMateri";
 
 export default function DetailTopic() {
   return (
-    <div className="flex flex-col gap-12 px-6">
+    <div className="flex flex-col gap-3 lg:gap-12 px-6">
       <NavbarTopic />
       <div className="flex gap-6 px-2 material">
         <TopicWrapper className="material">

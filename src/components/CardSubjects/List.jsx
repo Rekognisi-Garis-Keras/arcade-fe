@@ -6,7 +6,7 @@ import CourseCard from "@/components/CardSubjects/SubjectCard";
 
 const List = () => {
   return (
-    <div className="pt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-4">
+    <div className="pt-6 grid grid-cols-1 pb-20 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-4">
       <EachUtils
         of={LIST_COURSES}
         render={(item, index) => (

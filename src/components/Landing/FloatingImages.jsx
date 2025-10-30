@@ -15,7 +15,7 @@ const FloatingImages = () => {
             alt={image.alt}
             width={image.size.width}
             height={image.size.height}
-            className={`absolute ${image.animation} ${image.position} ${image.rotation} hidden md:block -z-5 drop-shadow-md`}
+            className={`absolute ${image.position} ${image.rotation} hidden md:block -z-5 drop-shadow-md`}
           />
         )}
       />
