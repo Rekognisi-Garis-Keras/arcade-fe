@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/UI/button";
 import Image from "next/image";
 import Link from "next/link";
+import { CircleQuestionMark, LogOut } from "lucide-react";
 
 const BottomMore = () => {
   const [open, setOpen] = useState(false);
@@ -33,21 +34,11 @@ const BottomMore = () => {
                 className="w-full justify-start rounded-lg"
               >
                 <Link
-                  href="/settings"
-                  className="block px-3 py-2 rounded-md w-full text-left"
-                >
-                  Settings
-                </Link>
-              </Button>
-              <Button
-                variant="sidebar"
-                className="w-full justify-start rounded-lg"
-              >
-                <Link
                   href="/help"
-                  className="block px-3 py-2 rounded-md w-full text-left"
+                  className="flex gap-x-2 py-2 rounded-md w-full text-left"
                 >
-                  Help
+                  <CircleQuestionMark />
+                  <span>Help</span>
                 </Link>
               </Button>
               <Button
@@ -56,9 +47,10 @@ const BottomMore = () => {
               >
                 <Link
                   href="/logout"
-                  className="block px-3 py-2 rounded-md w-full text-left"
+                  className="flex gap-x-2 py-2 rounded-md w-full text-left"
                 >
-                  Log out
+                  <LogOut />
+                  <span>Log out</span>
                 </Link>
               </Button>
             </div>

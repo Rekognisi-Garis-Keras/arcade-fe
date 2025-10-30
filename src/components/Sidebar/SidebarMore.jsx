@@ -4,15 +4,16 @@ import { useState } from "react";
 import { Button } from "@/components/UI/button";
 import Image from "next/image";
 import Link from "next/link";
+import { CircleQuestionMark, LogOut } from "lucide-react";
 
 const SidebarMore = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <div
       className="relative"
       onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseLeave={() => setOpen(true)}
     >
       <Button
         className="lg:justify-start justify-center h-[52px] w-full lg:px-4 lg:py-2 p-0"
@@ -34,18 +35,15 @@ const SidebarMore = () => {
 
           <div className="relative w-50 bg-white shadow-lg rounded-2xl border gap-x-2 p-2">
             <Button variant={"sidebar"} className="w-full justify-start">
-              <Link href="/settings" className="block px-3 py-2 rounded-md">
-                Settings
-              </Link>
-            </Button>
-            <Button variant={"sidebar"} className="w-full justify-start">
-              <Link href="/help" className="block px-3 py-2 rounded-md">
-                Help
+              <Link href="/help" className="py-2 flex gap-x-2 rounded-md">
+                <CircleQuestionMark strokeWidth={2.5} size={100} />
+                <span>Help</span>
               </Link>
             </Button>
             <Button variant={"dangerOutline"} className="w-full justify-start">
-              <Link href="/logout" className="block px-3 py-2 rounded-md">
-                Log out
+              <Link href="/logout" className="py-2 flex gap-x-2 rounded-md">
+                <LogOut strokeWidth={3} size={1} />
+                <span>Log out</span>
               </Link>
             </Button>
           </div>

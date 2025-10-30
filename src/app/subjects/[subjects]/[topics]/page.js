@@ -19,7 +19,13 @@ export default function DetailTopic() {
 
         <AsideWrapper>
           {/* isinya nanti daftar isi, tapi buat test bisa taro placeholder dulu */}
-          <div>Sidebar TOC</div>
+          <div>
+            <ol>
+              <li>Apa itu matahari?</li>
+              <li>Index UV bagi kulit</li>
+              <li>Vit D pada matahari</li>
+            </ol>
+          </div>
         </AsideWrapper>
       </div>
     </div>
