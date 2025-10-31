@@ -6,7 +6,7 @@ import { response } from "@/constants/listMateri";
 export default function DetailTopic() {
   return (
     <div className="flex flex-col gap-3 lg:gap-12 px-6">
-      <NavbarTopic />
+      <NavbarTopic title={response[0].title} />
       <div className="flex gap-6 px-2 material">
         <TopicWrapper className="material">
           {response.map((item, index) => (
@@ -19,13 +19,7 @@ export default function DetailTopic() {
 
         <AsideWrapper>
           {/* isinya nanti daftar isi, tapi buat test bisa taro placeholder dulu */}
-          <div>
-            <ol>
-              <li>Apa itu matahari?</li>
-              <li>Index UV bagi kulit</li>
-              <li>Vit D pada matahari</li>
-            </ol>
-          </div>
+          <div></div>
         </AsideWrapper>
       </div>
     </div>

@@ -7,13 +7,13 @@ import Link from "next/link";
 import { CircleQuestionMark, LogOut } from "lucide-react";
 
 const SidebarMore = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <div
       className="relative"
       onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
     >
       <Button
         className="lg:justify-start justify-center h-[52px] w-full lg:px-4 lg:py-2 p-0"
@@ -35,7 +35,10 @@ const SidebarMore = () => {
 
           <div className="relative w-50 bg-white shadow-lg rounded-2xl border gap-x-2 p-2">
             <Button variant={"sidebar"} className="w-full justify-start">
-              <Link href="/help" className="py-2 flex gap-x-2 rounded-md">
+              <Link
+                href="/help"
+                className="py-2 flex gap-x-2 rounded-md -translate-x-[3px]"
+              >
                 <CircleQuestionMark strokeWidth={2.5} size={100} />
                 <span>Help</span>
               </Link>

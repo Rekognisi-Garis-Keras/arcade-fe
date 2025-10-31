@@ -72,6 +72,38 @@ body {
   font-family: "Nunito", sans-serif;
 }
 
+.duolingo-button {
+  /* Styling dasar tombolnya */
+  background-color: #58cc02; /* Warna ijo Duolingo */
+  color: white;
+  font-family: sans-serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+
+  border: none; /* Kita nggak pake border */
+  /* border-radius: 16px; Bikin melengkung */
+  padding: 16px 32px;
+  cursor: pointer;
+
+  /* === INI BAGIAN PENTINGNYA === */
+
+  /* 1. Bikin 'tepian' 3D pake box-shadow */
+  /* Format: [X-offset] [Y-offset] [Blur] [Warna] */
+  box-shadow: 0 6px 0 #58a700; /* 6px ke bawah, 0 blur, warna lebih gelap */
+
+  /* 2. Bikin transisi biar alus (tapi cepet) */
+  transition: all 0.1s ease-in-out;
+}
+
+/* === INI BAGIAN AJAIBNYA PAS DIPENCET === */
+.duolingo-button:active {
+  /* 1. Gerakin tombolnya ke bawah 6px (setebal shadow-nya) */
+  transform: translateY(6px);
+
+  /* 2. Hilangin shadow-nya, karena tombolnya udah 'tiduran' */
+  box-shadow: 0 0 0 #58a700;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

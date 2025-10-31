@@ -35,7 +35,7 @@ const BottomMore = () => {
               >
                 <Link
                   href="/help"
-                  className="flex gap-x-2 py-2 rounded-md w-full text-left"
+                  className="flex gap-x-2 py-2 rounded-md w-full text-left -translate-x-[3px]"
                 >
                   <CircleQuestionMark />
                   <span>Help</span>

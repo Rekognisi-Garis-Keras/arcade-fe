@@ -6,8 +6,10 @@ import Link from "next/link";
 import Image from "next/image";
 
 const SidebarItem = ({ label, iconSrc, href }) => {
+  // const pathname = usePathname();
+  // const active = pathname === href;
   const pathname = usePathname();
-  const active = pathname === href;
+  const active = pathname.startsWith(href);
   return (
     <Button
       className="lg:justify-start justify-center h-52px p-0 lg:px-4 lg:py-2"

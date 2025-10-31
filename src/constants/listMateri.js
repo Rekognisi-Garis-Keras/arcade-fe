@@ -1,6 +1,7 @@
 const response = [
   {
     id: "sun01",
+    title: "Matahari: Baik untuk kesehatan, tapi bisa membakar kulit?",
     content: `
 <article class="prose max-w-none" aria-labelledby="sun-title">
   <h1 id="sun-title">Matahari — Bintang di Tengah Tata Surya</h1>
