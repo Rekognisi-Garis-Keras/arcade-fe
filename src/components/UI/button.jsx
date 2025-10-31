@@ -24,15 +24,16 @@ const buttonVariants = cva(
           "bg-transparent text-slate-500 border-2 border-transparent hover:bg-slate-100 transition-none",
         sidebarOutline:
           "bg-sky-500/15 text-sky-500 border-sky-300 border-[1.5px] hover:bg-sky-500/20 transition-none",
-        lesson:
-          "bg-green-500 text-primary-foreground hover:bg-green-500/90 border-green-600 border-b-[6px] active:border-b-0",
+        lessonOpen:
+          "absolute bg-green-500 shadow-[0_10px_0_#00a63e] active:shadow-[0_2px_0_#00a63e] active:translate-y-1 transition-all duration-100 flex items-center justify-center transform-[perspective(500px)_rotateX(30deg)] origin-bottom",
+        lessonLocked:
+          "absolute bg-[#e5e5e5] shadow-[0_10px_0_#b7b7b7] active:shadow-[0_2px_0_#b7b7b7] active:translate-y-1 transition-all duration-100 flex items-center justify-center transform-[perspective(500px)_rotateX(30deg)] origin-bottom",
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",
         sm: "h-9 gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-12 px-8 has-[>svg]:px-4",
-        rounded: "rounded-full",
-        lesson: "h-[65px] w-[70px]",
+        rounded: "w-20 h-20 rounded-full",
         icon: "size-9",
         "icon-sm": "size-8",
         "icon-lg": "size-10",
