@@ -47,11 +47,19 @@ export default function AR() {
             {hasAsked ? "Tanya Jawab" : "Deskripsi"}
           </h1>
 
-          <p>
+          {/* <p>
             {hasAsked
               ? `Kamu: "${liveText || "..."}"`
               : LIST_LESSON_ASTRONOMY[0].desc}
-          </p>
+          </p> */}
+          {hasAsked ? (
+            <p>
+              <span className="font-bold">Kamu: </span>
+              {liveText || "..."}
+            </p>
+          ) : (
+            <p>{LIST_LESSON_ASTRONOMY[0].desc}</p>
+          )}
         </div>
 
         <div className="flex h-[100px] w-[100px] items-center justify-center">
