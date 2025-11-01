@@ -1,58 +1,103 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { Mic } from "lucide-react";
-import { useEffect, useState } from "react";
 
-export default function MicButton() {
-  const [recognition, setRecognition] = useState(null);
+export default function MicButton({ onTextChange, onStartAsk }) {
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef(null);
+  const silenceTimer = useRef(null);
+  const lastSpokeTime = useRef(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return; // pastiin client side
-
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      console.error("Browser belum support Speech Recognition 😢");
+      alert("Browser kamu belum mendukung Speech Recognition 😔");
       return;
     }
 
-    const recog = new SpeechRecognition();
-    recog.lang = "id-ID";
-    recog.continuous = false;
-    recog.interimResults = false;
+    const recognition = new SpeechRecognition();
+    recognition.lang = "id-ID";
+    recognition.continuous = false; // 🚫 jangan continuous
+    recognition.interimResults = true;
 
-    recog.onresult = (event) => {
-      const text = event.results[0][0].transcript;
-      console.log("🎙️ Hasil:", text);
+    recognition.onstart = () => {
+      console.log("🎙️ Recording started");
+      setIsRecording(true);
+      lastSpokeTime.current = Date.now();
+      onStartAsk?.();
+      startSilenceWatcher(recognition);
     };
 
-    recog.onerror = (event) => {
-      console.error("❌ Error:", event.error);
+    recognition.onresult = (event) => {
+      let liveText = "";
+      for (let i = 0; i < event.results.length; i++) {
+        liveText += event.results[i][0].transcript;
+      }
+      onTextChange(liveText);
+      lastSpokeTime.current = Date.now(); // update waktu terakhir ngomong
     };
 
-    recog.onend = () => {
-      console.log("✅ Perekaman selesai");
+    recognition.onerror = (event) => {
+      console.error("❌ Speech recognition error:", event.error);
+      setIsRecording(false);
     };
 
-    setRecognition(recog);
-  }, []);
+    recognition.onend = () => {
+      console.log("🛑 Recording ended");
+      setIsRecording(false);
+      clearInterval(silenceTimer.current);
+    };
 
-  const handleStart = () => {
-    if (!recognition) {
-      console.warn("Recognition belum siap");
-      return;
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.stop();
+      clearInterval(silenceTimer.current);
+    };
+  }, [onTextChange, onStartAsk]);
+
+  // ⏱️ Deteksi diam selama >2 detik, lalu stop recognition
+  const startSilenceWatcher = (recognition) => {
+    clearInterval(silenceTimer.current);
+    silenceTimer.current = setInterval(() => {
+      if (!lastSpokeTime.current) return;
+
+      const elapsed = Date.now() - lastSpokeTime.current;
+      if (elapsed > 2000) {
+        console.log("😴 Tidak ada suara 2 detik — stop mic");
+        recognition.stop();
+        clearInterval(silenceTimer.current);
+      }
+    }, 300);
+  };
+
+  const handleClick = () => {
+    const recognition = recognitionRef.current;
+    if (!recognition) return;
+
+    if (isRecording) {
+      recognition.stop();
+      clearInterval(silenceTimer.current);
+      setIsRecording(false);
+    } else {
+      onTextChange("");
+      recognition.start();
     }
-    recognition.start();
-    console.log("🎧 Mulai mendengarkan...");
   };
 
   return (
     <button
-      onClick={handleStart}
-      className="rounded-full p-8 border-3 border-b-4 border-steal-200 flex items-center justify-center"
+      onClick={handleClick}
+      className={`rounded-full p-8 border-4 transition-all duration-300 ${
+        isRecording
+          ? "bg-red-500 border-red-700 text-white scale-110 shadow-lg"
+          : "border-steal-200 hover:bg-steal-100"
+      }`}
     >
-      <Mic />
+      <Mic className={isRecording ? "animate-pulse" : ""} />
     </button>
   );
 }
