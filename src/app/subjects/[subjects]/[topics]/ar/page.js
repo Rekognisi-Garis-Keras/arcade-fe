@@ -1,3 +1,4 @@
+import MicButton from "@/components/AR/ButtonMic";
 import NavbarTopic from "@/components/DetailTopic/NavbarTopic";
 import { LIST_LESSON_ASTRONOMY } from "@/constants/listLesson";
 import { Mic } from "lucide-react";
@@ -23,9 +24,7 @@ export default function AR() {
           <p>{LIST_LESSON_ASTRONOMY[0].desc}</p>
         </div>
         <div className="flex h-[100px] w-[100px] items-center justify-center ">
-          <button className="rounded-full p-8 border-3 border-b-4 border-steal-200 flex items-center justify-center">
-            <Mic />
-          </button>
+          <MicButton />
         </div>
       </div>
     </div>

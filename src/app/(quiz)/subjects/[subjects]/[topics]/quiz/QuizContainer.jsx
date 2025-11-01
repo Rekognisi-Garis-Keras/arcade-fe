@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/UI/card";
 import QuizQuestion from "./QuizQuestion";
 import QuizResult from "./QuizResult";
 

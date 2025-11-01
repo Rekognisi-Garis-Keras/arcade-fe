@@ -1,7 +1,7 @@
 "use client";
 
-import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { CardHeader, CardTitle, CardContent } from "@/components/UI/card";
+import { Button } from "@/components/UI/button";
 import { motion, AnimatePresence } from "framer-motion";
 import QuizOption from "./QuizOption";
 import QuizExplanation from "./QuizExplanation";
