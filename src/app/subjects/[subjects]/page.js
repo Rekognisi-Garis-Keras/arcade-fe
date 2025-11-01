@@ -3,6 +3,8 @@ import ContentWrapper from "@/components/DetailSubject/ContentWrapper";
 import EachUtils from "@/utils/EachUtils";
 import LessonButton from "@/components/LessonButton";
 
+import React from "react";
+
 import { LIST_LESSON_ASTRONOMY } from "@/constants/listLesson";
 import Link from "next/link";
 
@@ -19,9 +21,32 @@ const DetailSubject = () => {
           <EachUtils
             of={LIST_LESSON_ASTRONOMY}
             render={(item, index) => (
-              <Link href={`/astronomi/${item.slug}`} key={index}>
-                <LessonButton locked={item.locked} index={index} />
-              </Link>
+              <React.Fragment key={index}>
+                <Link href={`/astronomi/${item.slug}`} key={index + 1}>
+                  <LessonButton
+                    buttonType="lesson"
+                    locked={item.locked}
+                    index={index}
+                    subIndex={0}
+                  />
+                </Link>
+                <Link href={`/astronomi/${item.slug}`} key={index + 2}>
+                  <LessonButton
+                    buttonType="ar"
+                    locked={item.locked}
+                    index={index}
+                    subIndex={1}
+                  />
+                </Link>
+                <Link href={`/astronomi/${item.slug}`} key={index + 3}>
+                  <LessonButton
+                    buttonType="quiz"
+                    locked={item.locked}
+                    index={index}
+                    subIndex={2}
+                  />
+                </Link>
+              </React.Fragment>
             )}
           />
         </div>

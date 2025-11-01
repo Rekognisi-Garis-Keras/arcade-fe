@@ -1,6 +1,6 @@
 export default function AR() {
   return (
-    <div>
+    <div className="flex flex-col">
       <iframe
         src="https://badzlan.is-a.dev/test-ar"
         width={"100%"}

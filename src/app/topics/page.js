@@ -3,6 +3,8 @@ import ContentWrapper from "@/components/DetailSubject/ContentWrapper";
 import EachUtils from "@/utils/EachUtils";
 import LessonButton from "./LessonButton";
 
+import React from "react";
+
 import { LIST_LESSON_ASTRONOMY } from "@/constants/listLesson";
 import Link from "next/link";
 
@@ -19,8 +21,8 @@ const DetailSubject = () => {
           <EachUtils
             of={LIST_LESSON_ASTRONOMY}
             render={(item, index) => (
-              <>
-                <Link href={`/astronomi/${item.slug}`} key={index}>
+              <React.Fragment key={index}>
+                <Link href={`/astronomi/${item.slug}`} key={index + 1}>
                   <LessonButton
                     buttonType="lesson"
                     locked={item.locked}
@@ -28,7 +30,7 @@ const DetailSubject = () => {
                     subIndex={0}
                   />
                 </Link>
-                <Link href={`/astronomi/${item.slug}`} key={index}>
+                <Link href={`/astronomi/${item.slug}`} key={index + 2}>
                   <LessonButton
                     buttonType="ar"
                     locked={item.locked}
@@ -36,7 +38,7 @@ const DetailSubject = () => {
                     subIndex={1}
                   />
                 </Link>
-                <Link href={`/astronomi/${item.slug}`} key={index}>
+                <Link href={`/astronomi/${item.slug}`} key={index + 3}>
                   <LessonButton
                     buttonType="quiz"
                     locked={item.locked}
@@ -44,27 +46,9 @@ const DetailSubject = () => {
                     subIndex={2}
                   />
                 </Link>
-              </>
+              </React.Fragment>
             )}
           />
-          {/* <Link href="/subjects/astronomi/matahari">
-            <LessonButton index={0} buttonType="lesson" />
-          </Link>
-          <Link href="/subjects/astronomi/matahari/ar">
-            <LessonButton index={1} buttonType="ar" />
-          </Link>
-          <Link href="/subjects/astronomi/matahari/quiz">
-            <LessonButton index={2} buttonType="quiz" />
-          </Link>
-          <Link href="/subjects/astronomi/matahari/quiz">
-            <LessonButton index={3} buttonType="lesson" />
-          </Link>
-          <Link href="/subjects/astronomi/matahari/quiz">
-            <LessonButton index={4} buttonType="ar" />
-          </Link>
-          <Link href="/subjects/astronomi/matahari/quiz">
-            <LessonButton index={5} buttonType="quiz" />
-          </Link> */}
         </div>
       </ContentWrapper>
     </div>
