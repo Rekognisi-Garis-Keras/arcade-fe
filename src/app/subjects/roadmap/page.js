@@ -1,9 +1,9 @@
 import StickyWrapper from "@/components/DetailSubject/StickyWrapper";
 import ContentWrapper from "@/components/DetailSubject/ContentWrapper";
 import EachUtils from "@/utils/EachUtils";
-import LessonButton from "@/components/LessonButton";
+import LessonButton from "./LessonButton";
 
-import TopicTitle from "@/components/TopicTitle";
+import TopicTitle from "./TopicTitle";
 import React from "react";
 
 import { LIST_LESSON_ASTRONOMY } from "@/constants/listLesson";
@@ -23,17 +23,14 @@ const DetailSubject = () => {
           render={(item, index) => (
             <div className="h-[350px] w-full mb-3" key={index}>
               <TopicTitle text={item.title} />
-
               <div className="w-2 h-1 relative mx-auto">
-                <Link href={`/astronomi/${item.slug}`} key={index + 1}>
-                  <LessonButton
-                    buttonType="lesson"
-                    locked={item.locked}
-                    index={index}
-                    subIndex={0}
-                  />
-                </Link>
-                <Link href={`/astronomi/${item.slug}/ar`} key={index + 2}>
+                <LessonButton
+                  buttonType="lesson"
+                  locked={item.locked}
+                  index={index}
+                  subIndex={0}
+                />
+                <Link href={`/astronomi/${item.slug}`} key={index + 2}>
                   <LessonButton
                     buttonType="ar"
                     locked={item.locked}
@@ -41,7 +38,7 @@ const DetailSubject = () => {
                     subIndex={1}
                   />
                 </Link>
-                <Link href={`/astronomi/${item.slug}/quiz`} key={index + 3}>
+                <Link href={`/astronomi/${item.slug}`} key={index + 3}>
                   <LessonButton
                     buttonType="quiz"
                     locked={item.locked}
