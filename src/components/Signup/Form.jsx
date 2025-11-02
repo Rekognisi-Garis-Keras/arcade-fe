@@ -5,22 +5,38 @@ import SubmitButton from "@/components/Login/SubmitButton";
 
 import { useState } from "react";
 
-// Main Form Component (Parent)
-const Form = () => {
+// Sign Up Form Component
+const SignUpForm = () => {
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({
+    username: "",
     email: "",
     password: "",
   });
 
   const [touched, setTouched] = useState({
+    username: false,
     email: false,
     password: false,
   });
+
+  // Validasi username
+  const validateUsername = (username) => {
+    if (!username) return "Masukkan Username";
+    if (username.length < 3)
+      return "Username minimal memiliki panjang 3 karakter";
+    if (username.length > 20) return "Username maksimal 20 karakter";
+    // Hanya boleh huruf, angka, underscore, dan dash
+    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (!usernameRegex.test(username))
+      return "Username hanya boleh mengandung huruf, angka, underscore, dan dash";
+    return "";
+  };
 
   // Validasi email
   const validateEmail = (email) => {
@@ -43,14 +59,28 @@ const Form = () => {
     return "";
   };
 
+  // Get validator function based on field name
+  const getValidator = (name) => {
+    switch (name) {
+      case "username":
+        return validateUsername;
+      case "email":
+        return validateEmail;
+      case "password":
+        return validatePassword;
+      default:
+        return () => "";
+    }
+  };
+
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
     if (touched[name]) {
-      const error =
-        name === "email" ? validateEmail(value) : validatePassword(value);
+      const validator = getValidator(name);
+      const error = validator(value);
       setErrors((prev) => ({ ...prev, [name]: error }));
     }
   };
@@ -60,52 +90,76 @@ const Form = () => {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
 
-    const error =
-      name === "email" ? validateEmail(value) : validatePassword(value);
+    const validator = getValidator(name);
+    const error = validator(value);
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
   // Submit handler
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
-    setTouched({ email: true, password: true });
+    // Mark all fields as touched
+    setTouched({ username: true, email: true, password: true });
 
+    // Validate all fields
+    const usernameError = validateUsername(formData.username);
     const emailError = validateEmail(formData.email);
     const passwordError = validatePassword(formData.password);
 
     setErrors({
+      username: usernameError,
       email: emailError,
       password: passwordError,
     });
 
-    if (emailError || passwordError) {
-      console.log("Form error ❌", { emailError, passwordError });
+    // Check if there are any errors
+    if (usernameError || emailError || passwordError) {
+      console.log("Form error ❌", {
+        usernameError,
+        emailError,
+        passwordError,
+      });
       return;
     }
 
-    console.log("Form valid", formData);
-    alert("Form berhasil disubmit");
+    console.log("Form valid ✅", formData);
+
+    alert("Form berhasil dikirim");
   };
 
-  // Handle Google login
+  // Handle Google signup
   const handleGoogleSuccess = () => {
-    alert("Google login simulated");
+    alert("Google sign up simulated");
   };
 
   const handleGoogleError = () => {
-    alert("Google login failed");
+    alert("Google sign up failed");
   };
 
   return (
     <>
       <HeaderForm
-        header="Selamat Datang Kembali!"
-        paragraph="Tolong masukkan email dan password kamu"
+        header="Buat Akun ARcade"
+        paragraph="Daftar untuk memulai pembelajaran seru!"
       />
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         <div className="space-y-2">
+          <InputField
+            label="Nama"
+            id="username"
+            name="username"
+            type="text"
+            value={formData.username}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.username}
+            touched={touched.username}
+            placeholder="Nama Kamu"
+            helpText="Nama kamu minimal memiliki panjang 3 karakter"
+          />
+
           <InputField
             label="Email"
             id="email"
@@ -134,7 +188,7 @@ const Form = () => {
           />
         </div>
 
-        <SubmitButton type="submit">Masuk</SubmitButton>
+        <SubmitButton type="submit">Daftar</SubmitButton>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -152,8 +206,12 @@ const Form = () => {
         />
 
         <div className="text-center">
-          <a href="#" className="text-sm text-sky-500 hover:text-sky-600">
-            Lupa password kamu?
+          <span className="text-sm text-gray-600">Sudah punya akun? </span>
+          <a
+            href="#"
+            className="text-sm text-sky-500 hover:text-sky-600 font-medium"
+          >
+            Masuk di sini
           </a>
         </div>
       </form>
@@ -161,4 +219,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SignUpForm;

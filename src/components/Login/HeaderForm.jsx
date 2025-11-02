@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-const HeaderForm = () => {
+const HeaderForm = ({ header, paragraph }) => {
   return (
     <div className="mb-6 text-center flex flex-col items-center">
       <Image
@@ -12,10 +12,8 @@ const HeaderForm = () => {
         className="mb-3"
       />
 
-      <h2 className="font-extrabold mb-1 text-2xl text-slate-700">
-        Selamat Datang Kembali!
-      </h2>
-      <p className="text-slate-500">Tolong masukkan email dan password kamu</p>
+      <h2 className="font-extrabold mb-1 text-2xl text-slate-700">{header}</h2>
+      <p className="text-slate-500">{paragraph}</p>
     </div>
   );
 };
