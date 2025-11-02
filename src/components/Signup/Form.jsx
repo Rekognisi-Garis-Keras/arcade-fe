@@ -170,7 +170,7 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             error={errors.password}
             touched={touched.password}
-            placeholder="········"
+            placeholder="●●●●●●●●"
             helpText="Password harus minimal 8 karakter dengan huruf dan angka"
           />
         </div>

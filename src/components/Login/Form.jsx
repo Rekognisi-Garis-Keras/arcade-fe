@@ -106,7 +106,7 @@ const Form = () => {
   };
 
   const handleGoogleSuccess = () => {
-    alert("Google login simulated");
+    window.location.href = "https://api-arcade.vercel.app/auth/google";
   };
 
   const handleGoogleError = () => {
@@ -145,7 +145,7 @@ const Form = () => {
             onBlur={handleBlur}
             error={errors.password}
             touched={touched.password}
-            placeholder="········"
+            placeholder="●●●●●●●●"
             helpText="Password harus minimal 8 karakter dengan huruf dan angka"
           />
         </div>
