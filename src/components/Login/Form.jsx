@@ -2,6 +2,7 @@ import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
 import HeaderForm from "@/components/Login/HeaderForm";
 import InputField from "@/components/Login/InputField";
 import SubmitButton from "@/components/Login/SubmitButton";
+import Link from "next/link";
 
 import { useState } from "react";
 
@@ -151,10 +152,17 @@ const Form = () => {
           disabled={false}
         />
 
-        <div className="text-center">
-          <a href="#" className="text-sm text-sky-500 hover:text-sky-600">
-            Lupa password kamu?
-          </a>
+        <div className="gap-3 mt-5 flex justify-evenly">
+          <Link href="#" className="text-sm text-sky-500 hover:text-sky-600">
+            Lupa password?
+          </Link>
+          <div className="border border-slate-200 h-5"></div>
+          <Link
+            href="/signup"
+            className="text-sm text-sky-500 hover:text-sky-600"
+          >
+            Belum punya akun?
+          </Link>
         </div>
       </form>
     </>

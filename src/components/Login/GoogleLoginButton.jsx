@@ -4,7 +4,6 @@ import { Button } from "@/components/UI/button";
 const GoogleLoginButton = ({ onSuccess, onError, disabled }) => {
   return (
     <Button
-      variant={"sidebar"}
       type="button"
       onClick={() => onSuccess()}
       disabled={disabled}
