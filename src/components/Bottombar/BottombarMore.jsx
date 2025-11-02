@@ -5,9 +5,16 @@ import { Button } from "@/components/UI/button";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleQuestionMark, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const BottomMore = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
 
   return (
     <div className="relative flex justify-center">
@@ -44,14 +51,10 @@ const BottomMore = () => {
               <Button
                 variant="dangerOutline"
                 className="w-full justify-start rounded-lg"
+                onClick={handleLogout}
               >
-                <Link
-                  href="/logout"
-                  className="flex gap-x-2 py-2 rounded-md w-full text-left"
-                >
                   <LogOut />
                   <span>Log out</span>
-                </Link>
               </Button>
             </div>
           </div>
