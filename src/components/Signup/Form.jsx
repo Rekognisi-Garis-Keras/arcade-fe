@@ -1,17 +1,23 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiRequest } from "@/utils/api";
 import HeaderForm from "@/components/Login/HeaderForm";
 import InputField from "@/components/Login/InputField";
 import SubmitButton from "@/components/Login/SubmitButton";
 import Link from "next/link";
 
-import { useState } from "react";
-
-// Sign Up Form Component
 const SignUpForm = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({
     username: "",
@@ -25,32 +31,24 @@ const SignUpForm = () => {
     password: false,
   });
 
-  // Validasi username
   const validateUsername = (username) => {
     if (!username) return "Masukkan Nama";
     if (username.length < 3) return "Nama minimal memiliki panjang 3 karakter";
     if (username.length > 20) return "Nama maksimal 20 karakter";
-    // Hanya boleh huruf (a-z, A-Z)
-    const usernameRegex = /^[a-zA-Z]+$/;
-    if (!usernameRegex.test(username))
-      return "Nama hanya boleh mengandung huruf";
+    if (!/^[a-zA-Z]+$/.test(username)) return "Nama hanya boleh mengandung huruf";
     return "";
   };
 
-  // Validasi email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) return "Masukkan Email";
-    if (!emailRegex.test(email))
-      return "Tolong masukkan alamat email yang valid";
+    if (!emailRegex.test(email)) return "Masukkan email yang valid";
     return "";
   };
 
-  // Validasi password
   const validatePassword = (password) => {
     if (!password) return "Masukkan password";
-    if (password.length < 8)
-      return "Password minimal memiliki panjang 8 karakter";
+    if (password.length < 8) return "Password minimal 8 karakter";
     const hasLetter = /[a-zA-Z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     if (!hasLetter || !hasNumber)
@@ -58,7 +56,6 @@ const SignUpForm = () => {
     return "";
   };
 
-  // Get validator function based on field name
   const getValidator = (name) => {
     switch (name) {
       case "username":
@@ -72,7 +69,6 @@ const SignUpForm = () => {
     }
   };
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -84,24 +80,19 @@ const SignUpForm = () => {
     }
   };
 
-  // Handle blur
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
-
     const validator = getValidator(name);
     const error = validator(value);
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  // Submit handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Mark all fields as touched
     setTouched({ username: true, email: true, password: true });
 
-    // Validate all fields
     const usernameError = validateUsername(formData.username);
     const emailError = validateEmail(formData.email);
     const passwordError = validatePassword(formData.password);
@@ -112,19 +103,25 @@ const SignUpForm = () => {
       password: passwordError,
     });
 
-    // Check if there are any errors
-    if (usernameError || emailError || passwordError) {
-      console.log("Form error ❌", {
-        usernameError,
-        emailError,
-        passwordError,
+    if (usernameError || emailError || passwordError) return;
+
+    setLoading(true);
+    try {
+      const res = await apiRequest("/auth/register", {
+        method: "POST",
+        body: {
+          name: formData.username,
+          email: formData.email,
+          password: formData.password,
+        },
       });
-      return;
+
+      router.push("/login");
+    } catch (err) {
+      alert("❌ Gagal registrasi: " + err.message);
+    } finally {
+      setLoading(false);
     }
-
-    console.log("Form valid ✅", formData);
-
-    alert("Form valid! (belum ada logic sign up)");
   };
 
   return (
@@ -173,12 +170,14 @@ const SignUpForm = () => {
             onBlur={handleBlur}
             error={errors.password}
             touched={touched.password}
-            placeholder="········"
+            placeholder="●●●●●●●●"
             helpText="Password harus minimal 8 karakter dengan huruf dan angka"
           />
         </div>
 
-        <SubmitButton type="submit">Daftar</SubmitButton>
+        <SubmitButton type="submit">
+          {loading ? "Mendaftarkan..." : "Daftar"}
+        </SubmitButton>
 
         <div className="text-center">
           <span className="text-sm text-gray-600">Sudah punya akun? </span>

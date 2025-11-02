@@ -1,13 +1,17 @@
-import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiRequest } from "@/utils/api";
+import Link from "next/link";
 import HeaderForm from "@/components/Login/HeaderForm";
 import InputField from "@/components/Login/InputField";
 import SubmitButton from "@/components/Login/SubmitButton";
-import Link from "next/link";
+import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
 
-import { useState } from "react";
-
-// Main Form Component (Parent)
 const Form = () => {
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,20 +27,18 @@ const Form = () => {
     password: false,
   });
 
-  // Validasi email
+  const [loading, setLoading] = useState(false);
+
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) return "Masukkan Email";
-    if (!emailRegex.test(email))
-      return "Tolong masukkan alamat email yang valid";
+    if (!emailRegex.test(email)) return "Tolong masukkan alamat email yang valid";
     return "";
   };
 
-  // Validasi password
   const validatePassword = (password) => {
     if (!password) return "Masukkan password";
-    if (password.length < 8)
-      return "Password minimal memiliki panjang 8 karakter";
+    if (password.length < 8) return "Password minimal 8 karakter";
     const hasLetter = /[a-zA-Z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     if (!hasLetter || !hasNumber)
@@ -44,7 +46,6 @@ const Form = () => {
     return "";
   };
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -56,7 +57,6 @@ const Form = () => {
     }
   };
 
-  // Handle blur
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
@@ -66,9 +66,8 @@ const Form = () => {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-  // Submit handler
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     setTouched({ email: true, password: true });
 
@@ -85,13 +84,29 @@ const Form = () => {
       return;
     }
 
-    console.log("Form valid", formData);
-    alert("Form berhasil disubmit");
+    setLoading(true);
+
+    try {
+      const res = await apiRequest("/auth/login", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      router.push("/subjects");
+    } catch (error) {
+      alert(error.message || "Login gagal, coba lagi!");
+      console.error("Login error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle Google login
   const handleGoogleSuccess = () => {
-    alert("Google login simulated");
+    window.location.href = "https://api-arcade.vercel.app/auth/google";
   };
 
   const handleGoogleError = () => {
@@ -134,12 +149,14 @@ const Form = () => {
             onBlur={handleBlur}
             error={errors.password}
             touched={touched.password}
-            placeholder="········"
+            placeholder="●●●●●●●●"
             helpText="Password harus minimal 8 karakter dengan huruf dan angka"
           />
         </div>
 
-        <SubmitButton type="submit">Masuk</SubmitButton>
+        <SubmitButton type="submit" disabled={loading}>
+          {loading ? "Sedang masuk..." : "Masuk"}
+        </SubmitButton>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -153,7 +170,7 @@ const Form = () => {
         <GoogleLoginButton
           onSuccess={handleGoogleSuccess}
           onError={handleGoogleError}
-          disabled={false}
+          disabled={loading}
         />
 
         <div className="gap-3 mt-5 flex justify-evenly">

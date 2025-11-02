@@ -5,9 +5,16 @@ import { Button } from "@/components/UI/button";
 import Image from "next/image";
 import Link from "next/link";
 import { CircleQuestionMark, LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const SidebarMore = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
 
   return (
     <div
@@ -43,11 +50,9 @@ const SidebarMore = () => {
                 <span>Help</span>
               </Link>
             </Button>
-            <Button variant={"dangerOutline"} className="w-full justify-start">
-              <Link href="/logout" className="py-2 flex gap-x-2 rounded-md">
+            <Button variant={"dangerOutline"} className="w-full justify-start" onClick={handleLogout}>
                 <LogOut strokeWidth={3} size={1} />
                 <span>Log out</span>
-              </Link>
             </Button>
           </div>
         </div>
