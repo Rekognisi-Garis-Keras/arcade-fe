@@ -1,7 +1,7 @@
-import GoogleLoginButton from "./GoogleLoginButton";
-import HeaderForm from "./HeaderForm";
-import InputField from "./InputField";
-import SubmitButton from "./SubmitButton";
+import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
+import HeaderForm from "@/components/Login/HeaderForm";
+import InputField from "@/components/Login/InputField";
+import SubmitButton from "@/components/Login/SubmitButton";
 
 import { useState } from "react";
 

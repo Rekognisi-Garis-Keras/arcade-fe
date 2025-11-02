@@ -12,7 +12,7 @@ const HeaderForm = () => {
         className="mb-3"
       />
 
-      <h2 className="font-bold mb-1 text-2xl text-slate-700">
+      <h2 className="font-extrabold mb-1 text-2xl text-slate-700">
         Selamat Datang Kembali!
       </h2>
       <p className="text-slate-500">Tolong masukkan email dan password kamu</p>
