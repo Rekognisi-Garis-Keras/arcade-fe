@@ -34,7 +34,7 @@ const HeaderLanding = () => {
           </div>
         </Link>
 
-        <Button size={"sm"} className="w-24" variant="primary">
+        <Button size={"sm"} className="w-24" asChild variant="primary">
           <Link href="/login">Login</Link>
         </Button>
       </nav>

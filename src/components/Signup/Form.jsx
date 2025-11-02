@@ -1,7 +1,7 @@
-import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
 import HeaderForm from "@/components/Login/HeaderForm";
 import InputField from "@/components/Login/InputField";
 import SubmitButton from "@/components/Login/SubmitButton";
+import Link from "next/link";
 
 import { useState } from "react";
 
@@ -27,14 +27,13 @@ const SignUpForm = () => {
 
   // Validasi username
   const validateUsername = (username) => {
-    if (!username) return "Masukkan Username";
-    if (username.length < 3)
-      return "Username minimal memiliki panjang 3 karakter";
-    if (username.length > 20) return "Username maksimal 20 karakter";
-    // Hanya boleh huruf, angka, underscore, dan dash
-    const usernameRegex = /^[a-zA-Z0-9_-]+$/;
+    if (!username) return "Masukkan Nama";
+    if (username.length < 3) return "Nama minimal memiliki panjang 3 karakter";
+    if (username.length > 20) return "Nama maksimal 20 karakter";
+    // Hanya boleh huruf (a-z, A-Z)
+    const usernameRegex = /^[a-zA-Z]+$/;
     if (!usernameRegex.test(username))
-      return "Username hanya boleh mengandung huruf, angka, underscore, dan dash";
+      return "Nama hanya boleh mengandung huruf";
     return "";
   };
 
@@ -125,16 +124,7 @@ const SignUpForm = () => {
 
     console.log("Form valid ✅", formData);
 
-    alert("Form berhasil dikirim");
-  };
-
-  // Handle Google signup
-  const handleGoogleSuccess = () => {
-    alert("Google sign up simulated");
-  };
-
-  const handleGoogleError = () => {
-    alert("Google sign up failed");
+    alert("Form valid! (belum ada logic sign up)");
   };
 
   return (
@@ -157,7 +147,7 @@ const SignUpForm = () => {
             error={errors.username}
             touched={touched.username}
             placeholder="Nama Kamu"
-            helpText="Nama kamu minimal memiliki panjang 3 karakter"
+            helpText="Nama mengandung 3-20 karakter, hanya huruf"
           />
 
           <InputField
@@ -190,29 +180,14 @@ const SignUpForm = () => {
 
         <SubmitButton type="submit">Daftar</SubmitButton>
 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">atau</span>
-          </div>
-        </div>
-
-        <GoogleLoginButton
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-          disabled={false}
-        />
-
         <div className="text-center">
           <span className="text-sm text-gray-600">Sudah punya akun? </span>
-          <a
-            href="#"
+          <Link
             className="text-sm text-sky-500 hover:text-sky-600 font-medium"
+            href="/login"
           >
             Masuk di sini
-          </a>
+          </Link>
         </div>
       </form>
     </>
