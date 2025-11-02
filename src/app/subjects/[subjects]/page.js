@@ -14,42 +14,61 @@ const DetailSubject = () => {
   const router = useRouter();
   const { subjects: subjectSlug } = useParams();
   const [topics, setTopics] = useState([]);
+  const [subjectDetail, setSubjectDetail] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTopics = async () => {
+    const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await apiRequest(`/subjects/${subjectSlug}/topics`, {
+
+        // fetch subject detail
+        const subjectRes = await apiRequest(`/subjects/${subjectSlug}`, {
           method: "GET",
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         });
 
-        if (res.status === "success" && res.data.length > 0) {
-          setTopics(res.data);
+        if (subjectRes.status !== "success" || !subjectRes.data) {
+          router.replace("/not-found");
+          return;
+        }
+
+        setSubjectDetail(subjectRes.data);
+
+        // fetch topics
+        const topicRes = await apiRequest(`/subjects/${subjectSlug}/topics`, {
+          method: "GET",
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        if (topicRes.status === "success" && topicRes.data.length > 0) {
+          // sort by id ascending
+          const sortedTopics = topicRes.data.sort((a, b) => a.id - b.id);
+          setTopics(sortedTopics);
         } else {
           router.replace("/not-found");
         }
       } catch (err) {
-        console.error("Failed to fetch topics:", err);
+        console.error("Failed to fetch subject/topics:", err);
         router.replace("/not-found");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTopics();
+    fetchData();
   }, [subjectSlug, router]);
 
   if (loading) return <p>Loading...</p>;
+  if (!subjectDetail) return null;
 
   return (
     <div className="flex flex-row-reverse gap-12 px-6">
       <StickyWrapper />
       <ContentWrapper>
         <div className="w-full rounded-xl border-2 border-b-4 h-[100px] bg-white mb-10 p-5 flex flex-col gap-y- ">
-          <h3 className="font-extrabold text-xl">SECTION 1 UNIT 5</h3>
-          <p className="text-md font-bold">lorem ipsum sit</p>
+          <h3 className="font-extrabold text-xl">Mata Pelajaran {subjectDetail.name}</h3>
+          <p className="text-md font-bold">{subjectDetail.desc}</p>
         </div>
 
         <EachUtils
@@ -60,29 +79,13 @@ const DetailSubject = () => {
 
               <div className="w-2 h-1 relative mx-auto flex gap-x-3">
                 <Link href={`/subjects/${subjectSlug}/${topic.slug}`} key={index + 1}>
-                  <LessonButton
-                    buttonType="lesson"
-                    locked={false}
-                    index={index}
-                    subIndex={0}
-                  />
+                  <LessonButton buttonType="lesson" locked={false} index={index} subIndex={0} />
                 </Link>
                 <Link href={`/subjects/${subjectSlug}/${topic.slug}/ar`} key={index + 2}>
-                  <LessonButton
-                    buttonType="ar"
-                    locked={false}
-                    index={index}
-                    subIndex={1}
-                    
-                  />
+                  <LessonButton buttonType="ar" locked={false} index={index} subIndex={1} />
                 </Link>
                 <Link href={`/subjects/${subjectSlug}/${topic.slug}/quiz`} key={index + 3}>
-                  <LessonButton
-                    buttonType="quiz"
-                    locked={false}
-                    index={index}
-                    subIndex={2}
-                  />
+                  <LessonButton buttonType="quiz" locked={false} index={index} subIndex={2} />
                 </Link>
               </div>
             </div>
