@@ -75,7 +75,7 @@ export default function AR() {
       <div className="flex flex-col min-h-screen pb-25 px-5">
          <NavbarTopic title={`AR: ${LIST_LESSON_ASTRONOMY[0].title}`} />
 
-         <ARCamera title={`AR: ${LIST_LESSON_ASTRONOMY[0].desc}`} />
+         <ARCamera model={LIST_LESSON_ASTRONOMY[0].model_url} />
 
          <div className="flex lg:flex-row flex-col-reverse items-center gap-y-3 gap-x-5">
             <div className="grow border-2 p-5 rounded-xl border-steel-200 border-b-4">
@@ -89,7 +89,7 @@ export default function AR() {
                         <span className="font-bold">Kamu:</span> {liveText || "..."}
                      </p>
                      <p>
-                        <span className="font-bold">ARmin:</span> {loading ? "Sedang menjawab..." : answer || "Belum ada jawaban."}
+                        <span className="font-bold">ARmin:</span> {loading ? "ARmin mikir dulu ya.." : answer || "Belum ada jawaban."}
                      </p>
                   </div>
                )}
