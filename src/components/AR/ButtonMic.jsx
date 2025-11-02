@@ -8,6 +8,7 @@ export default function MicButton({ onTextChange, onStartAsk }) {
   const recognitionRef = useRef(null);
   const silenceTimer = useRef(null);
   const lastSpokeTime = useRef(null);
+  const finalTranscript = useRef("");
 
   useEffect(() => {
     const SpeechRecognition =
@@ -20,13 +21,14 @@ export default function MicButton({ onTextChange, onStartAsk }) {
 
     const recognition = new SpeechRecognition();
     recognition.lang = "id-ID";
-    recognition.continuous = false; // 🚫 jangan continuous
+    recognition.continuous = false;
     recognition.interimResults = true;
 
     recognition.onstart = () => {
       console.log("🎙️ Recording started");
       setIsRecording(true);
       lastSpokeTime.current = Date.now();
+      finalTranscript.current = "";
       onStartAsk?.();
       startSilenceWatcher(recognition);
     };
@@ -36,8 +38,8 @@ export default function MicButton({ onTextChange, onStartAsk }) {
       for (let i = 0; i < event.results.length; i++) {
         liveText += event.results[i][0].transcript;
       }
-      onTextChange(liveText);
-      lastSpokeTime.current = Date.now(); // update waktu terakhir ngomong
+      finalTranscript.current = liveText;
+      lastSpokeTime.current = Date.now();
     };
 
     recognition.onerror = (event) => {
@@ -49,6 +51,10 @@ export default function MicButton({ onTextChange, onStartAsk }) {
       console.log("🛑 Recording ended");
       setIsRecording(false);
       clearInterval(silenceTimer.current);
+
+      if (finalTranscript.current.trim() !== "") {
+        onTextChange(finalTranscript.current.trim());
+      }
     };
 
     recognitionRef.current = recognition;
@@ -59,15 +65,13 @@ export default function MicButton({ onTextChange, onStartAsk }) {
     };
   }, [onTextChange, onStartAsk]);
 
-  // ⏱️ Deteksi diam selama >2 detik, lalu stop recognition
   const startSilenceWatcher = (recognition) => {
     clearInterval(silenceTimer.current);
     silenceTimer.current = setInterval(() => {
       if (!lastSpokeTime.current) return;
-
       const elapsed = Date.now() - lastSpokeTime.current;
-      if (elapsed > 2000) {
-        console.log("😴 Tidak ada suara 2 detik — stop mic");
+      if (elapsed > 5000) {
+        console.log("😴 Tidak ada suara 5 detik — stop mic");
         recognition.stop();
         clearInterval(silenceTimer.current);
       }
@@ -94,7 +98,7 @@ export default function MicButton({ onTextChange, onStartAsk }) {
       className={`rounded-full p-8 border-4 transition-all duration-300 ${
         isRecording
           ? "bg-red-500 border-red-700 text-white scale-110 shadow-lg"
-          : "border-steal-200 hover:bg-steal-100"
+          : "border-steel-200 hover:bg-steel-100"
       }`}
     >
       <Mic className={isRecording ? "animate-pulse" : ""} />

@@ -1,10 +1,10 @@
 import React from "react";
 
-const ARCamera = ({ title }) => {
+const ARCamera = ({ model }) => {
   return (
     <div className="relative">
       <iframe
-        src={`https://badzlan.is-a.dev/test-ar/?model=${title}`}
+        src={`https://badzlan.is-a.dev/test-ar/?model=https://cdn.jsdelivr.net/gh/badzlan/test-ar/model/sun.glb`}
         width="100%"
         height="600px"
         title="AR"

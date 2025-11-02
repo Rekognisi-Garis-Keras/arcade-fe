@@ -6,7 +6,7 @@ const LIST_LESSON_ASTRONOMY = [
     title: "Matahari",
     slug: "matahari",
     desc: "Matahari adalah bintang pusat tata surya yang menjadi sumber utama cahaya dan energi bagi planet-planet di sekitarnya.",
-    model_url: "https://cdn.jsdelivr.net/gh/badzlan/test-ar/sun.glb",
+    model_url: "https://cdn.jsdelivr.net/gh/badzlan/test-ar/model/sun.glb",
     marker_img_url:
       "https://cdn.jsdelivr.net/gh/badzlan/test-ar/marker-sun.png",
     audio_url: "https://cdn.jsdelivr.net/gh/badzlan/test-ar/audio-sun.mp3",
