@@ -1,6 +1,4 @@
 import React from "react";
-import { LIST_COURSES } from "@/constants/listCourses";
-import EachUtils from "@/utils/EachUtils";
 import List from "@/components/CardSubjects/List";
 import AuthGuard from "@/utils/authGuard";
 
