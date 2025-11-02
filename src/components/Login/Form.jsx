@@ -97,6 +97,10 @@ const Form = () => {
   const handleGoogleError = () => {
     alert("Google login failed");
   };
+  const [isShowing, setIsShowing] = useState(false);
+  const showPassword = () => {
+    setIsShowing(!isShowing);
+  };
 
   return (
     <>
@@ -124,7 +128,7 @@ const Form = () => {
             label="Password"
             id="password"
             name="password"
-            type="password"
+            type={"password"}
             value={formData.password}
             onChange={handleChange}
             onBlur={handleBlur}

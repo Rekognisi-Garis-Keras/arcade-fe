@@ -20,7 +20,7 @@ const HeaderLanding = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 bg-white ${
+      className={`fixed top-0 left-0 w-full z-50 bg-transparent ${
         isScrolled ? "border-b-2 border-steal-200" : "border-b-0"
       }`}
     >
