@@ -5,7 +5,8 @@ import { Button } from "@/components/UI/button";
 import { Label } from "@/components/UI/label";
 import { Upload, X } from "lucide-react";
 
-const FileUploadInput = ({ value, onChange, label }) => {
+const FileUploadInput = ({ value, onChange, label, onFileSelect }) => {
+  // Prop 'onFileSelect' ditambahkan
   const [isDragging, setIsDragging] = useState(false);
   const fileRef = useRef(null);
 
@@ -17,9 +18,16 @@ const FileUploadInput = ({ value, onChange, label }) => {
   const handleFile = (file) => {
     if (!file.type.startsWith("image/"))
       return alert("Please upload an image file");
+
+    // Untuk preview base64 (dikirim ke 'onChange')
     const reader = new FileReader();
     reader.onload = (e) => onChange(e.target.result);
     reader.readAsDataURL(file);
+
+    // Untuk submission (dikirim ke 'onFileSelect')
+    if (onFileSelect) {
+      onFileSelect(file);
+    }
   };
 
   const handleDrop = (e) => {
@@ -35,8 +43,11 @@ const FileUploadInput = ({ value, onChange, label }) => {
   };
 
   const clearFile = () => {
-    onChange("");
+    onChange(""); // Hapus preview base64
     if (fileRef.current) fileRef.current.value = "";
+    if (onFileSelect) {
+      onFileSelect(null); // Hapus file biner di parent
+    }
   };
 
   return (

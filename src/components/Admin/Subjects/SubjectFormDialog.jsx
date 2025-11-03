@@ -19,7 +19,9 @@ const SubjectFormDialog = ({
   mode,
   formData,
   onChange,
+  onFileChange, // Prop baru untuk file biner
   onSubmit,
+  isSubmitting, // Prop baru untuk loading
 }) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -42,6 +44,7 @@ const SubjectFormDialog = ({
           <Input
             value={formData.name}
             onChange={(e) => onChange("name", e.target.value)}
+            disabled={isSubmitting}
           />
         </div>
         <div className="grid gap-2">
@@ -49,19 +52,15 @@ const SubjectFormDialog = ({
           <Input
             value={formData.description}
             onChange={(e) => onChange("description", e.target.value)}
+            disabled={isSubmitting}
           />
         </div>
-        <div className="grid gap-2">
-          <Label>Slug</Label>
-          <Input
-            value={formData.slug}
-            onChange={(e) => onChange("slug", e.target.value)}
-          />
-        </div>
+        {/* Input Slug dihapus sesuai permintaan */}
         <FileUploadInput
           label="Icon"
-          value={formData.iconPath}
-          onChange={(v) => onChange("iconPath", v)}
+          value={formData.iconPath} // Untuk preview (base64)
+          onChange={(v) => onChange("iconPath", v)} // Untuk update preview (base64)
+          onFileSelect={onFileChange} // Untuk update file biner
         />
       </div>
 
@@ -70,6 +69,7 @@ const SubjectFormDialog = ({
           variant="outline"
           className={"cursor-pointer"}
           onClick={() => onOpenChange(false)}
+          disabled={isSubmitting}
         >
           Batal
         </Button>
@@ -77,8 +77,13 @@ const SubjectFormDialog = ({
           onClick={onSubmit}
           variant={mode === "edit" ? "editProfile" : "primary"}
           className={"cursor-pointer"}
+          disabled={isSubmitting}
         >
-          {mode === "edit" ? "Simpan" : "Tambahkan"}
+          {isSubmitting
+            ? "Menyimpan..."
+            : mode === "edit"
+            ? "Simpan"
+            : "Tambahkan"}
         </Button>
       </DialogFooter>
     </DialogContent>

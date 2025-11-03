@@ -27,7 +27,7 @@ export default function GuestGuard({ children }) {
 
             if (res.ok) {
                // Token valid → redirect ke subjects
-               router.replace("/subjects");
+               router.push("/subjects");
             } else {
                // Token invalid → hapus dan render halaman
                localStorage.removeItem("token");

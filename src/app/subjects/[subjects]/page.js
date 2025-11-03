@@ -32,7 +32,7 @@ export default function DetailSubject() {
         });
 
         if (subjectRes.status !== "success" || !subjectRes.data) {
-          router.replace("/not-found");
+          router.push("/not-found");
           return;
         }
 
@@ -49,11 +49,11 @@ export default function DetailSubject() {
           const sortedTopics = topicRes.data.sort((a, b) => a.id - b.id);
           setTopics(sortedTopics);
         } else {
-          router.replace("/not-found");
+          router.push("/not-found");
         }
       } catch (err) {
         console.error("Failed to fetch subject/topics:", err);
-        router.replace("/not-found");
+        router.push("/not-found");
       } finally {
         setLoading(false);
       }

@@ -4,7 +4,7 @@ export async function apiRequest(endpoint, { method = "GET", query = {}, body = 
    const url = `${baseUrl}${endpoint}${queryString}`;
 
    const headers = isFormData
-      ? customHeaders // biarkan FormData handle Content-Type
+      ? customHeaders
       : { "Content-Type": "application/json", ...customHeaders };
 
    const options = { method, headers };

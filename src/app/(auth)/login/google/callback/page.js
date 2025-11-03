@@ -11,10 +11,10 @@ export default function GoogleCallbackPage() {
 
       if (token) {
          localStorage.setItem("token", token);
-         router.replace("/subjects");
+         router.push("/subjects");
       } else {
          alert("Login gagal!");
-         router.replace("/login");
+         router.push("/login");
       }
    }, [router]);
 

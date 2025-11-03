@@ -13,7 +13,7 @@ export default function AuthGuard({ children }) {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        router.replace("/login");
+        router.push("/login");
         return;
       }
 
@@ -34,7 +34,7 @@ export default function AuthGuard({ children }) {
         setChecking(false); // auth valid, lanjut render
       } catch (err) {
         localStorage.removeItem("token"); // hapus token yang invalid
-        router.replace("/login"); // redirect ke login
+        router.push("/login"); // redirect ke login
       }
     };
 

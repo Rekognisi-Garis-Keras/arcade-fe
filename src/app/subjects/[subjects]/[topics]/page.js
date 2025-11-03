@@ -29,7 +29,7 @@ export default function DetailTopic() {
         );
 
         if (res.status !== "success" || !res.data) {
-          router.replace("/not-found");
+          router.push("/not-found");
           return;
         }
 
@@ -61,7 +61,7 @@ export default function DetailTopic() {
         setTopic(res.data);
       } catch (err) {
         console.error("Failed to fetch topic:", err);
-        router.replace("/not-found");
+        router.push("/not-found");
       } finally {
         setLoading(false);
       }

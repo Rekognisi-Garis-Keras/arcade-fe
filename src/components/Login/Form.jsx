@@ -97,7 +97,12 @@ const Form = () => {
         localStorage.setItem("token", res.data.token);
       }
 
-      router.push("/subjects");
+      if (res.data.user.role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/subjects");
+      }
+
     } catch (error) {
       alert(error.message || "Login gagal, coba lagi!");
       console.error("Login error:", error);

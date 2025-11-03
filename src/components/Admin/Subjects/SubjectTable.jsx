@@ -2,69 +2,191 @@
 
 import { Button } from "@/components/UI/button";
 import { SquarePen, Trash, Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SubjectFormDialog from "./SubjectFormDialog";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
-
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog"; // Asumsi Anda punya komponen ini
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "../../UI/input";
-
-const initialSubjects = [
-  {
-    id: 1,
-    name: "Astronomy",
-    description: "Study of celestial objects",
-    slug: "/subjects/astronomy",
-    iconPath: "/icons/telescope.svg",
-  },
-  {
-    id: 2,
-    name: "Physics",
-    description: "Study of matter and energy",
-    slug: "/subjects/physics",
-    iconPath: "/icons/atom.svg",
-  },
-];
+import { apiRequest } from "@/utils/api";
 
 const SubjectTable = () => {
-  const [subjects, setSubjects] = useState(initialSubjects);
+  const [subjects, setSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [dialogMode, setDialogMode] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [formData, setFormData] = useState({
+    id: null,
     name: "",
     description: "",
     slug: "",
     iconPath: "",
   });
+  const [selectedFile, setSelectedFile] = useState(null); // State untuk file biner
   const [searchInput, setSearchInput] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false); // State untuk loading form
+
+  const fetchSubjects = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await apiRequest("/subjects", {
+        method: "GET",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      if (res.status === "success" && Array.isArray(res.data)) {
+        const mapped = res.data.map((s) => ({
+          id: s.id,
+          name: s.name,
+          description: s.desc || s.description || "",
+          slug: `/${s.slug}`,
+          iconPath: s.thumbnail || "",
+        }));
+        setSubjects(mapped);
+        setFilteredSubjects(mapped);
+      } else {
+        setSubjects([]);
+        setFilteredSubjects([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch subjects:", err);
+      setSubjects([]);
+      setFilteredSubjects([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubjects();
+  }, []);
+
+  // filter berdasarkan search input
+  useEffect(() => {
+    const filtered = subjects.filter((s) =>
+      s.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setFilteredSubjects(filtered);
+  }, [searchInput, subjects]);
 
   const openEdit = (subject) => {
     setDialogMode("edit");
     setFormData(subject);
+    setSelectedFile(null); // Reset file
   };
 
   const openAdd = () => {
     setDialogMode("add");
-    setFormData({ name: "", description: "", slug: "", iconPath: "" });
+    setFormData({ name: "", description: "", iconPath: "" }); // Hapus slug
+    setSelectedFile(null); // Reset file
   };
 
-  const saveEdit = () => {
-    setSubjects(subjects.map((s) => (s.id === formData.id ? formData : s)));
-    setDialogMode(null);
+  const saveAdd = async () => {
+    setIsSubmitting(true);
+    const token = localStorage.getItem("token");
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("desc", formData.description);
+    if (selectedFile) {
+      data.append("thumbnail", selectedFile);
+    }
+
+    try {
+      const res = await apiRequest("/subjects", {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: data,
+        isFormData: true,
+      });
+
+      if (res.status === "success" && res.data) {
+        // Refresh data dari server agar sinkron
+        await fetchSubjects();
+        setDialogMode(null);
+      } else {
+        console.error("Failed to add subject:", res.message);
+        // Tampilkan error ke user
+      }
+    } catch (err) {
+      console.error("Failed to add subject:", err);
+      // Tampilkan error ke user
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const saveAdd = () => {
-    setSubjects([
-      ...subjects,
-      { ...formData, id: Math.max(...subjects.map((s) => s.id), 0) + 1 },
-    ]);
-    setDialogMode(null);
+  const saveEdit = async () => {
+    setIsSubmitting(true);
+    const token = localStorage.getItem("token");
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("desc", formData.description);
+    if (selectedFile) {
+      // Hanya kirim thumbnail jika file baru dipilih
+      data.append("thumbnail", selectedFile);
+    }
+
+    // Ambil slug tanpa tanda '/' di depan
+    const apiSlug = formData.slug.startsWith("/")
+      ? formData.slug.substring(1)
+      : formData.slug;
+
+    try {
+      const res = await apiRequest(`/subjects/${apiSlug}`, {
+        method: "PUT",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: data,
+        isFormData: true,
+      });
+
+      if (res.status === "success" && res.data) {
+        // Refresh data dari server agar sinkron
+        await fetchSubjects();
+        setDialogMode(null);
+      } else {
+        console.error("Failed to edit subject:", res.message);
+        // Tampilkan error ke user
+      }
+    } catch (err) {
+      console.error("Failed to edit subject:", err);
+      // Tampilkan error ke user
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const deleteSubject = () => {
-    setSubjects(subjects.filter((s) => s.id !== deleteId));
-    setDeleteId(null);
+  const deleteSubject = async () => {
+    if (!deleteId) return;
+
+    const subjectToDelete = subjects.find((s) => s.id === deleteId);
+    if (!subjectToDelete) return;
+
+    const apiSlug = subjectToDelete.slug.startsWith("/")
+      ? subjectToDelete.slug.substring(1)
+      : subjectToDelete.slug;
+
+    setIsSubmitting(true);
+    const token = localStorage.getItem("token");
+
+    try {
+      await apiRequest(`/subjects/${apiSlug}`, {
+        method: "DELETE",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+
+      // Jika sukses, update state lokal (atau fetch ulang)
+      setSubjects(subjects.filter((s) => s.id !== deleteId));
+      setDeleteId(null);
+    } catch (err) {
+      console.error("Failed to delete subject:", err);
+      // Tampilkan error ke user
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (loading) return <p>Loading subjects...</p>;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -74,11 +196,10 @@ const SubjectTable = () => {
           <div className="flex items-center gap-2">
             <Input
               placeholder="Cari data..."
-              className={"border border-b-4 border-r-4"}
+              className={"border border-b-4 border-r-4 h-full lg:w-[300px] "}
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <Button variant="primary" className="cursor-pointer">
-              {searchInput}
               <Search />
             </Button>
           </div>
@@ -114,16 +235,18 @@ const SubjectTable = () => {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {subjects.map((s) => (
+            {filteredSubjects.map((s) => (
               <tr key={s.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4">{s.name}</td>
+                <td className="px-6 py-4">
+                  <b>{s.name}</b>
+                </td>
                 <td className="px-6 py-4">{s.description}</td>
                 <td className="px-6 py-4">{s.slug}</td>
                 <td className="px-6 py-4">
                   {s.iconPath && (
                     <Avatar>
-                      <AvatarImage src={s.iconPath} alt="atom" />
-                      <AvatarFallback>PY</AvatarFallback>
+                      <AvatarImage src={s.iconPath} alt={s.name} />
+                      <AvatarFallback>?</AvatarFallback>
                     </Avatar>
                   )}
                 </td>
@@ -159,7 +282,9 @@ const SubjectTable = () => {
           mode={dialogMode}
           formData={formData}
           onChange={(f, v) => setFormData({ ...formData, [f]: v })}
+          onFileChange={setSelectedFile} // Kirim file biner ke state
           onSubmit={dialogMode === "edit" ? saveEdit : saveAdd}
+          isSubmitting={isSubmitting} // Kirim state submitting
         />
       )}
 
@@ -168,6 +293,7 @@ const SubjectTable = () => {
           open={!!deleteId}
           onOpenChange={() => setDeleteId(null)}
           onConfirm={deleteSubject}
+          isSubmitting={isSubmitting} // Kirim state submitting
         />
       )}
     </div>
