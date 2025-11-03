@@ -12,7 +12,7 @@ const SignUpForm = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
@@ -20,22 +20,22 @@ const SignUpForm = () => {
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
   });
 
   const [touched, setTouched] = useState({
-    username: false,
+    name: false,
     email: false,
     password: false,
   });
 
-  const validateUsername = (username) => {
-    if (!username) return "Masukkan Nama";
-    if (username.length < 3) return "Nama minimal memiliki panjang 3 karakter";
-    if (username.length > 20) return "Nama maksimal 20 karakter";
-    if (!/^[a-zA-Z]+$/.test(username)) return "Nama hanya boleh mengandung huruf";
+  const validateName = (name) => {
+    if (!name) return "Masukkan Nama";
+    if (name.length < 3) return "Nama minimal memiliki panjang 3 karakter";
+    if (name.length > 20) return "Nama maksimal 20 karakter";
+    if (!/^[a-zA-Z]+$/.test(name)) return "Nama hanya boleh mengandung huruf";
     return "";
   };
 
@@ -58,8 +58,8 @@ const SignUpForm = () => {
 
   const getValidator = (name) => {
     switch (name) {
-      case "username":
-        return validateUsername;
+      case "name":
+        return validateName;
       case "email":
         return validateEmail;
       case "password":
@@ -91,26 +91,26 @@ const SignUpForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setTouched({ username: true, email: true, password: true });
+    setTouched({ name: true, email: true, password: true });
 
-    const usernameError = validateUsername(formData.username);
+    const nameError = validateName(formData.name);
     const emailError = validateEmail(formData.email);
     const passwordError = validatePassword(formData.password);
 
     setErrors({
-      username: usernameError,
+      name: nameError,
       email: emailError,
       password: passwordError,
     });
 
-    if (usernameError || emailError || passwordError) return;
+    if (nameError || emailError || passwordError) return;
 
     setLoading(true);
     try {
       const res = await apiRequest("/auth/register", {
         method: "POST",
         body: {
-          name: formData.username,
+          name: formData.name,
           email: formData.email,
           password: formData.password,
         },
@@ -135,14 +135,14 @@ const SignUpForm = () => {
         <div className="space-y-2">
           <InputField
             label="Nama"
-            id="username"
-            name="username"
+            id="name"
+            name="name"
             type="text"
-            value={formData.username}
+            value={formData.name}
             onChange={handleChange}
             onBlur={handleBlur}
-            error={errors.username}
-            touched={touched.username}
+            error={errors.name}
+            touched={touched.name}
             placeholder="Nama Kamu"
             helpText="Nama mengandung 3-20 karakter, hanya huruf"
           />

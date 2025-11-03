@@ -3,10 +3,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       new URL("https://ar-cade-fe.vercel.app/**"),
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
+      new URL("https://images.unsplash.com/**"),
+      new URL("https://res.cloudinary.com/**"),
     ],
   },
 };
