@@ -3,14 +3,14 @@ import { MessageCircleQuestionMark, Star, Smartphone } from "lucide-react";
 import { Button } from "@/components/UI/button";
 
 const LessonButton = ({ index, locked, buttonType = "lesson", subIndex }) => {
-  const offset = 60;
+  const offset = 30;
 
   let horizontalShift;
 
   if (buttonType === "lesson" || buttonType === "quiz") {
-    horizontalShift = 0;
+    horizontalShift = -30;
   } else {
-    index % 2 == 0 ? (horizontalShift = offset) : (horizontalShift = -offset);
+    index % 2 == 0 ? (horizontalShift = offset) : (horizontalShift = -100);
   }
 
   const icons = {

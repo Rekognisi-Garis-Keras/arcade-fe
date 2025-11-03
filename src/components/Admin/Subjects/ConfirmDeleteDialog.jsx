@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/components/UI/alert-dialog";
 
 const ConfirmDeleteDialog = ({ open, onOpenChange, onConfirm }) => (
   <AlertDialog open={open} onOpenChange={onOpenChange}>

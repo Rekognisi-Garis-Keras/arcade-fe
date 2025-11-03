@@ -67,7 +67,7 @@ export default function DetailSubject() {
 
   return (
     <AuthGuard>
-      <div className="flex flex-row-reverse gap-12 px-6">
+      <div className="flex flex-row-reverse gap-12 px-6 pb-30 md:pb-0">
         <StickyWrapper />
         <ContentWrapper>
           <div className="w-full rounded-xl border-2 border-b-4 bg-white mb-10 p-5 flex flex-col gap-y-1 ">
@@ -75,9 +75,7 @@ export default function DetailSubject() {
               <Link href="/subjects">
                 <MoveLeft />
               </Link>
-              <h3 className="font-bold text-xl">
-                Mata Pelajaran {subjectDetail.name}
-              </h3>
+              <h3 className="font-bold text-xl">{subjectDetail.name}</h3>
             </div>
             <p className="text-sm font-medium">{subjectDetail.desc}</p>
           </div>
@@ -130,4 +128,4 @@ export default function DetailSubject() {
       </div>
     </AuthGuard>
   );
-};
+}

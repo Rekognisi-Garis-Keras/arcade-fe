@@ -11,4 +11,4 @@ export default function Subjects() {
       </div>
     </AuthGuard>
   );
-};
+}

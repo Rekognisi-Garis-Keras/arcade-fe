@@ -36,7 +36,7 @@ const List = () => {
   if (subjects.length === 0) return <p>Tidak ada mata pelajaran tersedia</p>;
 
   return (
-    <div className="pt-6 grid grid-cols-1 pb-20 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-4">
+    <div className="pt-6 grid pb-30 md:pb-0 grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(420px,1fr))] gap-4">
       {subjects.map((item) => (
         <Link href={`/subjects/${item.slug}`} key={item.id}>
           <CourseCard

@@ -131,7 +131,7 @@ export default function ProfilePage() {
           alt="Profile picture"
           width={100}
           height={100}
-          className="rounded-full border-4 border-sky-500"
+          className="rounded-full border-4 border-sky-500 aspect-square object-cover object-center"
         />
         <div className="flex flex-col md:items-start items-center h-full justify-between gap-y-3">
           <h1 className="text-lg font-bold">Profile Picture</h1>
@@ -156,7 +156,9 @@ export default function ProfilePage() {
             <p className="text-xs text-gray-400">
               File yang disupport: .png .jpg .jpeg
             </p>
-            <p className="text-xs text-gray-400">File maksimal berukuran 10MB</p>
+            <p className="text-xs text-gray-400">
+              File maksimal berukuran 10MB
+            </p>
           </div>
         </div>
       </div>
@@ -169,11 +171,12 @@ export default function ProfilePage() {
           <h1 className="text-lg font-bold">Informasi Pribadi</h1>
           <Button
             onClick={() => {
-              setTempName(user.name);
-              setTempEmail(user.email);
-              setTempPhone(user.phone);
+              setTempPhone(user.phone ?? "");
+              setTempEmail(user.email ?? "");
+              setTempName(user.name ?? "");
               setIsEditOpen(true);
             }}
+            variant={"editProfile"}
           >
             <SquarePen />
           </Button>
@@ -200,9 +203,10 @@ export default function ProfilePage() {
           <h1 className="text-lg font-bold">Bio</h1>
           <Button
             onClick={() => {
-              setTempBio(user.bio);
+              setTempBio(user.bio ?? "");
               setIsEditBioOpen(true);
             }}
+            variant={"editProfile"}
           >
             <SquarePen />
           </Button>
@@ -221,23 +225,36 @@ export default function ProfilePage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Nama
               </label>
-              <Input value={tempName} onChange={(e) => setTempName(e.target.value)} />
+              <Input
+                value={tempName}
+                onChange={(e) => setTempName(e.target.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
-              <Input value={tempEmail} onChange={(e) => setTempEmail(e.target.value)} />
+              <Input
+                value={tempEmail}
+                onChange={(e) => setTempEmail(e.target.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Nomor Telepon
               </label>
-              <Input value={tempPhone} onChange={(e) => setTempPhone(e.target.value)} />
+              <Input
+                value={tempPhone}
+                onChange={(e) => setTempPhone(e.target.value)}
+              />
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleSaveProfile} variant={"secondary"}>
+            <Button
+              onClick={handleSaveProfile}
+              className={"cursor-pointer"}
+              variant={"primary"}
+            >
               Simpan
             </Button>
           </DialogFooter>
@@ -255,11 +272,19 @@ export default function ProfilePage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Bio
               </label>
-              <Textarea rows={3} value={tempBio} onChange={(e) => setTempBio(e.target.value)} />
+              <Textarea
+                rows={3}
+                value={tempBio}
+                onChange={(e) => setTempBio(e.target.value)}
+              />
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleSaveBio} variant={"secondary"}>
+            <Button
+              onClick={handleSaveBio}
+              className={"cursor-pointer"}
+              variant={"primary"}
+            >
               Simpan
             </Button>
           </DialogFooter>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Slab } from "react-loading-indicators";
+import { FourSquare } from "react-loading-indicators";
 
 export default function AuthGuard({ children }) {
   const router = useRouter();
@@ -44,10 +44,10 @@ export default function AuthGuard({ children }) {
   if (checking) {
     return (
       <div className="h-full w-full flex flex-col items-center justify-center text-gray-600">
-        <Slab
+        <FourSquare
           color={["#2bb3ff", "#2b97ff", "#2b7fff", "#2b60ff"]}
           size="large"
-          text="Loading"
+          text="Loading..."
           textColor="#45556c"
         />
       </div>

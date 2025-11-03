@@ -52,7 +52,7 @@ const CourseMarquee = () => {
                   width={40}
                   height={40}
                   src={item.thumbnail} // pakai thumbnail dari API
-                  className="mr-4"
+                  className="mr-4 aspect-square object-center object-cover"
                 />
                 <span className="text-lg font-bold">{item.name}</span>
               </div>

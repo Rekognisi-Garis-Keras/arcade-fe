@@ -20,10 +20,13 @@ export default function DetailTopic() {
     const fetchTopic = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await apiRequest(`/subjects/${subjectSlug}/topics/${topicSlug}`, {
-          method: "GET",
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await apiRequest(
+          `/subjects/${subjectSlug}/topics/${topicSlug}`,
+          {
+            method: "GET",
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
 
         if (res.status !== "success" || !res.data) {
           router.replace("/not-found");
@@ -73,13 +76,17 @@ export default function DetailTopic() {
   return (
     <AuthGuard>
       <div className="flex flex-col gap-3 lg:gap-12 px-6">
-        <NavbarTopic title={topic.title} desc={topic.description} slug={subjectSlug} />
+        <NavbarTopic
+          title={topic.title}
+          desc={topic.description}
+          slug={subjectSlug}
+        />
         <div className="flex gap-6 px-2 material">
           <TopicWrapper className="material">
             <div
               id="topic-content"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
-              className="prose max-w-none"
+              className="prose max-w-full"
             />
           </TopicWrapper>
 
@@ -90,7 +97,9 @@ export default function DetailTopic() {
                 {headings.map((h) => (
                   <li
                     key={h.id}
-                    className={`ml-${(h.level - 1) * 3} hover:underline cursor-pointer`}
+                    className={`ml-${
+                      (h.level - 1) * 3
+                    } hover:underline cursor-pointer`}
                   >
                     <a
                       href={`#${h.id}`}
