@@ -5,6 +5,7 @@ import { Marquee } from "../UI/marquee";
 import EachUtils from "@/utils/EachUtils";
 import Image from "next/image";
 import { apiRequest } from "@/utils/api";
+import SkeletonMarquee from "./SkeletonMarquee";
 
 const CourseMarquee = () => {
   const [subjects, setSubjects] = useState([]);
@@ -35,7 +36,7 @@ const CourseMarquee = () => {
     fetchSubjects();
   }, []);
 
-  if (loading) return <p>Loading courses...</p>;
+  if (loading) return <SkeletonMarquee />;
   if (subjects.length === 0) return <p>No courses available</p>;
 
   return (
