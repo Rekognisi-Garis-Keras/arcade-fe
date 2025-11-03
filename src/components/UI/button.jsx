@@ -30,12 +30,20 @@ const buttonVariants = cva(
           "absolute bg-[#e5e5e5] shadow-[0_10px_0_#b7b7b7] active:shadow-[0_2px_0_#b7b7b7] active:translate-y-1 transition-all duration-100 flex items-center justify-center transform-[perspective(500px)_rotateX(30deg)] origin-bottom",
         uploadButton:
           "absolute right-0 bottom-0 border-2 rounded-full bg-white cursor-pointer",
+        adminAddNew:
+          "capitalize text-primary-foreground font-semibold text-sm bg-green-500",
+        search: "text-primary-foreground font-semibold text-sm bg-green-500 ",
+        edit: "text-primary-foreground font-semibold text-sm bg-yellow-500 rounded-md",
+        delete:
+          "text-primary-foreground font-semibold text-sm bg-red-500 rounded-md",
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",
         sm: "h-9 gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-12 px-8 has-[>svg]:px-4",
         rounded: "w-20 h-20 rounded-full",
+        search: "h-10 w-10 p-10",
+        action: "h-8 w-8",
         uploadButton: "p-2",
         icon: "size-9",
         "icon-sm": "size-8",
