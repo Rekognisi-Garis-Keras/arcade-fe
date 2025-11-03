@@ -72,41 +72,6 @@ body {
   font-family: "Nunito", sans-serif;
 }
 
-body {
-  position: relative;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    from 0deg,
-    #ff4444,
-    /* Red */ #ffaa44,
-    /* Orange */ #ffff44,
-    /* Yellow */ #44ff44,
-    /* Green */ #4444ff,
-    /* Blue */ #aa44ff,
-    /* Purple */ #ff4444 /* Back to Red */
-  );
-  animation: rotate 30s linear infinite;
-  z-index: -1;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .duolingo-button {
   /* Styling dasar tombolnya */
   background-color: #58cc02; /* Warna ijo Duolingo */
