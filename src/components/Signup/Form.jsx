@@ -176,7 +176,7 @@ const SignUpForm = () => {
         </div>
 
         <SubmitButton type="submit">
-          {loading ? "Mendaftarkan..." : "Daftar"}
+          {loading ? "Mendaftarkan" : "Daftar"}
         </SubmitButton>
 
         <div className="text-center">

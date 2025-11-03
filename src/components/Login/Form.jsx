@@ -155,7 +155,7 @@ const Form = () => {
         </div>
 
         <SubmitButton type="submit" disabled={loading}>
-          {loading ? "Sedang masuk..." : "Masuk"}
+          {loading ? "Sedang masuk" : "Masuk"}
         </SubmitButton>
 
         <div className="relative">

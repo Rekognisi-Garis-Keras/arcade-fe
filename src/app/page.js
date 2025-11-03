@@ -4,7 +4,7 @@ import HeaderLanding from "@/components/Landing/HeaderLanding";
 import CourseMarquee from "@/components/Landing/CourseMarquee";
 import HeroSection from "@/components/Landing/HeroSection";
 
-const LandingPage = () => {
+export default function Landing() {
   return (
     <div className="pt-16">
       <HeaderLanding />
@@ -13,5 +13,3 @@ const LandingPage = () => {
     </div>
   );
 };
-
-export default LandingPage;
