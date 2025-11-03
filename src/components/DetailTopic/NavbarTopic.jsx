@@ -2,7 +2,7 @@ import React from "react";
 import { MoveLeft } from "lucide-react";
 import Link from "next/link";
 
-const NavbarTopic = ({ title = "", desc = "", slug = "" }) => {
+const NavbarTopic = ({ title = "", slug = "" }) => {
   return (
     <div className="bg-white relative h-[70px] rounded-xl border-2 border-b-4 border-r-4 border-steal-200 flex items-center justify-center">
       <Link
@@ -14,7 +14,6 @@ const NavbarTopic = ({ title = "", desc = "", slug = "" }) => {
       <div>
         <h5 className="font-bold text-lg">
           <span className="hidden md:inline">{title}</span>
-          <span className="md:hidden">{desc}</span>
         </h5>
       </div>
     </div>

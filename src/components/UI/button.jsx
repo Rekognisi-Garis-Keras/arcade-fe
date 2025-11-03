@@ -18,7 +18,7 @@ const buttonVariants = cva(
           "bg-green-500 text-primary-foreground hover:bg-green-500/90 border-green-600 border-b-[5px] active:border-b-0",
         secondaryOutline: "bg-white text-green-500 hover:bg-slate-100",
         danger:
-          "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-600 border-b-[5px] active:border-b-0",
+          "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-600 cborder-b-[5px] active:border-b-0",
         dangerOutline: "bg-white text-rose-500 hover:bg-slate-100",
         sidebar:
           "bg-transparent text-slate-500 border-2 border-transparent hover:bg-slate-100 transition-none",
@@ -37,7 +37,7 @@ const buttonVariants = cva(
         search: "text-primary-foreground font-semibold text-sm bg-green-500 ",
         edit: "text-primary-foreground font-semibold text-sm bg-yellow-500 rounded-md",
         delete:
-          "text-primary-foreground font-semibold text-sm bg-red-500 rounded-md",
+          "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-600 border-b-[5px] active:border-b-0",
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",

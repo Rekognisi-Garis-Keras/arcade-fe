@@ -1,4 +1,5 @@
 import React from "react";
+import { Eye, EyeClosed } from "lucide-react";
 
 const InputField = ({
   label,
@@ -13,6 +14,7 @@ const InputField = ({
   touched,
   placeholder,
   helpText,
+  showToggle = false,
 }) => {
   return (
     <div>
@@ -22,21 +24,24 @@ const InputField = ({
       >
         {label}
       </label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        onKeyDown={onKeyDown}
-        className={`w-full px-4 py-2 border border-b-3 border-r-3 rounded-lg focus:outline-none focus:ring-1 transition-colors ${
-          error && touched
-            ? "border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:ring-sky-500"
-        }`}
-        placeholder={placeholder}
-      />
+      <div className="relative">
+        <input
+          type={type}
+          id={id}
+          name={name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          onKeyDown={onKeyDown}
+          className={`w-full px-4 py-2 border border-b-3 border-r-3 rounded-lg focus:outline-none focus:ring-1 transition-colors ${
+            error && touched
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:ring-sky-500"
+          }`}
+          placeholder={placeholder}
+        />
+        {showToggle && type === "password" && <Button></Button>}
+      </div>
       {error && touched && <p className="mt-1 text-sm text-red-600">{error}</p>}
       {!error && touched && value && helpText && (
         <p className="mt-1 text-sm text-gray-500">{helpText}</p>

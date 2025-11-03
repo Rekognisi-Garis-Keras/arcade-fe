@@ -25,25 +25,27 @@ const SubjectFormDialog = ({
     <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
       <DialogHeader>
         <DialogTitle>
-          {mode === "edit" ? "Edit Subject" : "Add New Subject"}
+          {mode === "edit"
+            ? "Edit Mata Pelajaran"
+            : "Tambah Mata Pelajaran Baru"}
         </DialogTitle>
         <DialogDescription>
           {mode === "edit"
-            ? "Make changes to the subject here. Click save when you're done."
-            : "Fill in the details for the new subject."}
+            ? "Ubah mata pelajaran di sini. Klik simpan setelah selesai."
+            : "Isi detail untuk mata pelajaran baru."}
         </DialogDescription>
       </DialogHeader>
 
       <div className="grid gap-4 py-4">
         <div className="grid gap-2">
-          <Label>Name</Label>
+          <Label>Nama</Label>
           <Input
             value={formData.name}
             onChange={(e) => onChange("name", e.target.value)}
           />
         </div>
         <div className="grid gap-2">
-          <Label>Description</Label>
+          <Label>Deskripsi</Label>
           <Input
             value={formData.description}
             onChange={(e) => onChange("description", e.target.value)}
@@ -64,11 +66,19 @@ const SubjectFormDialog = ({
       </div>
 
       <DialogFooter>
-        <Button variant="outline" onClick={() => onOpenChange(false)}>
-          Cancel
+        <Button
+          variant="outline"
+          className={"cursor-pointer"}
+          onClick={() => onOpenChange(false)}
+        >
+          Batal
         </Button>
-        <Button onClick={onSubmit}>
-          {mode === "edit" ? "Save changes" : "Add Subject"}
+        <Button
+          onClick={onSubmit}
+          variant={mode === "edit" ? "editProfile" : "primary"}
+          className={"cursor-pointer"}
+        >
+          {mode === "edit" ? "Simpan" : "Tambahkan"}
         </Button>
       </DialogFooter>
     </DialogContent>

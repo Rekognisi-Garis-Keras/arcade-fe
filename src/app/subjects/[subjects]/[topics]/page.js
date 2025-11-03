@@ -76,12 +76,8 @@ export default function DetailTopic() {
   return (
     <AuthGuard>
       <div className="flex flex-col gap-3 lg:gap-12 px-6">
-        <NavbarTopic
-          title={topic.title}
-          desc={topic.description}
-          slug={subjectSlug}
-        />
-        <div className="flex gap-6 px-2 material">
+        <NavbarTopic title={topic.title} slug={subjectSlug} />
+        <div className="flex gap-6 material">
           <TopicWrapper className="material">
             <div
               id="topic-content"

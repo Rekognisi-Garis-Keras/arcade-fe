@@ -74,6 +74,7 @@ const SubjectTable = () => {
           <div className="flex items-center gap-2">
             <Input
               placeholder="Cari data..."
+              className={"border border-b-4 border-r-4"}
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <Button variant="primary" className="cursor-pointer">
@@ -129,7 +130,7 @@ const SubjectTable = () => {
                 <td className="px-6 py-4 flex justify-end gap-2">
                   <Button
                     size="sm"
-                    variant="outline"
+                    variant="editProfile"
                     onClick={() => openEdit(s)}
                     className="h-8 w-8 p-0 cursor-pointer"
                   >
@@ -137,7 +138,7 @@ const SubjectTable = () => {
                   </Button>
                   <Button
                     size="sm"
-                    variant="destructive"
+                    variant="delete"
                     onClick={() => setDeleteId(s.id)}
                     className="h-8 w-8 p-0 cursor-pointer"
                   >

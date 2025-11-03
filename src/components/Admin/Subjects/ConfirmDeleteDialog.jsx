@@ -15,16 +15,27 @@ const ConfirmDeleteDialog = ({ open, onOpenChange, onConfirm }) => (
   <AlertDialog open={open} onOpenChange={onOpenChange}>
     <AlertDialogContent>
       <AlertDialogHeader>
-        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+        <AlertDialogTitle>Apakah kamu yakin?</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. The subject will be permanently deleted.
+          Tindakan ini tidak dapat dibatalkan. Subjek akan dihapus secara
+          permanen.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel onClick={() => onOpenChange(false)}>
-          Cancel
+        <AlertDialogCancel
+          className={"cursor-pointer"}
+          onClick={() => onOpenChange(false)}
+        >
+          Batal
         </AlertDialogCancel>
-        <AlertDialogAction onClick={onConfirm}>Delete</AlertDialogAction>
+        <AlertDialogAction
+          onClick={onConfirm}
+          className={
+            "bg-rose-500 hover:bg-rose-500/90 text-primary-foreground border-rose-600 cursor-pointer"
+          }
+        >
+          Hapus
+        </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   </AlertDialog>
