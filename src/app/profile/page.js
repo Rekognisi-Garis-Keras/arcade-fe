@@ -14,6 +14,7 @@ import { Input } from "@/components/UI/input";
 import { Textarea } from "@/components/UI/textarea";
 import { Upload, SquarePen } from "lucide-react";
 import { apiRequest } from "@/utils/api";
+import SkeletonProfile from "@/components/Profile/Skeleton";
 
 export default function ProfilePage() {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -119,7 +120,7 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading) return <p>Loading profile...</p>;
+  if (loading) return <SkeletonProfile />;
   if (!user) return <p>User data not found</p>;
 
   return (
