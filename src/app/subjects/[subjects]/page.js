@@ -68,7 +68,24 @@ export default function DetailSubject() {
   return (
     <AuthGuard>
       <div className="flex flex-row-reverse gap-12 px-6 pb-30 md:pb-0">
-        <StickyWrapper />
+        <StickyWrapper>
+          <div className="min-h-[200px] w-full border-2 rounded-xl flex flex-col gap-2 p-5 shadow-xs mt-5">
+            <h1 className="text-lg text-shadow-gray-800">Tahukah kamu?</h1>
+            <div className="flex items-center gap-4">
+              <img
+                src="https://d35aaqx5ub95lt.cloudfront.net/images/leagues/7082c58e0bdbfbf9aec94191b704f549.svg"
+                width="50px"
+              />
+              <p className="text-slate-700 text-sm">
+                🌌 Tahukah kamu, bintang yang paling terang dan paling sering
+                kita lihat di langit malam, Sirius, sebenarnya berjarak sekitar
+                8,6 tahun cahaya dari Bumi? Itu artinya, cahaya yang kamu lihat
+                malam ini sudah melakukan perjalanan selama 8,6 tahun untuk
+                sampai di matamu! 🤯✨
+              </p>
+            </div>
+          </div>
+        </StickyWrapper>
         <ContentWrapper>
           <div className="w-full rounded-xl border-2 border-b-4 bg-white mb-10 p-5 flex flex-col gap-y-1 ">
             <div className="flex items-center gap-3">

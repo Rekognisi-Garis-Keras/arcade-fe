@@ -123,7 +123,7 @@ export default function ProfilePage() {
   if (!user) return <p>User data not found</p>;
 
   return (
-    <main className="p-10 w-full min-h-screen pb-20">
+    <main className="p-10 w-full min-h-screen pb-30">
       {/* profile picture card */}
       <div className="flex md:flex-row flex-col border-2 border-b-4 rounded-xl p-5 gap-5 items-center">
         <Image

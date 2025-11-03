@@ -10,7 +10,9 @@ const MainLayout = ({ children }) => {
       </div>
 
       <main className="lg:pl-64 md:pl-20 h-full pb-20">
-        <div className="h-full max-w-[1056px] mx-auto pt-6">{children}</div>
+        <div className="h-full max-w-[1056px] mx-auto md:pt-6 pt-2">
+          {children}
+        </div>
       </main>
 
       <div className="md:hidden fixed bottom-0 left-0 w-full">
