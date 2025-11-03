@@ -9,6 +9,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "../../UI/input";
 import { apiRequest } from "@/utils/api";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
 const SubjectTable = () => {
   const [subjects, setSubjects] = useState([]);
   const [filteredSubjects, setFilteredSubjects] = useState([]);
@@ -192,7 +203,7 @@ const SubjectTable = () => {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex flex-col mb-6">
         <h1 className="text-3xl font-bold text-left mb-5">Mata Pelajaran</h1>
-        <div className="flex justify-between">
+        <div className="flex flex-col lg:flex-row gap-y-2 lg:justify-between">
           <div className="flex items-center gap-2">
             <Input
               placeholder="Cari data..."
@@ -213,44 +224,38 @@ const SubjectTable = () => {
         </div>
       </div>
 
-      <div className="rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-        <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
-                Nama
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
-                Deskripsi
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
-                Slug
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-semibold">
-                Icon
-              </th>
-              <th className="px-6 py-3 text-center text-sm font-semibold">
-                Aksi
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
+      <h3 className="text-xl font-semibold text-left mb-5">
+        List Mata Pelajaran
+      </h3>
+
+      <div className="rounded-lg border border-gray-200 shadow-sm overflow-x-auto ">
+        <Table className="min-w-[850px] px-4 lg:px-6">
+          <TableHeader>
+            <TableRow className="bg-gray-50 border-b border-gray-200">
+              <TableHead className="font-bold">Nama</TableHead>
+              <TableHead className="font-bold">Deskripsi</TableHead>
+              <TableHead className="font-bold">Slug</TableHead>
+              <TableHead className="font-bold">Icon</TableHead>
+              <TableHead className="text-center font-bold">Aksi</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {filteredSubjects.map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4">
-                  <b>{s.name}</b>
-                </td>
-                <td className="px-6 py-4">{s.description}</td>
-                <td className="px-6 py-4">{s.slug}</td>
-                <td className="px-6 py-4">
+              <TableRow key={s.id} className="hover:bg-gray-50">
+                <TableCell className="font-semibold">{s.name}</TableCell>
+                <TableCell className={"max-w-[250px] truncate"}>
+                  {s.description}
+                </TableCell>
+                <TableCell>{s.slug}</TableCell>
+                <TableCell>
                   {s.iconPath && (
                     <Avatar>
                       <AvatarImage src={s.iconPath} alt={s.name} />
                       <AvatarFallback>?</AvatarFallback>
                     </Avatar>
                   )}
-                </td>
-                <td className="px-6 py-4 flex justify-end gap-2">
+                </TableCell>
+                <TableCell className="flex justify-center gap-2">
                   <Button
                     size="sm"
                     variant="editProfile"
@@ -267,11 +272,11 @@ const SubjectTable = () => {
                   >
                     <Trash size={16} />
                   </Button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {/* Dialogs */}
