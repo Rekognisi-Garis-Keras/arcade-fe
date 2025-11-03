@@ -1,19 +1,14 @@
-export async function apiRequest(endpoint, { method = "GET", query = {}, body = null, headers: customHeaders = {} } = {}) {
+export async function apiRequest(endpoint, { method = "GET", query = {}, body = null, headers: customHeaders = {}, isFormData = false } = {}) {
    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://api-arcade.vercel.app";
    const queryString = Object.keys(query).length ? "?" + new URLSearchParams(query).toString() : "";
    const url = `${baseUrl}${endpoint}${queryString}`;
 
-   const headers = {
-      "Content-Type": "application/json",
-      ...customHeaders,
-   };
+   const headers = isFormData
+      ? customHeaders // biarkan FormData handle Content-Type
+      : { "Content-Type": "application/json", ...customHeaders };
 
-   const options = {
-      method,
-      headers,
-   };
-
-   if (body) options.body = JSON.stringify(body);
+   const options = { method, headers };
+   if (body) options.body = isFormData ? body : JSON.stringify(body);
 
    try {
       const res = await fetch(url, options);

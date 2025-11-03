@@ -11,8 +11,9 @@ import { apiRequest } from "@/utils/api";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 import DetailSubjectsSkeleton from "@/components/DetailSubject/Skeleton";
+import AuthGuard from "@/utils/authGuard";
 
-const DetailSubject = () => {
+export default function DetailSubject() {
   const router = useRouter();
   const { subjects: subjectSlug } = useParams();
   const [topics, setTopics] = useState([]);
@@ -65,68 +66,68 @@ const DetailSubject = () => {
   if (!subjectDetail) return null;
 
   return (
-    <div className="flex flex-row-reverse gap-12 px-6">
-      <StickyWrapper />
-      <ContentWrapper>
-        <div className="w-full rounded-xl border-2 border-b-4 bg-white mb-10 p-5 flex flex-col gap-y-1 ">
-          <div className="flex items-center gap-3">
-            <Link href="/subjects">
-              <MoveLeft />
-            </Link>
-            <h3 className="font-bold text-xl">
-              Mata Pelajaran {subjectDetail.name}
-            </h3>
-          </div>
-          <p className="text-sm font-medium">{subjectDetail.desc}</p>
-        </div>
-
-        <EachUtils
-          of={topics}
-          render={(topic, index) => (
-            <div className="h-[350px] w-full mb-3" key={topic.id}>
-              <TopicTitle text={topic.title} />
-
-              <div className="w-2 h-1 relative mx-auto flex gap-x-3">
-                <Link
-                  href={`/subjects/${subjectSlug}/${topic.slug}`}
-                  key={index + 1}
-                >
-                  <LessonButton
-                    buttonType="lesson"
-                    locked={false}
-                    index={index}
-                    subIndex={0}
-                  />
-                </Link>
-                <Link
-                  href={`/subjects/${subjectSlug}/${topic.slug}/ar`}
-                  key={index + 2}
-                >
-                  <LessonButton
-                    buttonType="ar"
-                    locked={false}
-                    index={index}
-                    subIndex={1}
-                  />
-                </Link>
-                <Link
-                  href={`/subjects/${subjectSlug}/${topic.slug}/quiz`}
-                  key={index + 3}
-                >
-                  <LessonButton
-                    buttonType="quiz"
-                    locked={false}
-                    index={index}
-                    subIndex={2}
-                  />
-                </Link>
-              </div>
+    <AuthGuard>
+      <div className="flex flex-row-reverse gap-12 px-6">
+        <StickyWrapper />
+        <ContentWrapper>
+          <div className="w-full rounded-xl border-2 border-b-4 bg-white mb-10 p-5 flex flex-col gap-y-1 ">
+            <div className="flex items-center gap-3">
+              <Link href="/subjects">
+                <MoveLeft />
+              </Link>
+              <h3 className="font-bold text-xl">
+                Mata Pelajaran {subjectDetail.name}
+              </h3>
             </div>
-          )}
-        />
-      </ContentWrapper>
-    </div>
+            <p className="text-sm font-medium">{subjectDetail.desc}</p>
+          </div>
+
+          <EachUtils
+            of={topics}
+            render={(topic, index) => (
+              <div className="h-[350px] w-full mb-3" key={topic.id}>
+                <TopicTitle text={topic.title} />
+
+                <div className="w-2 h-1 relative mx-auto flex gap-x-3">
+                  <Link
+                    href={`/subjects/${subjectSlug}/${topic.slug}`}
+                    key={index + 1}
+                  >
+                    <LessonButton
+                      buttonType="lesson"
+                      locked={false}
+                      index={index}
+                      subIndex={0}
+                    />
+                  </Link>
+                  <Link
+                    href={`/subjects/${subjectSlug}/${topic.slug}/ar`}
+                    key={index + 2}
+                  >
+                    <LessonButton
+                      buttonType="ar"
+                      locked={false}
+                      index={index}
+                      subIndex={1}
+                    />
+                  </Link>
+                  <Link
+                    href={`/subjects/${subjectSlug}/${topic.slug}/quiz`}
+                    key={index + 3}
+                  >
+                    <LessonButton
+                      buttonType="quiz"
+                      locked={false}
+                      index={index}
+                      subIndex={2}
+                    />
+                  </Link>
+                </div>
+              </div>
+            )}
+          />
+        </ContentWrapper>
+      </div>
+    </AuthGuard>
   );
 };
-
-export default DetailSubject;
