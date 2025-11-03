@@ -123,6 +123,8 @@ const SignUpForm = () => {
       setLoading(false);
     }
   };
+  const [isShowing, setIsShowing] = useState(false);
+  const togglePassword = () => setIsShowing((prev) => !prev);
 
   return (
     <>
@@ -172,6 +174,9 @@ const SignUpForm = () => {
             touched={touched.password}
             placeholder="●●●●●●●●"
             helpText="Password harus minimal 8 karakter dengan huruf dan angka"
+            showToggle
+            isShowing={isShowing}
+            onToggle={togglePassword}
           />
         </div>
 

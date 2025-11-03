@@ -1,5 +1,5 @@
 import React from "react";
-import { Eye, EyeClosed } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 const InputField = ({
   label,
@@ -14,7 +14,9 @@ const InputField = ({
   touched,
   placeholder,
   helpText,
-  showToggle = false,
+  showToggle,
+  isShowing,
+  onToggle,
 }) => {
   return (
     <div>
@@ -26,7 +28,7 @@ const InputField = ({
       </label>
       <div className="relative">
         <input
-          type={type}
+          type={isShowing && type === "password" ? "text" : type}
           id={id}
           name={name}
           value={value}
@@ -40,7 +42,15 @@ const InputField = ({
           }`}
           placeholder={placeholder}
         />
-        {showToggle && type === "password" && <Button></Button>}
+        {showToggle && type === "password" && (
+          <button
+            type="button"
+            onClick={onToggle}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+          >
+            {isShowing ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        )}
       </div>
       {error && touched && <p className="mt-1 text-sm text-red-600">{error}</p>}
       {!error && touched && value && helpText && (

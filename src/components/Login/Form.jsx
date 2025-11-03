@@ -32,7 +32,8 @@ const Form = () => {
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) return "Masukkan Email";
-    if (!emailRegex.test(email)) return "Tolong masukkan alamat email yang valid";
+    if (!emailRegex.test(email))
+      return "Tolong masukkan alamat email yang valid";
     return "";
   };
 
@@ -113,9 +114,7 @@ const Form = () => {
     alert("Google login failed");
   };
   const [isShowing, setIsShowing] = useState(false);
-  const showPassword = () => {
-    setIsShowing(!isShowing);
-  };
+  const togglePassword = () => setIsShowing((prev) => !prev);
 
   return (
     <>
@@ -143,7 +142,7 @@ const Form = () => {
             label="Password"
             id="password"
             name="password"
-            type={"password"}
+            type="password"
             value={formData.password}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -151,6 +150,9 @@ const Form = () => {
             touched={touched.password}
             placeholder="●●●●●●●●"
             helpText="Password harus minimal 8 karakter dengan huruf dan angka"
+            showToggle
+            isShowing={isShowing}
+            onToggle={togglePassword}
           />
         </div>
 
