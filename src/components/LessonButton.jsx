@@ -26,6 +26,7 @@ const LessonButton = ({ index, locked, buttonType = "lesson", subIndex }) => {
   return (
     <Button
       size="rounded"
+      className="cursor-pointer"
       variant={locked ? "lessonLocked" : "lessonOpen"}
       style={{
         marginTop: `${verticalPosition}px`,

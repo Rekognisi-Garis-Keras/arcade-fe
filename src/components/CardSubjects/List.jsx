@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CourseCard from "@/components/CardSubjects/SubjectCard";
 import Link from "next/link";
 import { apiRequest } from "@/utils/api";
+import SkeletonSubjects from "./Skeleton";
 
 const List = () => {
   const [subjects, setSubjects] = useState([]);
@@ -31,7 +32,7 @@ const List = () => {
     fetchSubjects();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <SkeletonSubjects />;
   if (subjects.length === 0) return <p>Tidak ada mata pelajaran tersedia</p>;
 
   return (
