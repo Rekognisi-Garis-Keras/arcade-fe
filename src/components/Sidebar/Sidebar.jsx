@@ -9,7 +9,7 @@ const Sidebar = () => {
   return (
     <div
       className="
-    hidden md:w-20 md:flex lg:w-64 lg:flex h-screen fixed left-0 top-0 px-4 border-r-2 flex-col justify-between"
+    hidden md:w-20 md:flex lg:w-64 lg:flex h-screen fixed left-0 top-0 px-4 border-r-2 flex-col justify-between z-[9999]"
     >
       <div>
         <Link href="/subjects">

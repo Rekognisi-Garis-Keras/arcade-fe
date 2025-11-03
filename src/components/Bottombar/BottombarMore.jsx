@@ -21,7 +21,7 @@ const BottomMore = () => {
       {/* tombol More */}
       <div onClick={() => setOpen(!open)} className="relative">
         <Button
-          className="justify-center h-[52px] w-[52px] rounded-xl p-0"
+          className="justify-center h-[52px] w-[52px] rounded-xl p-0 cursor-pointer"
           variant="sidebar"
         >
           <Image
@@ -34,11 +34,11 @@ const BottomMore = () => {
 
         {/* Popup muncul di atas tombol */}
         {open && (
-          <div className="absolute bottom-full right-3 mb-2 z-40">
+          <div className="absolute bottom-full right-3 mb-2">
             <div className="relative bg-white border shadow-lg rounded-2xl p-2 w-40">
               <Button
                 variant="sidebar"
-                className="w-full justify-start rounded-lg"
+                className="w-full justify-start rounded-lg cursor-pointer"
               >
                 <Link
                   href="/help"
@@ -53,8 +53,8 @@ const BottomMore = () => {
                 className="w-full justify-start rounded-lg"
                 onClick={handleLogout}
               >
-                  <LogOut />
-                  <span>Log out</span>
+                <LogOut />
+                <span>Log out</span>
               </Button>
             </div>
           </div>
