@@ -2,53 +2,53 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { FourSquare } from "react-loading-indicators";
+import { apiRequest } from "@/utils/api";
 
 export default function GuestGuard({ children }) {
-   const router = useRouter();
-   const [checking, setChecking] = useState(true);
+  const router = useRouter();
+  const [checking, setChecking] = useState(true);
 
-   useEffect(() => {
-      const checkGuest = async () => {
-         const token = localStorage.getItem("token");
+  useEffect(() => {
+    const checkGuest = async () => {
+      const token = localStorage.getItem("token");
 
-         if (!token) {
-            // Tidak ada token → render halaman login/register
-            setChecking(false);
-            return;
-         }
+      if (!token) {
+        setChecking(false);
+        return;
+      }
 
-         try {
-            const res = await fetch("https://api-arcade.vercel.app/auth/user", {
-               method: "GET",
-               headers: {
-                  Authorization: `Bearer ${token}`,
-               },
-            });
+      try {
+        await apiRequest("/auth/user", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-            if (res.ok) {
-               // Token valid → redirect ke subjects
-               router.push("/subjects");
-            } else {
-               // Token invalid → hapus dan render halaman
-               localStorage.removeItem("token");
-               setChecking(false);
-            }
-         } catch (err) {
-            localStorage.removeItem("token");
-            setChecking(false);
-         }
-      };
+        router.push("/subjects");
+      } catch (err) {
+        console.error("GuestGuard error:", err);
+        localStorage.removeItem("token");
+        setChecking(false);
+      }
+    };
 
-      checkGuest();
-   }, [router]);
+    checkGuest();
+  }, [router]);
 
-   if (checking) {
-      return (
-         <div className="h-screen w-screen flex items-center justify-center text-gray-600">
-            <p>Memeriksa sesi login...</p>
-         </div>
-      );
-   }
+  if (checking) {
+    return (
+      <div className="h-screen w-full flex flex-col items-center justify-center text-gray-600">
+        <FourSquare
+          color={["#2bb3ff", "#2b97ff", "#2b7fff", "#2b60ff"]}
+          size="large"
+          text="Loading..."
+          textColor="#45556c"
+        />
+      </div>
+    );
+  }
 
-   return <>{children}</>;
+  return <>{children}</>;
 }

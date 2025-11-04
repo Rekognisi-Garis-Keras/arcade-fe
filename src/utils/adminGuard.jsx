@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { FourSquare } from "react-loading-indicators";
 import { apiRequest } from "@/utils/api";
 
-export default function AuthGuard({ children }) {
+export default function AdminGuard({ children }) {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
 
@@ -19,16 +19,23 @@ export default function AuthGuard({ children }) {
       }
 
       try {
-        await apiRequest("/auth/user", {
+        const res = await apiRequest("/auth/user", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
+        const user = res?.data;
+
+        if (!user || user.role !== "admin") {
+          router.push("/subjects");
+          return;
+        }
+
         setChecking(false);
       } catch (err) {
-        console.error("AuthGuard error:", err);
+        console.error("AdminGuard error:", err);
         localStorage.removeItem("token");
         router.push("/login");
       }
