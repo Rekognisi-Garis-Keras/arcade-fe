@@ -5,7 +5,7 @@ import { SquarePen, Trash, Plus, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import SubjectFormDialog from "./SubjectFormDialog";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog"; // Asumsi Anda punya komponen ini
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar";
 import { Input } from "../../UI/input";
 import { apiRequest } from "@/utils/api";
 
@@ -208,7 +208,7 @@ const SubjectTable = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex flex-col mb-6">
-        <h1 className="text-3xl font-bold text-left mb-5">Mata Pelajaran</h1>
+        <h1 className="text-3xl font-bold text-left mb-5">Topik Materi</h1>
         <div className="flex flex-col lg:flex-row gap-y-2 lg:justify-between">
           <div className="flex items-center gap-2">
             <Input
@@ -225,23 +225,25 @@ const SubjectTable = () => {
             className="gap-2 cursor-pointer"
             variant={"primary"}
           >
-            <Plus size={20} /> Tambah Mata Pelajaran
+            <Plus size={20} /> Tambah Topik Baru
           </Button>
         </div>
       </div>
 
       <h3 className="text-xl font-semibold text-left mb-5">
-        List Mata Pelajaran
+        List Topik Materi
       </h3>
 
       <div className="rounded-lg border border-gray-200 shadow-sm overflow-x-auto ">
         <Table className="min-w-[850px] px-4 lg:px-6">
           <TableHeader>
             <TableRow className="bg-gray-50 border-b border-gray-200">
+              <TableHead className="font-bold">Mata Pelajaran</TableHead>
               <TableHead className="font-bold">Nama</TableHead>
-              <TableHead className="font-bold">Deskripsi</TableHead>
-              <TableHead className="font-bold">Slug</TableHead>
-              <TableHead className="font-bold">Icon</TableHead>
+              <TableHead className="font-bold">Konten Topik</TableHead>
+              <TableHead className="font-bold">Model 3D</TableHead>
+              <TableHead className="font-bold">Scale Model</TableHead>
+              <TableHead className="font-bold">Gambar Marker</TableHead>
               <TableHead className="text-center font-bold">Aksi</TableHead>
             </TableRow>
           </TableHeader>

@@ -2,11 +2,14 @@ import React from "react";
 import {
   NativeSelect,
   NativeSelectOption,
-} from "@/components/ui/native-select";
+} from "@/components/UI/native-select";
 import { Label } from "@/components/UI/label";
+import SubjectTable from "@/components/Admin/Topics/SubjectTable";
 
-const page = () => {
+export default function AdminTopics() {
   return (
+    <>
+    <SubjectTable />
     <div className="flex flex-col gap-2">
       <Label htmlFor="dropdown-subjects">Mata Pelajaran:</Label>
       <NativeSelect id="dropdown-subjects">
@@ -17,7 +20,6 @@ const page = () => {
         <NativeSelectOption value="astronomy">Astronomy</NativeSelectOption>
       </NativeSelect>
     </div>
+    </>
   );
 };
-
-export default page;
