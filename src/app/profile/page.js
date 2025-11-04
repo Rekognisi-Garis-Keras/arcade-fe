@@ -15,8 +15,9 @@ import { Textarea } from "@/components/UI/textarea";
 import { Upload, SquarePen } from "lucide-react";
 import { apiRequest } from "@/utils/api";
 import SkeletonProfile from "@/components/Profile/Skeleton";
+import AuthGuard from "@/utils/authGuard";
 
-export default function ProfilePage() {
+function ProfileContent() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isEditBioOpen, setIsEditBioOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -292,5 +293,13 @@ export default function ProfilePage() {
         </DialogContent>
       </Dialog>
     </main>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <AuthGuard>
+      <ProfileContent />
+    </AuthGuard>
   );
 }

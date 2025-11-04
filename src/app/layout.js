@@ -1,6 +1,6 @@
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@/components/UI/sonner";
 
 const font = Nunito({
   variable: "--font-nunito-sans",
