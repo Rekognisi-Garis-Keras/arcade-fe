@@ -5,14 +5,14 @@ const LIST_NAVIGATION_USER = [
     label: "Subjects",
   },
   {
-    path: "/books",
-    icon: "/bumi.svg",
-    label: "Books",
-  },
-  {
     path: "/leaderboard",
     icon: "/bumi.svg",
     label: "Leaderboard",
+  },
+  {
+    path: "/books",
+    icon: "/bumi.svg",
+    label: "Books",
   },
   {
     path: "/profile",

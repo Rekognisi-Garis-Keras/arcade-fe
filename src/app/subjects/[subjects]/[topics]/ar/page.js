@@ -41,7 +41,7 @@ export default function AR() {
                   headers: {
                      "Content-Type": "application/json",
                      Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkJ1enoiLCJlbWFpbCI6ImJ1enpAZ21haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjIwNzQxMzIsImV4cCI6MTc2MjE2MDUzMn0.ZoYDnOBIKubr1HRjL9z9uM4DgFs5BfbF8dekTjYQ18E",
+                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImJ1enoiLCJlbWFpbCI6ImJ1enpAZ21haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjIxODY2MTksImV4cCI6MTc2MjI3MzAxOX0.D8JwIPKyrl9pAlP2cD7cf1ZEUQ3oWyC9hU8xIp1Dcc4",
                   },
                   body: JSON.stringify({ question: liveText }),
                });
