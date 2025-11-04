@@ -9,6 +9,7 @@ function page() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  // useEffect untuk track toast
   useEffect(() => {
     const isLoggedIn = searchParams.get("loggedIn") === "true";
     if (isLoggedIn) {
