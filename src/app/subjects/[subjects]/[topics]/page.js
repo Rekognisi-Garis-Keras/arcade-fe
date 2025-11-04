@@ -84,6 +84,36 @@ export default function DetailTopic() {
     }
   };
 
+  // Function to generate numbering for headings
+  const getNumberedHeadings = () => {
+    const counters = { h1: 0, h2: 0, h3: 0 };
+
+    return headings.map((heading) => {
+      let number = "";
+
+      if (heading.level === 1) {
+        counters.h1++;
+        counters.h2 = 0; // reset h2 counter
+        counters.h3 = 0; // reset h3 counter
+        number = `${counters.h1}.`;
+      } else if (heading.level === 2) {
+        counters.h2++;
+        counters.h3 = 0; // reset h3 counter
+        number = `${counters.h1}.${counters.h2}.`;
+      } else if (heading.level === 3) {
+        counters.h3++;
+        number = `${counters.h1}.${counters.h2}.${counters.h3}.`;
+      }
+
+      return {
+        ...heading,
+        number,
+      };
+    });
+  };
+
+  const numberedHeadings = getNumberedHeadings();
+
   if (loading) return <p>Loading...</p>;
   if (!topic) return null;
 
@@ -104,12 +134,12 @@ export default function DetailTopic() {
             <div className="sticky top-24">
               <h3 className="font-semibold mb-2 mt-0">Daftar Isi</h3>
               <ul className="text-sm mb-0 list-none">
-                {headings.map((h) => (
+                {numberedHeadings.map((h) => (
                   <li
                     key={h.id}
                     className={`${getIndentClass(
                       h.level
-                    )}  cursor-pointer p-2 hover:bg-gray-100/80 rounded-sm group`}
+                    )} cursor-pointer p-2 hover:bg-gray-100/80 rounded-sm group`}
                   >
                     <a
                       href={`#${h.id}`}
@@ -125,6 +155,7 @@ export default function DetailTopic() {
                         }
                       }}
                     >
+                      <span className="font-medium">{h.number}</span>
                       {h.text}
                     </a>
                   </li>
