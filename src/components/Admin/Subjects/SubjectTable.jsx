@@ -5,7 +5,7 @@ import { SquarePen, Trash, Plus, Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import SubjectFormDialog from "./SubjectFormDialog";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog"; // Asumsi Anda punya komponen ini
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/UI/avatar";
 import { Input } from "../../UI/input";
 import { apiRequest } from "@/utils/api";
 
