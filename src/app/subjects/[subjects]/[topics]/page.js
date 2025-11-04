@@ -70,6 +70,20 @@ export default function DetailTopic() {
     fetchTopic();
   }, [subjectSlug, topicSlug, router]);
 
+  // Helper function to get indentation class based on heading level
+  const getIndentClass = (level) => {
+    switch (level) {
+      case 1:
+        return "ml-0";
+      case 2:
+        return "ml-4";
+      case 3:
+        return "ml-8";
+      default:
+        return "ml-0";
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (!topic) return null;
 
@@ -88,17 +102,18 @@ export default function DetailTopic() {
 
           <AsideWrapper>
             <div className="sticky top-24">
-              <h3 className="font-semibold mb-2">Daftar Isi</h3>
-              <ul className="text-sm space-y-1">
+              <h3 className="font-semibold mb-2 mt-0">Daftar Isi</h3>
+              <ul className="text-sm mb-0 list-none">
                 {headings.map((h) => (
                   <li
                     key={h.id}
-                    className={`ml-${
-                      (h.level - 1) * 3
-                    } hover:underline cursor-pointer`}
+                    className={`${getIndentClass(
+                      h.level
+                    )}  cursor-pointer p-2 hover:bg-gray-100/80 rounded-sm group`}
                   >
                     <a
                       href={`#${h.id}`}
+                      className="no-underline text-gray-600 group-hover:text-gray-900 group-hover:underline"
                       onClick={(e) => {
                         e.preventDefault();
                         const target = document.getElementById(h.id);
