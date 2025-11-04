@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiRequest } from "@/utils/api";
 import Link from "next/link";
@@ -8,12 +8,12 @@ import HeaderForm from "@/components/Login/HeaderForm";
 import InputField from "@/components/Login/InputField";
 import SubmitButton from "@/components/Login/SubmitButton";
 import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
-import { toast } from "sonner";
-import { Button } from "../UI/button";
+
+import { Suspense } from "react";
+import URLParamToastHandler from "@/components/URLParamToastHandler";
 
 const Form = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -29,19 +29,6 @@ const Form = () => {
     email: false,
     password: false,
   });
-
-  // Toaster berhasil register
-  useEffect(() => {
-    const isRegistered = searchParams.get("registered") === "true";
-
-    if (isRegistered) {
-      toast.success("Registrasi berhasil!", {
-        description: "Selamat belajar dengan pengalaman menggunakan AR👾",
-        icon: "🎉",
-      });
-    }
-    router.replace("/login", { shallow: true });
-  }, [searchParams, router]);
 
   const [loading, setLoading] = useState(false);
 
@@ -138,6 +125,17 @@ const Form = () => {
 
   return (
     <>
+      <Suspense fallback={null}>
+        <URLParamToastHandler
+          paramName="registered" // Cari parameter 'registered'
+          paramValue="true" // Jika nilainya 'true'
+          toastMessage="Registrasi berhasil!"
+          toastDescription="Selamat belajar dengan pengalaman menggunakan AR👾"
+          icon="🎉"
+          replacePath="/login" // Bersihkan URL setelah toast
+        />
+      </Suspense>
+
       <HeaderForm
         header="Selamat Datang Kembali!"
         paragraph="Tolong masukkan email dan password kamu"
