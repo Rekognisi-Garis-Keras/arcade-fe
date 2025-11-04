@@ -1,16 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { apiRequest } from "@/utils/api";
 import Link from "next/link";
 import HeaderForm from "@/components/Login/HeaderForm";
 import InputField from "@/components/Login/InputField";
 import SubmitButton from "@/components/Login/SubmitButton";
 import GoogleLoginButton from "@/components/Login/GoogleLoginButton";
+import { toast } from "sonner";
+import { Button } from "../UI/button";
 
 const Form = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -26,6 +29,19 @@ const Form = () => {
     email: false,
     password: false,
   });
+
+  // Toaster berhasil register
+  useEffect(() => {
+    const isRegistered = searchParams.get("registered") === "true";
+
+    if (isRegistered) {
+      toast.success("Registrasi berhasil!", {
+        description: "Selamat belajar dengan pengalaman menggunakan AR👾",
+        icon: "🎉",
+      });
+    }
+    router.replace("/login", { shallow: true });
+  }, [searchParams, router]);
 
   const [loading, setLoading] = useState(false);
 
@@ -98,11 +114,10 @@ const Form = () => {
       }
 
       if (res.data.user.role === "admin") {
-        router.push("/admin");
+        router.push("/admin?loggedIn=true");
       } else {
-        router.push("/subjects");
+        router.push("/subjects?loggedIn=true");
       }
-
     } catch (error) {
       alert(error.message || "Login gagal, coba lagi!");
       console.error("Login error:", error);

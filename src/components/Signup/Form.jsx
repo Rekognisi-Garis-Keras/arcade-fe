@@ -116,7 +116,7 @@ const SignUpForm = () => {
         },
       });
 
-      router.push("/login");
+      router.push("/login?registered=true");
     } catch (err) {
       alert("❌ Gagal registrasi: " + err.message);
     } finally {
