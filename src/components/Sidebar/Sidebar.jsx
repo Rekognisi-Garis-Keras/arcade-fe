@@ -2,8 +2,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { LIST_NAVIGATION_USER } from "@/constants/listSidebarUser";
+
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import SidebarMore from "@/components/Sidebar/SidebarMore";
+import EachUtils from "@/utils/EachUtils";
 
 const Sidebar = () => {
   return (
@@ -21,14 +24,19 @@ const Sidebar = () => {
           </div>
         </Link>
         <div className="flex flex-col gap-y-4 lg:gap-y-2">
-          <SidebarItem label="Subject" href="/subjects" iconSrc="/bumi.svg" />
-          <SidebarItem label="Profile" href="/profile" iconSrc="/medium.png" />
+          <EachUtils
+            of={LIST_NAVIGATION_USER}
+            render={(item) => (
+              <SidebarItem
+                key={item.path}
+                label={item.label}
+                href={item.path}
+                iconSrc={item.icon}
+              />
+            )}
+          />
+          <SidebarMore />
         </div>
-      </div>
-
-      {/* This will stick to the bottom */}
-      <div className="pb-4">
-        <SidebarMore />
       </div>
     </div>
   );
