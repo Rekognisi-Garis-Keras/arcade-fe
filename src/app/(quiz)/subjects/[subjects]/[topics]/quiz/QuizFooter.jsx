@@ -21,7 +21,7 @@ const QuizFooter = ({
     <div className="h-30 bg-white border-t-2 w-full flex justify-center">
       <div className="w-5xl h-full flex items-center justify-between px-5">
         <Button
-          variant={"danger"}
+          variant={"skip"}
           className={"w-40 cursor-pointer"}
           onClick={handleSkip}
         >

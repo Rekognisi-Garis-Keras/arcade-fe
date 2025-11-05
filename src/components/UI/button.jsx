@@ -45,6 +45,7 @@ const buttonVariants = cva(
         optionFalse:
           "bg-rose-200 border-rose-400 border-2 min-h-13 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
         nextLocked: "cursor-not-allowed bg-gray-400 text-gray-700",
+        skip: "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-700 border-b-[5px] active:border-b-0",
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",

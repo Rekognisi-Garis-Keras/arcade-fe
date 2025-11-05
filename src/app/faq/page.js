@@ -3,7 +3,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/components/UI/accordion";
 import EachUtils from "@/utils/EachUtils";
 import { MessageCircleQuestionMark } from "lucide-react";
 import React from "react";
