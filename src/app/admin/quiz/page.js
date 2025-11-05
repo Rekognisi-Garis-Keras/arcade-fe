@@ -1,7 +1,6 @@
 import React from "react";
+import SubjectTable from "@/components/Admin/Quiz/SubjectTable";
 
-const page = () => {
-  return <div>page</div>;
-};
-
-export default page;
+export default function AdminTopics() {
+  return <SubjectTable />;
+}

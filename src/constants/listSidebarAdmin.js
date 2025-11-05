@@ -1,22 +1,17 @@
 const LIST_SIDEBAR_ADMIN = [
   {
-    path: "/admin",
-    icon: "/atom.png",
-    label: "Dashboard",
-  },
-  {
     path: "/admin/subjects",
-    icon: "/atom.png",
+    icon: "/book-stack.png",
     label: "Subjects",
   },
   {
     path: "/admin/topics",
-    icon: "/atom.png",
+    icon: "/topic.png",
     label: "Topics",
   },
   {
     path: "/admin/quiz",
-    icon: "/atom.png",
+    icon: "/quiz.png",
     label: "Quiz",
   },
 ];
