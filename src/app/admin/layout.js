@@ -1,4 +1,4 @@
-import Bottombar from "@/components/Bottombar/Bottombar";
+import Bottombar from "@/components/Admin/Navigation/Bottombar";
 import Sidebar from "@/components/Admin/Navigation/Sidebar";
 import React from "react";
 

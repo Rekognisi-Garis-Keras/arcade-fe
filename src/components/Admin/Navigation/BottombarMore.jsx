@@ -45,7 +45,7 @@ const BottomMore = () => {
               </Button>
               <Button
                 variant="dangerOutline"
-                className="w-full justify-start rounded-lg"
+                className="w-full justify-start rounded-lg cursor-pointer pointer-events-auto"
                 onClick={handleLogout}
               >
                 <LogOut />

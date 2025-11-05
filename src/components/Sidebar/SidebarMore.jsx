@@ -27,7 +27,7 @@ const SidebarMore = () => {
         variant="sidebar"
       >
         <Image
-          src="https://d35aaqx5ub95lt.cloudfront.net/vendor/7159c0b5d4250a5aea4f396d53f17f0c.svg"
+          src="/more.png"
           alt="More"
           width={25}
           height={25}

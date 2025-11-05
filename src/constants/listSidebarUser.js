@@ -6,17 +6,17 @@ const LIST_NAVIGATION_USER = [
   },
   {
     path: "/leaderboard",
-    icon: "/bumi.svg",
+    icon: "/stairs.png",
     label: "Leaderboard",
   },
   {
     path: "/books",
-    icon: "/bumi.svg",
+    icon: "/book_user.png",
     label: "Books",
   },
   {
     path: "/profile",
-    icon: "/bumi.svg",
+    icon: "/user.png",
     label: "Profile",
   },
 ];
