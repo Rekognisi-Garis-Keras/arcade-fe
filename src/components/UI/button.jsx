@@ -38,6 +38,13 @@ const buttonVariants = cva(
         edit: "text-primary-foreground font-semibold text-sm bg-yellow-500 rounded-md",
         delete:
           "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-600 border-b-[5px] active:border-b-0",
+        option:
+          "bg-white hover:bg-gray-100/80 min-h-13 border-2 text-gray-800 cursor-pointer border-b-[5px] active:border-b-0 normal-case",
+        optionTrue:
+          "bg-lime-200 border-lime-400 border-2 min-h-13 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
+        optionFalse:
+          "bg-rose-200 border-rose-400 border-2 min-h-13 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
+        nextLocked: "cursor-not-allowed bg-gray-400 text-gray-700",
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",
