@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/UI/table";
+import SkeletonAdmin from "@/app/admin/skeleton";
 
 const SubjectTable = () => {
   const [subjects, setSubjects] = useState([]);
@@ -203,7 +204,7 @@ const SubjectTable = () => {
     }
   };
 
-  if (loading) return <p>Loading subjects...</p>;
+  if (loading) return <SkeletonAdmin />;
   const scaleModel = 0.5;
 
   return (

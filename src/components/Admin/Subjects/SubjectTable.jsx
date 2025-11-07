@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/UI/table";
+import SkeletonAdmin from "@/app/admin/skeleton";
 
 const SubjectTable = () => {
   const [subjects, setSubjects] = useState([]);
@@ -169,31 +170,33 @@ const SubjectTable = () => {
 
   const deleteSubject = async () => {
     if (!deleteId) return;
-  
+
     const subjectToDelete = subjects.find((s) => s.id === deleteId);
     if (!subjectToDelete) return;
-  
+
     // Hilangkan '/' dari slug agar sesuai dengan endpoint API
     const apiSlug = subjectToDelete.slug.startsWith("/")
       ? subjectToDelete.slug.slice(1)
       : subjectToDelete.slug;
-  
+
     setIsSubmitting(true);
     const token = localStorage.getItem("token");
-  
+
     try {
       const res = await apiRequest(`/subjects/${apiSlug}`, {
         method: "DELETE",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-  
+
       if (res.status === "success") {
         // Refresh list data agar sinkron dengan database
         await fetchSubjects();
         setDeleteId(null);
       } else {
         console.error("Failed to delete subject:", res.message);
-        alert("Gagal menghapus mata pelajaran: " + (res.message || "Unknown error"));
+        alert(
+          "Gagal menghapus mata pelajaran: " + (res.message || "Unknown error")
+        );
       }
     } catch (err) {
       console.error("Failed to delete subject:", err);
@@ -203,7 +206,7 @@ const SubjectTable = () => {
     }
   };
 
-  if (loading) return <p>Loading subjects...</p>;
+  if (loading) return <SkeletonAdmin />;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

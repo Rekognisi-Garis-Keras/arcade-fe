@@ -83,7 +83,7 @@ function page() {
   return (
     <div className="flex flex-row-reverse gap-2 px-6 pb-30 md:pb-0">
       <StickyWrapper>
-        <div className="border-3 w-full min-h-30 rounded-xl shadow-xs justify-evenly flex items-center p-3">
+        <div className="mt-5 border-3 w-full min-h-30 rounded-xl shadow-xs justify-evenly flex items-center p-3">
           <div className="text-5xl">🏅</div>
           <div className="flex flex-col items-start gap-y-1">
             <p className="text-xs text-gray-800 ">
