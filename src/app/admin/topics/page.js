@@ -1,6 +1,6 @@
 import React from "react";
-import SubjectTable from "@/components/Admin/Topics/SubjectTable";
+import TopicTable from "@/components/Admin/Topics/TopicTable";
 
 export default function AdminTopics() {
-  return <SubjectTable />;
+  return <TopicTable />;
 }

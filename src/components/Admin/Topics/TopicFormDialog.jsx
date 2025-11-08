@@ -19,7 +19,7 @@ import {
 } from "@/components/UI/native-select";
 import FileUploadInput from "./FileUploadInput";
 
-const SubjectFormDialog = ({
+const TopicFormDialog = ({
   open,
   onOpenChange,
   mode,
@@ -160,4 +160,4 @@ const SubjectFormDialog = ({
   );
 };
 
-export default SubjectFormDialog;
+export default TopicFormDialog;

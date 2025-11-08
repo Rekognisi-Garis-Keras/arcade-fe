@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card";
+} from "@/components/UI/card";
 import { Input } from "@/components/UI/input";
 import { ChevronRight, Search } from "lucide-react";
 

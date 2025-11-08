@@ -10,7 +10,7 @@ import React, {
 } from "react"
 import confetti from "canvas-confetti"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/UI/button"
 
 const ConfettiContext = createContext({})
 

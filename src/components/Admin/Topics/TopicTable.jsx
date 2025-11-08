@@ -3,8 +3,8 @@
 import { Button } from "@/components/UI/button";
 import { SquarePen, Trash, Plus, Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import SubjectFormDialog from "./SubjectFormDialog";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog"; // Asumsi Anda punya komponen ini
+import TopicFormDialog from "./TopicFormDialog";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import { Input } from "../../UI/input";
 import { apiRequest } from "@/utils/api";
 import Link from "next/link";
@@ -19,9 +19,9 @@ import {
 } from "@/components/UI/table";
 import SkeletonAdmin from "@/app/admin/skeleton";
 
-const SubjectTable = () => {
-  const [subjects, setSubjects] = useState([]);
-  const [filteredSubjects, setFilteredSubjects] = useState([]);
+const TopicTable = () => {
+  const [topics, setTopics] = useState([]);
+  const [filteredTopics, setFilteredTopics] = useState([]);
   const [dialogMode, setDialogMode] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [formData, setFormData] = useState({
@@ -31,16 +31,16 @@ const SubjectTable = () => {
     slug: "",
     iconPath: "",
   });
-  const [selectedFile, setSelectedFile] = useState(null); // State untuk file biner
+  const [selectedFile, setSelectedFile] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false); // State untuk loading form
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchSubjects = async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await apiRequest("/subjects", {
+      const res = await apiRequest("/topics", {
         method: "GET",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
@@ -48,21 +48,25 @@ const SubjectTable = () => {
       if (res.status === "success" && Array.isArray(res.data)) {
         const mapped = res.data.map((s) => ({
           id: s.id,
-          name: s.name,
-          description: s.desc || s.description || "",
+          title: s.title,
           slug: `/${s.slug}`,
-          iconPath: s.thumbnail || "",
+          description: s.desc || s.description || "",
+          model_url: s.model_url,
+          marker_img_url: s.marker_img_url,
+          scale_model: s.scale_model,
+          content: s.content,
+          subject: s.subject,
         }));
-        setSubjects(mapped);
-        setFilteredSubjects(mapped);
+        setTopics(mapped);
+        setFilteredTopics(mapped);
       } else {
-        setSubjects([]);
-        setFilteredSubjects([]);
+        setTopics([]);
+        setFilteredTopics([]);
       }
     } catch (err) {
-      console.error("Failed to fetch subjects:", err);
-      setSubjects([]);
-      setFilteredSubjects([]);
+      console.error("Failed to fetch topics:", err);
+      setTopics([]);
+      setFilteredTopics([]);
     } finally {
       setLoading(false);
     }
@@ -74,11 +78,11 @@ const SubjectTable = () => {
 
   // filter berdasarkan search input
   useEffect(() => {
-    const filtered = subjects.filter((s) =>
-      s.name.toLowerCase().includes(searchInput.toLowerCase())
+    const filtered = topics.filter((s) =>
+      s.title.toLowerCase().includes(searchInput.toLowerCase())
     );
-    setFilteredSubjects(filtered);
-  }, [searchInput, subjects]);
+    setFilteredTopics(filtered);
+  }, [searchInput, topics]);
 
   const openEdit = (subject) => {
     setDialogMode("edit");
@@ -169,7 +173,7 @@ const SubjectTable = () => {
   const deleteSubject = async () => {
     if (!deleteId) return;
 
-    const subjectToDelete = subjects.find((s) => s.id === deleteId);
+    const subjectToDelete = topics.find((s) => s.id === deleteId);
     if (!subjectToDelete) return;
 
     // Hilangkan '/' dari slug agar sesuai dengan endpoint API
@@ -205,7 +209,6 @@ const SubjectTable = () => {
   };
 
   if (loading) return <SkeletonAdmin />;
-  const scaleModel = 0.5;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -250,16 +253,16 @@ const SubjectTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredSubjects.map((s) => (
+            {filteredTopics.map((s) => (
               <TableRow key={s.id} className="hover:bg-gray-50">
-                <TableCell className="font-semibold">{s.name}</TableCell>
-                <TableCell className="font-semibold">Tata Surya</TableCell>
+                <TableCell className="font-semibold">{s.subject.name}</TableCell>
+                <TableCell className="font-semibold">{s.title}</TableCell>
                 <TableCell className={"max-w-[250px] truncate"}>
                   {s.description}
                 </TableCell>
                 <TableCell>
                   <Link
-                    href="www.google.com"
+                    href={s.model_url}
                     target="_blank"
                     className="cursor-pointer"
                   >
@@ -272,16 +275,19 @@ const SubjectTable = () => {
                     </Button>
                   </Link>
                 </TableCell>
-                <TableCell>{`${scaleModel}x`}</TableCell>
-
+                <TableCell>{`${s.scale_model}x`}</TableCell>
                 <TableCell>
-                  <Link target="_blank" href="www.google.com">
+                  <Link
+                    href={s.marker_img_url}
+                    target="_blank"
+                    className="cursor-pointer"
+                  >
                     <Button
                       variant={"primary"}
                       className={"normal-case cursor-pointer"}
                       size={"sm"}
                     >
-                      Marker 3D
+                      Marker Image
                     </Button>
                   </Link>
                 </TableCell>
@@ -311,7 +317,7 @@ const SubjectTable = () => {
 
       {/* Dialogs */}
       {dialogMode && (
-        <SubjectFormDialog
+        <TopicFormDialog
           open={!!dialogMode}
           onOpenChange={() => setDialogMode(null)}
           mode={dialogMode}
@@ -335,4 +341,4 @@ const SubjectTable = () => {
   );
 };
 
-export default SubjectTable;
+export default TopicTable;
