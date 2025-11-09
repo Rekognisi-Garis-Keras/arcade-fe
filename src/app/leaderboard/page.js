@@ -175,7 +175,7 @@ function page() {
         </div>
 
         {/* Fixed bottom bar showing current user position */}
-        <div className="fixed md:bottom-5 bottom-25 lg:w-[35%] md:w-[80%] w-[80%] bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50">
+        {/* <div className="fixed md:bottom-5 bottom-25 lg:w-[35%] md:w-[80%] w-[80%] bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50">
           <div className="flex items-center">
             <div className="font-semibold py-5 text-center text-gray-800 w-20 shrink-0">
               {currentUser.position}
@@ -195,7 +195,7 @@ function page() {
               {currentUser.xp}
             </div>
           </div>
-        </div>
+        </div> */}
       </ContentWrapper>
     </div>
   );
