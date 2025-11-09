@@ -80,6 +80,14 @@ function page() {
     },
   ];
 
+  // Current user data (hardcoded)
+  const currentUser = {
+    position: 5,
+    iconProfile: "https://randomuser.me/api/portraits/men/55.jpg",
+    name: "Noah Jones (You)",
+    xp: 850,
+  };
+
   return (
     <div className="flex flex-row-reverse gap-2 px-6 pb-30 md:pb-0">
       <StickyWrapper>
@@ -89,7 +97,7 @@ function page() {
             <p className="text-xs text-gray-800 ">
               Sekarang kamu di <br /> posisi ke-
             </p>
-            <h3 className="text-4xl font-bold">14</h3>
+            <h3 className="text-4xl font-bold">{currentUser.position}</h3>
           </div>
         </div>
       </StickyWrapper>
@@ -111,7 +119,7 @@ function page() {
           </p>
         </div>
         {/*  */}
-        <div className="relative w-full overflow-x-auto rounded-xl border-2 border-b-4">
+        <div className="relative w-full overflow-x-auto rounded-xl border-2 border-b-4 mb-24">
           <Table>
             <TableCaption className="p-5 mt-0 border-t-2">
               Setiap jawaban benar di kuis = +10 XP! 💥 <br /> Yuk terus latihan
@@ -164,6 +172,29 @@ function page() {
               />
             </TableBody>
           </Table>
+        </div>
+
+        {/* Fixed bottom bar showing current user position */}
+        <div className="fixed md:bottom-5 bottom-25 lg:w-[35%] md:w-[80%] w-[80%] bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50">
+          <div className="flex items-center">
+            <div className="font-semibold py-5 text-center text-gray-800 w-20 shrink-0">
+              {currentUser.position}
+            </div>
+            <div className="flex py-5 text-gray-800 items-center gap-3 flex-1">
+              <Avatar>
+                <AvatarImage
+                  src={currentUser.iconProfile}
+                  alt={currentUser.name}
+                />
+              </Avatar>
+              <span className="font-medium text-md tracking-wide text-gray-800">
+                {currentUser.name}
+              </span>
+            </div>
+            <div className="py-5 text-gray-800 lg:w-25 pr-6">
+              {currentUser.xp}
+            </div>
+          </div>
         </div>
       </ContentWrapper>
     </div>
