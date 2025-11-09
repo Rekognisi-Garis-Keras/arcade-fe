@@ -99,6 +99,7 @@ function DetailSubjectContent() {
             <div className="h-[350px] w-full mb-3" key={topic.id}>
               <TopicTitle text={topic.title} />
 
+              {/* floating image each topics */}
               <div className="w-2 h-1 relative mx-auto flex gap-x-3">
                 <div
                   className={`absolute h-25 w-25 top-25 ${
