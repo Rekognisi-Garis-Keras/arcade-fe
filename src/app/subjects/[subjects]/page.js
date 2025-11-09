@@ -12,6 +12,7 @@ import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 import DetailSubjectsSkeleton from "@/components/DetailSubject/Skeleton";
 import AuthGuard from "@/utils/authGuard";
+import Image from "next/image";
 
 function DetailSubjectContent() {
   const router = useRouter();
@@ -72,11 +73,11 @@ function DetailSubjectContent() {
               width="50px"
             />
             <p className="text-slate-700 text-sm">
-              🌌 Tahukah kamu, bintang yang paling terang dan paling sering
-              kita lihat di langit malam, Sirius, sebenarnya berjarak sekitar
-              8,6 tahun cahaya dari Bumi? Itu artinya, cahaya yang kamu lihat
-              malam ini sudah melakukan perjalanan selama 8,6 tahun untuk
-              sampai di matamu! 🤯✨
+              🌌 Tahukah kamu, bintang yang paling terang dan paling sering kita
+              lihat di langit malam, Sirius, sebenarnya berjarak sekitar 8,6
+              tahun cahaya dari Bumi? Itu artinya, cahaya yang kamu lihat malam
+              ini sudah melakukan perjalanan selama 8,6 tahun untuk sampai di
+              matamu! 🤯✨
             </p>
           </div>
         </div>
@@ -99,6 +100,16 @@ function DetailSubjectContent() {
               <TopicTitle text={topic.title} />
 
               <div className="w-2 h-1 relative mx-auto flex gap-x-3">
+                <div
+                  className={`absolute h-25 w-25 top-25 ${
+                    index % 2 == 0 ? "right-25" : "left-30"
+                  }`}
+                >
+                  <img
+                    src="/full-moon.png"
+                    className="h-full w-full drop-shadow-xl "
+                  />
+                </div>
                 <Link
                   href={`/subjects/${subjectSlug}/${topic.slug}`}
                   key={index + 1}
