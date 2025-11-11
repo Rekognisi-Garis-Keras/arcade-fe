@@ -15,8 +15,6 @@ export async function apiRequest(endpoint, {
 
    const options = { method, headers };
    if (body) options.body = isFormData ? body : JSON.stringify(body);
-   console.log({url, headers, options});
-
    try {
       const res = await fetch(url, options);
       const data = await res.json();

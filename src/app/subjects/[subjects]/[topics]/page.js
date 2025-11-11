@@ -8,7 +8,7 @@ import NavbarTopic from "@/components/DetailTopic/NavbarTopic";
 import AuthGuard from "@/utils/authGuard";
 import { apiRequest } from "@/utils/api";
 
-export default function DetailTopic() {
+function DetailTopicContent() {
   const router = useRouter();
   const { subjects: subjectSlug, topics: topicSlug } = useParams();
   const [topic, setTopic] = useState(null);
@@ -165,6 +165,14 @@ export default function DetailTopic() {
           </AsideWrapper>
         </div>
       </div>
+    </AuthGuard>
+  );
+}
+
+export default function DetailTopic() {
+  return (
+    <AuthGuard>
+      <DetailTopicContent />
     </AuthGuard>
   );
 }

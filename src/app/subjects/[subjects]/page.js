@@ -106,10 +106,10 @@ function DetailSubjectContent() {
                     index % 2 == 0 ? "right-25" : "left-30"
                   }`}
                 >
-                  <img
+                  {/* <img
                     src="/full-moon.png"
                     className="h-full w-full drop-shadow-xl "
-                  />
+                  /> */}
                 </div>
                 <Link
                   href={`/subjects/${subjectSlug}/${topic.slug}`}

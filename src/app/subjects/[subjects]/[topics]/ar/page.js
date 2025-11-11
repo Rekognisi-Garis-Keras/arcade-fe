@@ -1,110 +1,137 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import MicButton from "@/components/AR/ButtonMic";
 import NavbarTopic from "@/components/DetailTopic/NavbarTopic";
-import { LIST_LESSON_ASTRONOMY } from "@/constants/listLesson";
 import ARCamera from "@/components/AR/ARCamera";
+import { apiRequest } from "@/utils/api";
 
 export default function AR() {
-   const [liveText, setLiveText] = useState("");
-   const [hasAsked, setHasAsked] = useState(false);
-   const [answer, setAnswer] = useState("");
-   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { subjects: subjectSlug, topics: topicSlug } = useParams();
 
-   const params = useParams();
-   const subject = params.subjects;
-   const topic = params.topics;
+  const [liveText, setLiveText] = useState("");
+  const [hasAsked, setHasAsked] = useState(false);
+  const [answer, setAnswer] = useState("");
 
-   useEffect(() => {
-      const textToSpeak = LIST_LESSON_ASTRONOMY[0].desc;
+  const [loadingTopic, setLoadingTopic] = useState(true);
+  const [loadingAnswer, setLoadingAnswer] = useState(false);
 
-      if (textToSpeak && "speechSynthesis" in window) {
-         const utterance = new SpeechSynthesisUtterance(textToSpeak);
-         utterance.lang = "id-ID";
-         window.speechSynthesis.speak(utterance);
+  const [topic, setTopic] = useState(null);
 
-         return () => {
-            window.speechSynthesis.cancel();
-         };
+  // Fetch Topic Details
+  useEffect(() => {
+    const fetchTopic = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await apiRequest(`/subjects/${subjectSlug}/topics/${topicSlug}`, {
+          method: "GET",
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+
+        if (res.status !== "success" || !res.data) {
+          router.push("/not-found");
+          return;
+        }
+
+        setTopic(res.data);
+
+        // Text-to-speech
+        if ("speechSynthesis" in window && res.data.desc) {
+          const utterance = new SpeechSynthesisUtterance(res.data.desc);
+          utterance.lang = "id-ID";
+          window.speechSynthesis.speak(utterance);
+        }
+      } catch (err) {
+        console.error("Failed to fetch topic:", err);
+        router.push("/not-found");
+      } finally {
+        setLoadingTopic(false);
       }
-   }, []);
+    };
 
-   useEffect(() => {
-      if (hasAsked && liveText.trim() !== "") {
-         const fetchAnswer = async () => {
-            try {
-               setLoading(true);
-               const res = await fetch(`https://api-arcade.vercel.app/subjects/${subject}/topics/${topic}/ai`, {
-                  method: "POST",
-                  headers: {
-                     "Content-Type": "application/json",
-                     Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywibmFtZSI6ImJ1enoiLCJlbWFpbCI6ImJ1enpAZ21haWwuY29tIiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3NjIxODY2MTksImV4cCI6MTc2MjI3MzAxOX0.D8JwIPKyrl9pAlP2cD7cf1ZEUQ3oWyC9hU8xIp1Dcc4",
-                  },
-                  body: JSON.stringify({ question: liveText }),
-               });
+    fetchTopic();
+    return () => window.speechSynthesis.cancel();
+  }, [subjectSlug, topicSlug, router]);
 
-               const data = await res.json();
+  // Fetch AI Answer
+  useEffect(() => {
+    if (!hasAsked || liveText.trim() === "") return;
 
-               if (data.status === "success") {
-                  setAnswer(data.data.answer);
+    const fetchAnswer = async () => {
+      try {
+        setLoadingAnswer(true);
 
-                  if ("speechSynthesis" in window) {
-                     const utterance = new SpeechSynthesisUtterance(data.data.answer);
-                     utterance.lang = "id-ID";
-                     window.speechSynthesis.speak(utterance);
-                  }
-               } else {
-                  setAnswer("Maaf, terjadi kesalahan saat mendapatkan jawaban.");
-               }
-            } catch (error) {
-               console.error(error);
-               setAnswer("Gagal menghubungi server.");
-            } finally {
-               setLoading(false);
-            }
-         };
+        const token = localStorage.getItem("token");
 
-         fetchAnswer();
+        const res = await apiRequest(
+          `/subjects/${subjectSlug}/topics/${topicSlug}/ai`,
+          {
+            method: "POST",
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+            body: { question: liveText },
+          }
+        );
+
+        if (res.status === "success") {
+          setAnswer(res.data.answer);
+
+          // Text-to-Speech Jawaban
+          if ("speechSynthesis" in window) {
+            const utterance = new SpeechSynthesisUtterance(res.data.answer);
+            utterance.lang = "id-ID";
+            window.speechSynthesis.speak(utterance);
+          }
+        } else {
+          setAnswer("Maaf, terjadi kesalahan saat mendapatkan jawaban.");
+        }
+      } catch (error) {
+        console.error(error);
+        setAnswer("Gagal menghubungi server.");
+      } finally {
+        setLoadingAnswer(false);
       }
-   }, [hasAsked, liveText, subject, topic]);
+    };
 
-   return (
-      <div className="flex flex-col min-h-screen pb-25 px-5">
-         <NavbarTopic title={`AR: ${LIST_LESSON_ASTRONOMY[0].title}`} />
+    fetchAnswer();
+  }, [hasAsked, liveText, subjectSlug, topicSlug]);
 
-         <ARCamera model={LIST_LESSON_ASTRONOMY[0].model_url} />
+  if (loadingTopic || !topic) return <p className="p-5">Loading...</p>;
 
-         <div className="flex lg:flex-row flex-col-reverse items-center gap-y-3 gap-x-5">
-            <div className="grow border-2 p-5 rounded-xl border-steel-200 border-b-4">
-               <h1 className="font-bold text-lg mb-3">{hasAsked ? "Tanya Jawab" : "Deskripsi"}</h1>
+  return (
+    <div className="flex flex-col min-h-screen pb-25 px-5">
+      <NavbarTopic title={`AR: ${topic.title}`} slug={subjectSlug} />
 
-               {!hasAsked ? (
-                  <p>{LIST_LESSON_ASTRONOMY[0].desc}</p>
-               ) : (
-                  <div className="space-y-2">
-                     <p>
-                        <span className="font-bold">Kamu:</span> {liveText || "..."}
-                     </p>
-                     <p>
-                        <span className="font-bold">ARmin:</span> {loading ? "ARmin mikir dulu ya.." : answer || "Belum ada jawaban."}
-                     </p>
-                  </div>
-               )}
+      <ARCamera model={topic.model_url} marker={topic.marker_img_url} scale={topic.scale_model} />
+
+      <div className="flex lg:flex-row flex-col-reverse items-center gap-y-3 gap-x-5">
+        <div className="grow border-2 p-5 rounded-xl border-steel-200 border-b-4">
+          <h1 className="font-bold text-lg mb-3">{hasAsked ? "Tanya Jawab" : "Deskripsi"}</h1>
+
+          {!hasAsked ? (
+            <p>{topic.desc}</p>
+          ) : (
+            <div className="space-y-2">
+              <p><span className="font-bold">Pertanyaan:</span> {liveText || "..."}</p>
+              <p>
+                <span className="font-bold">Jawaban:</span>{" "}
+                {loadingAnswer ? "Aku mikir dulu ya..." : answer || "Belum ada jawaban."}
+              </p>
             </div>
+          )}
+        </div>
 
-            <div className="flex h-[100px] w-[100px] items-center justify-center">
-               <MicButton
-                  onTextChange={setLiveText}
-                  onStartAsk={() => {
-                     setHasAsked(true);
-                     setAnswer("");
-                  }}
-               />
-            </div>
-         </div>
+        <div className="flex h-[100px] w-[100px] items-center justify-center">
+          <MicButton
+            onTextChange={setLiveText}
+            onStartAsk={() => {
+              setHasAsked(true);
+              setAnswer("");
+            }}
+          />
+        </div>
       </div>
-   );
+    </div>
+  );
 }
