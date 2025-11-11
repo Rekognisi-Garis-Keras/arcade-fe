@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import TopicFormDialog from "./TopicFormDialog";
 import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import { Input } from "../../UI/input";
-import { apiRequest } from "@/utils/api";
 import Link from "next/link";
 
 import {
