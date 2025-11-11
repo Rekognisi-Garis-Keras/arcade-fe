@@ -18,44 +18,52 @@ import {
   TableRow,
 } from "@/components/UI/table";
 import SkeletonAdmin from "@/app/admin/skeleton";
+import { addTopic, deleteTopic, getTopics, updateTopic } from "@/services/topicService";
+import { getSubjects } from "@/services/subjectService";
 
 const TopicTable = () => {
+  const [subjects, setSubjects] = useState([]);
+  const [currentSubSlug, setCurrentSubSlug] = useState(null);
   const [topics, setTopics] = useState([]);
   const [filteredTopics, setFilteredTopics] = useState([]);
   const [dialogMode, setDialogMode] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [formData, setFormData] = useState({
-    id: null,
+    subject: "",
     name: "",
-    description: "",
-    slug: "",
+    desc: "",
+    content: "",
     iconPath: "",
+    icon: null,
+    model: null,
+    scale: "",
+    marker: null,
   });
-  const [selectedFile, setSelectedFile] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const fetchSubjects = async () => {
+  // Fetch topics and subjects
+  const fetchTopics = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const res = await apiRequest("/topics", {
-        method: "GET",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
+      const [topicResponse, subjectResponse] = await Promise.all([
+        getTopics(),
+        getSubjects(),
+      ]);
 
-      if (res.status === "success" && Array.isArray(res.data)) {
-        const mapped = res.data.map((s) => ({
-          id: s.id,
-          title: s.title,
-          slug: `/${s.slug}`,
-          description: s.desc || s.description || "",
-          model_url: s.model_url,
-          marker_img_url: s.marker_img_url,
-          scale_model: s.scale_model,
-          content: s.content,
-          subject: s.subject,
+      if (topicResponse.status === "success" && Array.isArray(topicResponse.data)) {
+        const mapped = topicResponse.data.map((topic) => ({
+          id: topic.id,
+          title: topic.title,
+          slug: topic.slug,
+          desc: topic.desc,
+          content: topic.content,
+          model_url: topic.model_url,
+          marker_img_url: topic.marker_img_url,
+          scale_model: topic.scale_model,
+          content: topic.content,
+          subject: topic.subject,
         }));
         setTopics(mapped);
         setFilteredTopics(mapped);
@@ -63,148 +71,201 @@ const TopicTable = () => {
         setTopics([]);
         setFilteredTopics([]);
       }
+
+      if (subjectResponse.status === "success" && Array.isArray(subjectResponse.data)) {
+        setSubjects(subjectResponse.data);
+      } else {
+        setSubjects([]);
+      }
     } catch (err) {
-      console.error("Failed to fetch topics:", err);
+      console.error("Failed to fetch data:", err);
       setTopics([]);
       setFilteredTopics([]);
+      setSubjects([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSubjects();
+    fetchTopics();
   }, []);
 
-  // filter berdasarkan search input
+  // Filter topics based on search input
   useEffect(() => {
-    const filtered = topics.filter((s) =>
-      s.title.toLowerCase().includes(searchInput.toLowerCase())
+    const filtered = topics.filter((topic) =>
+      topic.title.toLowerCase().includes(searchInput.toLowerCase())
     );
     setFilteredTopics(filtered);
   }, [searchInput, topics]);
 
-  const openEdit = (subject) => {
-    setDialogMode("edit");
-    setFormData(subject);
-    setSelectedFile(null); // Reset file
+  // Reset form data
+  const resetFormData = () => {
+    setFormData({
+      subject: "",
+      name: "",
+      desc: "",
+      iconPath: "",
+      icon: null,
+      model: null,
+      scale: "",
+      marker: null,
+    });
   };
 
+  // Open add dialog
   const openAdd = () => {
+    resetFormData();
     setDialogMode("add");
-    setFormData({ name: "", description: "", iconPath: "" }); // Hapus slug
-    setSelectedFile(null); // Reset file
   };
 
+  // Open edit dialog
+  const openEdit = (topic) => {
+    setFormData({
+      id: topic.id,
+      subject: topic.subject?.id || "",
+      name: topic.title,
+      desc: topic.desc,
+      content: topic.content,
+      iconPath: topic.icon_url || "",
+      icon: null,
+      model: null,
+      scale: topic.scale_model || "",
+      marker: null,
+      slug: topic.slug,
+      model_url: topic.model_url,
+      marker_img_url: topic.marker_img_url,
+    });
+    setDialogMode("edit");
+  };
+
+  // Handle form field changes
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  // Handle file changes
+  const handleFileChange = (field, file) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: file,
+    }));
+  };
+
+  // Save new topic
   const saveAdd = async () => {
     setIsSubmitting(true);
-    const token = localStorage.getItem("token");
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("desc", formData.description);
-    if (selectedFile) {
-      data.append("thumbnail", selectedFile);
-    }
 
     try {
-      const res = await apiRequest("/subjects", {
-        method: "POST",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: data,
-        isFormData: true,
-      });
+      const selectedSubject = subjects.find(
+        (s) => String(s.id) === String(formData.subject)
+      );
 
-      if (res.status === "success" && res.data) {
-        // Refresh data dari server agar sinkron
-        await fetchSubjects();
-        setDialogMode(null);
-      } else {
-        console.error("Failed to add subject:", res.message);
-        // Tampilkan error ke user
+      if (!selectedSubject || !selectedSubject.slug) {
+        alert("Mata pelajaran tidak valid");
+        setIsSubmitting(false);
+        return;
       }
-    } catch (err) {
-      console.error("Failed to add subject:", err);
-      // Tampilkan error ke user
+
+      // Validation for required files
+      if (!formData.icon || !formData.model || !formData.marker) {
+        alert("Model, marker, dan icon wajib diunggah");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Validation for subject
+      if (!formData.subject) {
+        alert("Pilih mata pelajaran terlebih dahulu");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Compose FormData per backend requirements
+      const data = new FormData();
+      data.append("title", formData.name || "");
+      data.append("desc", formData.desc || "");
+      data.append("content", formData.content || "");
+      if (formData.scale) {
+        data.append("scale_model", formData.scale);
+      }
+
+      data.append("icon", formData.icon);
+      data.append("model", formData.model);
+      data.append("marker", formData.marker);
+
+      // Send to backend according to backend's create implementation
+      const res = await addTopic(selectedSubject.slug, data);
+
+      if (res.status === "success" || res.status === 201) {
+        await fetchTopics();
+        setDialogMode(null);
+        resetFormData();
+        alert("Topik berhasil ditambahkan!");
+      } else {
+        const message = res.message || "Unknown error";
+        console.error("Failed to add topic:", message);
+        alert("Gagal menambahkan topik: " + message);
+      }
+    } catch (error) {
+      console.error("Failed to add topic:", error);
+      alert(error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const saveEdit = async () => {
+  // Save edited topic
+  const handleUpdateTopic = async (subSlug) => {
     setIsSubmitting(true);
-    const token = localStorage.getItem("token");
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("desc", formData.description);
-    if (selectedFile) {
-      // Hanya kirim thumbnail jika file baru dipilih
-      data.append("thumbnail", selectedFile);
-    }
-
-    // Ambil slug tanpa tanda '/' di depan
-    const apiSlug = formData.slug.startsWith("/")
-      ? formData.slug.substring(1)
-      : formData.slug;
 
     try {
-      const res = await apiRequest(`/subjects/${apiSlug}`, {
-        method: "PUT",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: data,
-        isFormData: true,
-      });
+      const data = new FormData();
 
-      if (res.status === "success" && res.data) {
-        // Refresh data dari server agar sinkron
-        await fetchSubjects();
-        setDialogMode(null);
-      } else {
-        console.error("Failed to edit subject:", res.message);
-        // Tampilkan error ke user
-      }
+      data.append("title", formData.name);
+      data.append("desc", formData.desc);
+      data.append("content", formData.content);
+      data.append("scale_model", formData.scale);
+
+      if (formData.icon) data.append("icon", formData.icon);
+      if (formData.model) data.append("model", formData.model);
+      if (formData.marker) data.append("marker", formData.marker);
+
+      if (!formData.slug) throw new Error("Slug topik tidak ditemukan.");
+
+      const res = await updateTopic(subSlug, formData.slug, data);
+
+      await fetchTopics();
+      alert("Topik berhasil diperbarui!");
+
+      setDialogMode(null);
+      resetFormData();
     } catch (err) {
-      console.error("Failed to edit subject:", err);
-      // Tampilkan error ke user
+      console.error("Failed to edit topic:", err);
+      alert("Terjadi kesalahan saat memperbarui topik", (res.message || "Unknown error"));
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const deleteSubject = async () => {
+  // Delete topic
+  const handleDeleteTopic = async (subSlug) => {
     if (!deleteId) return;
-
-    const subjectToDelete = topics.find((s) => s.id === deleteId);
-    if (!subjectToDelete) return;
-
-    // Hilangkan '/' dari slug agar sesuai dengan endpoint API
-    const apiSlug = subjectToDelete.slug.startsWith("/")
-      ? subjectToDelete.slug.slice(1)
-      : subjectToDelete.slug;
-
+  
     setIsSubmitting(true);
-    const token = localStorage.getItem("token");
-
     try {
-      const res = await apiRequest(`/subjects/${apiSlug}`, {
-        method: "DELETE",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
-
-      if (res.status === "success") {
-        // Refresh list data agar sinkron dengan database
-        await fetchSubjects();
-        setDeleteId(null);
-      } else {
-        console.error("Failed to delete subject:", res.message);
-        alert(
-          "Gagal menghapus mata pelajaran: " + (res.message || "Unknown error")
-        );
-      }
+      const res = await deleteTopic(subSlug, deleteId);
+      await fetchTopics();
+      alert("Topik berhasil dihapus!");
     } catch (err) {
-      console.error("Failed to delete subject:", err);
-      alert("Terjadi kesalahan saat menghapus data.");
+      console.error("Failed to delete topic:", err);
+      alert("Terjadi kesalahan saat menghapus topik");
     } finally {
       setIsSubmitting(false);
+      setDeleteId(null);
     }
   };
 
@@ -212,13 +273,15 @@ const TopicTable = () => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      {/* Header Section */}
       <div className="flex flex-col mb-6">
         <h1 className="text-3xl font-bold text-left mb-5">Topik Materi</h1>
         <div className="flex flex-col lg:flex-row gap-y-2 lg:justify-between">
           <div className="flex items-center gap-2">
             <Input
-              placeholder="Cari data..."
-              className={"border border-b-4 border-r-4 h-full lg:w-[300px] "}
+              placeholder="Cari topik..."
+              className="border border-b-4 border-r-4 h-full lg:w-[300px]"
+              value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <Button variant="primary" className="cursor-pointer">
@@ -228,7 +291,7 @@ const TopicTable = () => {
           <Button
             onClick={openAdd}
             className="gap-2 cursor-pointer"
-            variant={"primary"}
+            variant="primary"
           >
             <Plus size={20} /> Tambah Topik Baru
           </Button>
@@ -236,81 +299,101 @@ const TopicTable = () => {
       </div>
 
       <h3 className="text-xl font-semibold text-left mb-5">
-        List Topik Materi
+        List Topik Materi ({filteredTopics.length})
       </h3>
 
-      <div className="rounded-lg border border-gray-200 shadow-sm overflow-x-auto ">
+      {/* Table Section */}
+      <div className="rounded-lg border border-gray-200 shadow-sm overflow-x-auto">
         <Table className="min-w-[850px] px-4 lg:px-6">
           <TableHeader>
             <TableRow className="bg-gray-50 border-b border-gray-200">
               <TableHead className="font-bold">Mata Pelajaran</TableHead>
-              <TableHead className="font-bold">Nama</TableHead>
-              <TableHead className="font-bold">Konten Topik</TableHead>
+              <TableHead className="font-bold">Nama Topik</TableHead>
+              <TableHead className="font-bold">Deskripsi</TableHead>
               <TableHead className="font-bold">Model 3D</TableHead>
-              <TableHead className="font-bold">Scale Model</TableHead>
-              <TableHead className="font-bold">Gambar Marker</TableHead>
+              <TableHead className="font-bold">Scale</TableHead>
+              <TableHead className="font-bold">Marker</TableHead>
               <TableHead className="text-center font-bold">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredTopics.map((s) => (
-              <TableRow key={s.id} className="hover:bg-gray-50">
-                <TableCell className="font-semibold">{s.subject.name}</TableCell>
-                <TableCell className="font-semibold">{s.title}</TableCell>
-                <TableCell className={"max-w-[250px] truncate"}>
-                  {s.description}
-                </TableCell>
-                <TableCell>
-                  <Link
-                    href={s.model_url}
-                    target="_blank"
-                    className="cursor-pointer"
-                  >
-                    <Button
-                      variant={"primary"}
-                      className={"normal-case cursor-pointer"}
-                      size={"sm"}
-                    >
-                      Model 3D
-                    </Button>
-                  </Link>
-                </TableCell>
-                <TableCell>{`${s.scale_model}x`}</TableCell>
-                <TableCell>
-                  <Link
-                    href={s.marker_img_url}
-                    target="_blank"
-                    className="cursor-pointer"
-                  >
-                    <Button
-                      variant={"primary"}
-                      className={"normal-case cursor-pointer"}
-                      size={"sm"}
-                    >
-                      Marker Image
-                    </Button>
-                  </Link>
-                </TableCell>
-                <TableCell className="flex justify-center gap-2">
-                  <Button
-                    size="sm"
-                    variant="editProfile"
-                    onClick={() => openEdit(s)}
-                    className="h-8 w-8 p-0 cursor-pointer"
-                  >
-                    <SquarePen size={16} />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="delete"
-                    onClick={() => setDeleteId(s.id)}
-                    className="h-8 w-8 p-0 cursor-pointer"
-                  >
-                    <Trash size={16} />
-                  </Button>
+            {filteredTopics.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-8 text-gray-500">
+                  {searchInput
+                    ? "Tidak ada topik yang sesuai dengan pencarian"
+                    : "Belum ada topik. Tambahkan topik baru untuk memulai."}
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredTopics.map((topic) => (
+                <TableRow key={topic.id} className="hover:bg-gray-50">
+                  <TableCell className="font-semibold">
+                    {topic.subject.name}
+                  </TableCell>
+                  <TableCell className="font-semibold">{topic.title}</TableCell>
+                  <TableCell className="max-w-[250px] truncate">
+                    {topic.desc}
+                  </TableCell>
+                  <TableCell>
+                    {topic.model_url ? (
+                      <Link href={`http://localhost:3000${topic.model_url}`} target="_blank">
+                        <Button
+                          variant="primary"
+                          className="normal-case cursor-pointer"
+                          size="sm"
+                        >
+                          Lihat Model
+                        </Button>
+                      </Link>
+                    ) : (
+                      <span className="text-gray-400 text-sm">Tidak ada</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {topic.scale_model ? `${topic.scale_model}x` : "-"}
+                  </TableCell>
+                  <TableCell>
+                    {topic.marker_img_url ? (
+                      <Link href={`http://localhost:3000${topic.model_url}`} target="_blank">
+                        <Button
+                          variant="primary"
+                          className="normal-case cursor-pointer"
+                          size="sm"
+                        >
+                          Lihat Marker
+                        </Button>
+                      </Link>
+                    ) : (
+                      <span className="text-gray-400 text-sm">Tidak ada</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="flex justify-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="editProfile"
+                      onClick={() => openEdit(topic)}
+                      className="h-8 w-8 p-0 cursor-pointer"
+                      title="Edit topik"
+                    >
+                      <SquarePen size={16} />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="delete"
+                      onClick={() => {
+                        setCurrentSubSlug(topic.subject?.slug || null);
+                        setDeleteId(topic.slug);
+                      }}
+                      className="h-8 w-8 p-0 cursor-pointer"
+                      title="Hapus topik"
+                    >
+                      <Trash size={16} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
@@ -319,13 +402,17 @@ const TopicTable = () => {
       {dialogMode && (
         <TopicFormDialog
           open={!!dialogMode}
-          onOpenChange={() => setDialogMode(null)}
+          onOpenChange={() => {
+            setDialogMode(null);
+            resetFormData();
+          }}
           mode={dialogMode}
           formData={formData}
-          onChange={(f, v) => setFormData({ ...formData, [f]: v })}
-          onFileChange={setSelectedFile} // Kirim file biner ke state
-          onSubmit={dialogMode === "edit" ? saveEdit : saveAdd}
-          isSubmitting={isSubmitting} // Kirim state submitting
+          onChange={handleChange}
+          onFileChange={handleFileChange}
+          onSubmit={dialogMode === "edit" ? handleUpdateTopic : saveAdd}
+          isSubmitting={isSubmitting}
+          subjects={subjects}
         />
       )}
 
@@ -333,8 +420,10 @@ const TopicTable = () => {
         <ConfirmDeleteDialog
           open={!!deleteId}
           onOpenChange={() => setDeleteId(null)}
-          onConfirm={deleteSubject}
-          isSubmitting={isSubmitting} // Kirim state submitting
+          onConfirm={() => handleDeleteTopic(currentSubSlug)}
+          isSubmitting={isSubmitting}
+          title="Hapus Topik"
+          description="Apakah Anda yakin ingin menghapus topik ini? Tindakan ini tidak dapat dibatalkan."
         />
       )}
     </div>

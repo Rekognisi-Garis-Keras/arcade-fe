@@ -28,18 +28,18 @@ const TopicFormDialog = ({
   onFileChange,
   onSubmit,
   isSubmitting,
+  subjects
 }) => {
-  // 🧠 Sync state editor dengan formData.description
-  const [html, setHtml] = useState(formData.description || "");
+  const [html, setHtml] = useState(formData.content || "");
 
   useEffect(() => {
-    setHtml(formData.description || "");
-  }, [formData.description]);
+    setHtml(formData.content || "");
+  }, [formData.content]);
 
   const handleEditorChange = (e) => {
     const value = e.target.value;
     setHtml(value);
-    onChange("description", value); // sync ke parent form
+    onChange("content", value);
   };
 
   return (
@@ -59,7 +59,7 @@ const TopicFormDialog = ({
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
-          {/* 🧩 Mata Pelajaran */}
+          {/* ===== Subjects ===== */}
           <div className="grid gap-2">
             <Label>Mata Pelajaran</Label>
             <NativeSelect
@@ -72,16 +72,15 @@ const TopicFormDialog = ({
               <NativeSelectOption value="">
                 Pilih Mata Pelajaran
               </NativeSelectOption>
-              <NativeSelectOption value="math">Matematika</NativeSelectOption>
-              <NativeSelectOption value="physics">Fisika</NativeSelectOption>
-              <NativeSelectOption value="bio">Biologi</NativeSelectOption>
-              <NativeSelectOption value="astronomy">
-                Astronomi
-              </NativeSelectOption>
+              {Array.isArray(subjects) && subjects.map((subject) => (
+                <NativeSelectOption key={subject.id} value={subject.id}>
+                  {subject.name}
+                </NativeSelectOption>
+              ))}
             </NativeSelect>
           </div>
 
-          {/* 🧩 Judul */}
+          {/* ===== Title ===== */}
           <div className="grid gap-2">
             <Label>Judul Topik</Label>
             <Input
@@ -92,32 +91,54 @@ const TopicFormDialog = ({
             />
           </div>
 
-          {/* 🧩 Konten */}
+          {/* ===== Desc ===== */}
+          <div className="grid gap-2">
+            <Label>Deskripsi</Label>
+            <Input
+              value={formData.desc || ""}
+              onChange={(e) => onChange("desc", e.target.value)}
+              disabled={isSubmitting}
+              placeholder="Deskripsi singkat topik"
+            />
+          </div>
+
+          {/* ===== Content ===== */}
           <div className="grid gap-2">
             <Label>Konten</Label>
             <Editor value={html} onChange={handleEditorChange} />
           </div>
 
-          {/* 🧩 Icon Upload */}
+          {/* ===== Icon ===== */}
           <FileUploadInput
             label="Icon"
             value={formData.iconPath}
             onChange={(v) => onChange("iconPath", v)}
-            onFileSelect={onFileChange}
+            onFileSelect={(file) => onFileChange("icon", file)}
           />
 
-          {/* 🧩 Model 3D */}
+          {/* ===== Model 3D ===== */}
           <div className="grid gap-2">
-            <Label htmlFor="picture">
+            <Label htmlFor="model-file">
               <CloudUpload size={20} strokeWidth={2} /> Model 3D
             </Label>
-            <Input id="picture" type="file" />
+            <Input
+              id="model-file"
+              type="file"
+              onChange={(e) => onFileChange("model", e.target.files[0])}
+              disabled={isSubmitting}
+              // accept=".glb,.gltf,.obj,.fbx"
+            />
+            {formData.model && (
+              <p className="text-sm text-gray-500">{formData.model.name}</p>
+            )}
           </div>
 
-          {/* 🧩 Scale */}
+          {/* ===== Scale Model ===== */}
           <div className="grid gap-2">
             <Label>Scale Model</Label>
             <Input
+              type="number"
+              step="0.1"
               value={formData.scale || ""}
               onChange={(e) => onChange("scale", e.target.value)}
               disabled={isSubmitting}
@@ -125,13 +146,22 @@ const TopicFormDialog = ({
             />
           </div>
 
-          {/* 🧩 Marker */}
+          {/* ===== Marker ===== */}
           <div className="grid gap-2">
-            <Label htmlFor="picture">
+            <Label htmlFor="marker-file">
               <CloudUpload size={20} strokeWidth={2} />
               Marker
             </Label>
-            <Input id="picture" type="file" />
+            <Input
+              id="marker-file"
+              type="file"
+              onChange={(e) => onFileChange("marker", e.target.files[0])}
+              disabled={isSubmitting}
+              accept="image/*"
+            />
+            {formData.marker && (
+              <p className="text-sm text-gray-500">{formData.marker.name}</p>
+            )}
           </div>
         </div>
 
