@@ -1,6 +1,5 @@
-import React from "react";
-import SubjectTable from "@/components/Admin/Quiz/SubjectTable";
+import QuizTable from "@/components/Admin/Quiz/QuizTable";
 
-export default function AdminTopics() {
-  return <SubjectTable />;
+export default function AdminQuiz() {
+  return <QuizTable />;
 }
