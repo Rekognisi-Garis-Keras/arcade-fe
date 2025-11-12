@@ -8,10 +8,18 @@ export const getAllQuizzes = async () => {
   });
 }
 
-export const addQuiz = async (data) => {
-  return await apiRequest(`/quizzes`, {
+export const addQuiz = async (subSlug, topSlug, data) => {
+  return await apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes`, {
     method: "POST",
-    body: data,
+    body: JSON.stringify(data),
+    headers: { Authorization: `Bearer ${token}` }
+  });
+}
+
+export const updateQuiz = async (subSlug, topSlug, uuid, data) => {
+  return await apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes/${uuid}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
     headers: { Authorization: `Bearer ${token}` }
   });
 }

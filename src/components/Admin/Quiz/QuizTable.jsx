@@ -3,8 +3,8 @@
 import { Button } from "@/components/UI/button";
 import { SquarePen, Trash, Plus, Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import SubjectFormDialog from "./SubjectFormDialog";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog"; // Asumsi Anda punya komponen ini
+import SubjectFormDialog from "./QuizModal";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import { Input } from "../../UI/input";
 import { apiRequest } from "@/utils/api";
 import Link from "next/link";
@@ -19,17 +19,48 @@ import {
 } from "@/components/UI/table";
 import SkeletonAdmin from "@/app/admin/skeleton";
 import { getAllQuizzes } from "@/services/quizService";
+import QuizModal from "./QuizModal";
 
 const QuizTable = () => {
   const [quizzes, setQuizzes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(null);
 
-  useEffect(() => {
-    const fetchQuizzes = async () => {
+  // ====== FETCH QUIZZES ======
+  const fetchQuizzes = async () => {
+    setIsLoading(true);
+    try {
       const res = await getAllQuizzes();
       setQuizzes(res.data);
-    };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchQuizzes();
   }, []);
+
+  // ====== HANDLE MODAL ======
+  const openCreateModal = () => {
+    setSelected(null);
+    setOpen(true);
+  };
+  
+  const openEditQuiz = (quiz) => {
+    setSelected(quiz);
+    setOpen(true);
+  };
+
+  const handleSuccess = () => {
+    fetchQuizzes();
+    setOpen(false);
+  };
+
+
+
+  if (isLoading) return <SkeletonAdmin />;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -47,11 +78,11 @@ const QuizTable = () => {
             </Button>
           </div>
           <Button
-            // onClick={openAdd}
             className="gap-2 cursor-pointer"
             variant={"primary"}
+            onClick={openCreateModal}
           >
-            <Plus size={20} /> Tambah Topik Baru
+            <Plus size={20} /> Tambah Quiz Baru
           </Button>
         </div>
       </div>
@@ -63,7 +94,7 @@ const QuizTable = () => {
       <div className="space-y-6">
         {quizzes.map((quizGroup, i) => (
           <div key={i} className="space-y-3">
-            {/* Topic Header */}
+            {/* Topic Header */}  
             <div className="flex items-center justify-between mb-2">
               <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-semibold shadow-sm border border-blue-200">
                 <span className="mr-1 font-semibold">Topic:</span>
@@ -78,6 +109,7 @@ const QuizTable = () => {
                   <TableRow className="bg-gray-50 border-b border-gray-200">
                     <TableHead className="font-bold">Soal</TableHead>
                     <TableHead className="font-bold">Pilihan</TableHead>
+                    <TableHead className="font-bold">Penjelasan</TableHead>
                     <TableHead className="font-bold w-24">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -95,6 +127,13 @@ const QuizTable = () => {
                             </li>
                           ))}
                         </ul>
+                      </TableCell>
+                      <TableCell className="align-top">
+                        {quiz.explain ? (
+                          <span>{quiz.explain}</span>
+                        ) : (
+                          <span className="italic text-gray-400">Tidak ada penjelasan</span>
+                        )}
                       </TableCell>
                       <TableCell className="align-top">
                         <div className="flex gap-2">
@@ -129,28 +168,13 @@ const QuizTable = () => {
         ))}
       </div>
 
-      {/* Dialogs */}
-      {/* {dialogMode && (
-        <SubjectFormDialog
-          open={!!dialogMode}
-          onOpenChange={() => setDialogMode(null)}
-          mode={dialogMode}
-          formData={formData}
-          onChange={(f, v) => setFormData({ ...formData, [f]: v })}
-          onFileChange={setSelectedFile} // Kirim file biner ke state
-          onSubmit={dialogMode === "edit" ? saveEdit : saveAdd}
-          isSubmitting={isSubmitting} // Kirim state submitting
-        />
-      )}
-
-      {deleteId && (
-        <ConfirmDeleteDialog
-          open={!!deleteId}
-          onOpenChange={() => setDeleteId(null)}
-          onConfirm={deleteSubject}
-          isSubmitting={isSubmitting} // Kirim state submitting
-        />
-      )} */}
+      {/* === MODAL TAMBAH/EDIT === */}
+      <QuizModal 
+        open={open}
+        onClose={() => setOpen(false)}
+        onSuccess={handleSuccess}
+        initialData={selected}
+      />
     </div>
   );
 };
