@@ -17,9 +17,13 @@ import {
 } from "@/components/UI/native-select";
 import { Textarea } from "@/components/UI/textarea"; // pastikan kamu punya ini di UI kamu
 import { addQuiz, updateQuiz } from "@/services/quizService";
+import { toast } from "sonner";
+import { getTopics } from "@/services/topicService";
 
-const QuizModal = ({ open, onClose, onSuccess, initialData }) => {
+const QuizModal = ({ open, onClose, onSuccess, initialData, subSlug, topSlug }) => {
   const isEdit = !!initialData;
+
+  const [topics, setTopics] = useState([]);
 
   const [form, setForm] = useState({
     question: "",
@@ -35,21 +39,18 @@ const QuizModal = ({ open, onClose, onSuccess, initialData }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // ====== FETCH TOPICS ======
+  useEffect(() => {
+    if (open) {
+      getTopics().then(res => {
+        if (res.status === "success") setTopics(res.data);
+      });
+    }
+  }, [open]);
+
   // ======= ISI FORM VALUE JIKA EDIT ====== 
   useEffect(() => {
     if (initialData) setForm(initialData);
-    else
-      setForm({
-        question: "",
-        options: [
-          { id: "a", text: "" },
-          { id: "b", text: "" },
-          { id: "c", text: "" },
-          { id: "d", text: "" },
-        ],
-        correct_answer: "",
-        explain: "",
-      });
   }, [initialData]);
 
   // ====== HANDLER INPUT CHANGE ======
@@ -71,17 +72,44 @@ const QuizModal = ({ open, onClose, onSuccess, initialData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     try {
+      const selectedTopic = topics.find(t => t.id === Number(form.topic_id));
+      if (!selectedTopic) throw new Error("Pilih topik terlebih dahulu");
+
+      // get slug
+      const subSlug = selectedTopic.subject?.slug;
+      const topSlug = selectedTopic.slug;
+
+      if (!subSlug || !topSlug) throw new Error("Slug subject atau topic tidak ditemukan");
+
+      const payload = {
+        question: form.question,
+        options: form.options,
+        correct_answer: form.correct_answer,
+        explain: form.explain,
+      };
+
+      let res;
       if (isEdit) {
-        await updateQuiz();
+        res = await updateQuiz(subSlug, topSlug, initialData.uuid, payload);
       } else {
-        await addQuiz();
+        res = await addQuiz(subSlug, topSlug, payload);
       }
 
-      onSuccess();
-      onClose();
-    } catch (error) {
-      alert("Error saving topic");
+      if (res.status === "success") {
+        toast.success(`Quiz berhasil ${isEdit ? "diperbarui" : "ditambahkan"}!`);
+        onSuccess();
+        onClose();
+      } else {
+        toast.error(res.message || "Gagal menyimpan quiz!");
+      }
+    } catch (err) {
+      console.error("Error submit:", err);
+      toast.error("Terjadi kesalahan server!");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -101,13 +129,31 @@ const QuizModal = ({ open, onClose, onSuccess, initialData }) => {
 
         {/* 🔹 FORM */}
         <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+          {/* ===== Topics ===== */}
+          <div className="grid gap-2">
+            <Label>Topik</Label>
+            <NativeSelect
+              id="dropdown-topics"
+              className="w-full"
+              value={form.topic_id || ""}
+              onChange={(e) => handleChange("topic_id", e.target.value)}
+            >
+              <NativeSelectOption value="">Pilih Topik</NativeSelectOption>
+              {Array.isArray(topics) && topics.map((topic) => (
+                <NativeSelectOption key={topic.id} value={topic.id}>
+                  {topic.title} — {topic.subject?.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </div>
+
           {/* Pertanyaan */}
           <div className="space-y-2">
             <Label htmlFor="question">Pertanyaan</Label>
             <Textarea
               id="question"
               placeholder="Masukkan pertanyaan..."
-              value={form.question}
+              value={form.question ?? ""}
               onChange={(e) => handleChange("question", e.target.value)}
               required
             />
@@ -158,7 +204,7 @@ const QuizModal = ({ open, onClose, onSuccess, initialData }) => {
             <Textarea
               id="explain"
               placeholder="Berikan penjelasan singkat..."
-              value={form.explain}
+              value={form.explain ?? ""}
               onChange={(e) => handleChange("explain", e.target.value)}
             />
           </div>

@@ -3,11 +3,9 @@
 import { Button } from "@/components/UI/button";
 import { SquarePen, Trash, Plus, Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import SubjectFormDialog from "./QuizModal";
-import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 import { Input } from "../../UI/input";
-import { apiRequest } from "@/utils/api";
-import Link from "next/link";
+import { deleteQuiz } from "@/services/quizService";
+import { toast } from "sonner";
 
 import {
   Table,
@@ -58,7 +56,31 @@ const QuizTable = () => {
     setOpen(false);
   };
 
+  // ======= HANDLE DELETE ======
+  const handleDeleteQuiz = async (quiz) => {
+    if (!quiz || !quiz.topic) return toast.error("Quiz atau topik tidak valid!");
 
+    const subSlug = quiz.topic.subject?.slug;
+    const topSlug = quiz.topic.slug;
+    const uuid = quiz.uuid;
+
+    console.log({subSlug, topSlug, uuid});
+
+    if (!subSlug || !topSlug || !uuid) {
+      return toast.error("Slug subject, topic, atau ID quiz tidak ditemukan!");
+    }
+
+    if (window.confirm("Yakin ingin menghapus quiz ini?")) {
+      try {
+        await deleteQuiz(subSlug, topSlug, uuid);
+        toast.success("Quiz berhasil dihapus!");
+        fetchQuizzes();
+      } catch (err) {
+        console.error("Delete quiz error:", err);
+        toast.error("Gagal menghapus quiz!");
+      }
+    }
+  };
 
   if (isLoading) return <SkeletonAdmin />;
 
@@ -149,9 +171,7 @@ const QuizTable = () => {
                           <Button
                             size="sm"
                             variant="delete"
-                            onClick={() => {
-                              setDeleteQuizId(quiz.id);
-                            }}
+                            onClick={() => handleDeleteQuiz(quiz)}
                             className="h-8 w-8 p-0 cursor-pointer"
                             title="Hapus soal"
                           >
