@@ -123,10 +123,11 @@ const TopicFormDialog = ({
             </Label>
             <Input
               id="model-file"
-              type="file"
-              onChange={(e) => onFileChange("model", e.target.files[0])}
+              type="text"
+              value={formData.model_url || ""}
+              onChange={(e) => onChange("model_url", e.target.value)}
               disabled={isSubmitting}
-              // accept=".glb,.gltf,.obj,.fbx"
+              placeholder="URL model 3D (misal: https://...)"
             />
             {formData.model && (
               <p className="text-sm text-gray-500">{formData.model.name}</p>
@@ -148,20 +149,18 @@ const TopicFormDialog = ({
 
           {/* ===== Marker ===== */}
           <div className="grid gap-2">
-            <Label htmlFor="marker-file">
+            <Label htmlFor="marker-url">
               <CloudUpload size={20} strokeWidth={2} />
               Marker
             </Label>
             <Input
-              id="marker-file"
-              type="file"
-              onChange={(e) => onFileChange("marker", e.target.files[0])}
+              id="marker-url"
+              type="text"
+              value={formData.marker_img_url || ""}
+              onChange={(e) => onChange("marker_img_url", e.target.value)}
               disabled={isSubmitting}
-              accept="image/*"
+              placeholder="URL marker (misal: https://...)"
             />
-            {formData.marker && (
-              <p className="text-sm text-gray-500">{formData.marker.name}</p>
-            )}
           </div>
         </div>
 

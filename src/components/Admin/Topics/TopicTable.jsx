@@ -29,14 +29,13 @@ const TopicTable = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [formData, setFormData] = useState({
     subject: "",
-    name: "",
+    title: "",
     desc: "",
     content: "",
-    iconPath: "",
+    scale_model: "",
     icon: null,
-    model: null,
-    scale: "",
-    marker: null,
+    model_url: null,
+    marker_img_url: null,
   });
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
@@ -57,7 +56,6 @@ const TopicTable = () => {
           title: topic.title,
           slug: topic.slug,
           desc: topic.desc,
-          content: topic.content,
           model_url: topic.model_url,
           marker_img_url: topic.marker_img_url,
           scale_model: topic.scale_model,
@@ -102,13 +100,12 @@ const TopicTable = () => {
   const resetFormData = () => {
     setFormData({
       subject: "",
-      name: "",
+      title: "",
       desc: "",
-      iconPath: "",
       icon: null,
-      model: null,
-      scale: "",
-      marker: null,
+      scale_model: "",
+      model_url: null,
+      marker_img_url: null,
     });
   };
 
@@ -123,15 +120,12 @@ const TopicTable = () => {
     setFormData({
       id: topic.id,
       subject: topic.subject?.id || "",
-      name: topic.title,
+      title: topic.title,
+      slug: topic.slug,
       desc: topic.desc,
       content: topic.content,
-      iconPath: topic.icon_url || "",
+      scale_model: topic.scale_model || "",
       icon: null,
-      model: null,
-      scale: topic.scale_model || "",
-      marker: null,
-      slug: topic.slug,
       model_url: topic.model_url,
       marker_img_url: topic.marker_img_url,
     });
@@ -170,8 +164,8 @@ const TopicTable = () => {
       }
 
       // Validation for required files
-      if (!formData.icon || !formData.model || !formData.marker) {
-        alert("Model, marker, dan icon wajib diunggah");
+      if (!formData.icon) {
+        alert("Icon wajib diunggah");
         setIsSubmitting(false);
         return;
       }
@@ -193,8 +187,8 @@ const TopicTable = () => {
       }
 
       data.append("icon", formData.icon);
-      data.append("model", formData.model);
-      data.append("marker", formData.marker);
+      data.append("model_url", formData.model_url);
+      data.append("marker_img_url", formData.marker_img_url);
 
       // Send to backend according to backend's create implementation
       const res = await addTopic(selectedSubject.slug, data);
@@ -228,10 +222,10 @@ const TopicTable = () => {
       data.append("desc", formData.desc);
       data.append("content", formData.content);
       data.append("scale_model", formData.scale);
+      data.append("model_url", formData.model_url);
+      data.append("marker_img_url", formData.marker_img_url);
 
       if (formData.icon) data.append("icon", formData.icon);
-      if (formData.model) data.append("model", formData.model);
-      if (formData.marker) data.append("marker", formData.marker);
 
       if (!formData.slug) throw new Error("Slug topik tidak ditemukan.");
 
@@ -336,7 +330,7 @@ const TopicTable = () => {
                   </TableCell>
                   <TableCell>
                     {topic.model_url ? (
-                      <Link href={`http://localhost:3000${topic.model_url}`} target="_blank">
+                      <Link href={topic.model_url} target="_blank">
                         <Button
                           variant="primary"
                           className="normal-case cursor-pointer"
@@ -354,7 +348,7 @@ const TopicTable = () => {
                   </TableCell>
                   <TableCell>
                     {topic.marker_img_url ? (
-                      <Link href={`http://localhost:3000${topic.model_url}`} target="_blank">
+                      <Link href={topic.model_url} target="_blank">
                         <Button
                           variant="primary"
                           className="normal-case cursor-pointer"
