@@ -16,7 +16,7 @@ const MainHero = () => {
           <Button size={"lg"} className="w-55" asChild variant={"primary"}>
             <Link href="/subjects">{item.signUpBtn}</Link>
           </Button>
-          <Button size={"lg"} className="w-55" asChild variant={"sidebar"}>
+          <Button size={"lg"} className="w-55" asChild variant={"haveAcc"}>
             <Link href="/login">{item.loginBtn}</Link>
           </Button>
         </React.Fragment>
