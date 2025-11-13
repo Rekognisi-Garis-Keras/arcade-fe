@@ -163,13 +163,6 @@ const TopicTable = () => {
         return;
       }
 
-      // Validation for required files
-      if (!formData.icon) {
-        alert("Icon wajib diunggah");
-        setIsSubmitting(false);
-        return;
-      }
-
       // Validation for subject
       if (!formData.subject) {
         alert("Pilih mata pelajaran terlebih dahulu");
