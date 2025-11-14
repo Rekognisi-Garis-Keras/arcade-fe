@@ -397,7 +397,7 @@ const TopicTable = () => {
           formData={formData}
           onChange={handleChange}
           onFileChange={handleFileChange}
-          onSubmit={dialogMode === "edit" ? handleUpdateTopic : saveAdd}
+          onSubmit={dialogMode === "edit" ? handleUpdateTopic(currentSubSlug) : saveAdd}
           isSubmitting={isSubmitting}
           subjects={subjects}
         />
