@@ -120,13 +120,14 @@ const TopicTable = () => {
     setFormData({
       id: topic.id,
       subject: topic.subject?.id || "",
-      title: topic.title,
+      name: topic.title,
       slug: topic.slug,
       desc: topic.desc,
       content: topic.content,
       scale_model: topic.scale_model || "",
       icon: null,
       model_url: topic.model_url,
+      scale: topic.scale_model,
       marker_img_url: topic.marker_img_url,
     });
     setDialogMode("edit");
@@ -190,7 +191,7 @@ const TopicTable = () => {
         await fetchTopics();
         setDialogMode(null);
         resetFormData();
-        alert("Topik berhasil ditambahkan!");
+        // alert("Topik berhasil ditambahkan!");
       } else {
         const message = res.message || "Unknown error";
         console.error("Failed to add topic:", message);
@@ -225,7 +226,7 @@ const TopicTable = () => {
       const res = await updateTopic(subSlug, formData.slug, data);
 
       await fetchTopics();
-      alert("Topik berhasil diperbarui!");
+      // alert("Topik berhasil diperbarui!");
 
       setDialogMode(null);
       resetFormData();
@@ -341,7 +342,7 @@ const TopicTable = () => {
                   </TableCell>
                   <TableCell>
                     {topic.marker_img_url ? (
-                      <Link href={topic.model_url} target="_blank">
+                      <Link href={topic.marker_img_url} target="_blank">
                         <Button
                           variant="primary"
                           className="normal-case cursor-pointer"
