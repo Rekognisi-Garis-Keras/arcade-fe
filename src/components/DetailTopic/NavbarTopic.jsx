@@ -13,7 +13,7 @@ const NavbarTopic = ({ title = "", slug = "" }) => {
       </Link>
       <div>
         <h5 className="font-bold text-lg">
-          <span className="hidden md:inline">{title}</span>
+          <span className="inline">{title}</span>
         </h5>
       </div>
     </div>
