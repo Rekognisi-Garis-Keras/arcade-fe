@@ -9,10 +9,13 @@ export default function QuizResult({ quizzes, selected }) {
   const correctCount = quizzes.filter(
     (q) => selected[q.id] === q.correct_answer
   ).length;
+  
   const skippedCount = quizzes.filter(
     (q) => selected[q.id] === undefined
   ).length;
+  
   const wrongCount = quizzes.length - correctCount - skippedCount;
+  
   const xp = correctCount * 10;
 
   useEffect(() => {
@@ -88,54 +91,56 @@ export default function QuizResult({ quizzes, selected }) {
           Ringkasan Hasil
         </h1>
         <div className="space-y-3 mb-3">
-          {quizzes.map((quiz, idx) => {
-            const userAnswer = selected[quiz.id];
-            const isCorrect = userAnswer === quiz.correct_answer;
-            const isSkipped = userAnswer === undefined;
-            const isWrong = !isCorrect && !isSkipped;
+        {quizzes.map((quiz, idx) => {
+          const userAnswer = selected[quiz.id];
+          const correctAnswer = quiz.correct_answer;
 
-            return (
-              <div
-                key={quiz.id}
-                className={`p-4 rounded-xl border ${
-                  isCorrect
-                    ? "border-green-400 bg-green-50"
-                    : isWrong
-                    ? "border-red-400 bg-red-50"
-                    : "border-gray-400 bg-gray-100"
-                }`}
-              >
-                <p className="font-semibold text-gray-800">
-                  {idx + 1}. {quiz.question}
-                </p>
-                <p className="text-sm text-gray-700 mt-1">
-                  Jawaban kamu:{" "}
-                  <span
-                    className={`font-semibold ${
-                      isCorrect
-                        ? "text-green-600"
-                        : isWrong
-                        ? "text-red-600"
-                        : "text-gray-600"
-                    }`}
-                  >
-                    {quiz.options.find((o) => o.id === userAnswer)?.text || "-"}
-                  </span>
-                </p>
+          const userOption = quiz.options.find((o) => o.id === userAnswer);
+          const correctOption = quiz.options.find((o) => o.id === correctAnswer);
 
-                {!isCorrect && (
-                  <p className="text-sm text-green-600">
-                    {" "}
-                    ✅ Jawaban yang benar:{" "}
-                    {
-                      quiz.options.find((o) => o.id === quiz.correct_answer)
-                        ?.text
-                    }{" "}
-                  </p>
-                )}
-              </div>
-            );
-          })}
+          const isCorrect = userAnswer === correctAnswer;
+          const isSkipped = userAnswer === undefined;
+          const isWrong = !isCorrect && !isSkipped;
+
+          return (
+            <div
+              key={quiz.id}
+              className={`p-4 rounded-xl border ${
+                isCorrect
+                  ? "border-green-400 bg-green-50"
+                  : isWrong
+                  ? "border-red-400 bg-red-50"
+                  : "border-gray-400 bg-gray-100"
+              }`}
+            >
+              <p className="font-semibold text-gray-800">
+                {idx + 1}. {quiz.question}
+              </p>
+              <p className="text-sm text-gray-700 mt-1">
+                Jawaban kamu:{" "}
+                <span
+                  className={`font-semibold ${
+                    isCorrect
+                      ? "text-green-600"
+                      : isWrong
+                      ? "text-red-600"
+                      : "text-gray-600"
+                  }`}
+                >
+                  {userOption?.text || "-"}
+                </span>
+              </p>
+
+              {!isCorrect && correctOption && (
+                <p className="text-sm text-green-600">
+                  {" "}
+                  ✅ Jawaban yang benar: {correctOption.text}
+                </p>
+              )}
+            </div>
+          );
+        })}
+
         </div>
         <Link href="/subjects/astronomi">
           <Button

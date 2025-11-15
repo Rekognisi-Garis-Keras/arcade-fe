@@ -62,6 +62,8 @@ function DetailSubjectContent() {
   if (loading) return <DetailSubjectsSkeleton />;
   if (!subjectDetail) return null;
 
+  console.log(topics);
+
   return (
     <div className="flex flex-row-reverse gap-12 px-6 pb-30 md:pb-0">
       <StickyWrapper>
@@ -133,17 +135,26 @@ function DetailSubjectContent() {
                     subIndex={1}
                   />
                 </Link>
-                <Link
-                  href={`/subjects/${subjectSlug}/${topic.slug}/quiz`}
-                  key={index + 3}
-                >
+                {Array.isArray(topic.quizzes) && topic.quizzes.length > 0 ? (
+                  <Link
+                    href={`/subjects/${subjectSlug}/${topic.slug}/quiz`}
+                    key={index + 3}
+                  >
+                    <LessonButton
+                      buttonType="quiz"
+                      locked={false}
+                      index={index}
+                      subIndex={2}
+                    />
+                  </Link>
+                ) : (
                   <LessonButton
                     buttonType="quiz"
-                    locked={false}
+                    locked={true}
                     index={index}
                     subIndex={2}
                   />
-                </Link>
+                )}
               </div>
             </div>
           )}

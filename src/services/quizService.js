@@ -1,14 +1,16 @@
 import { apiRequest } from "@/utils/api";
 
+const getToken = () => (typeof window !== "undefined" ? localStorage.getItem("token") : null);
+
 export const getAllQuizzes = async () => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = getToken();
   return apiRequest(`/quizzes`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 
 export const addQuiz = async (subSlug, topSlug, data) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = getToken();
   return await apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes`, {
     method: "POST",
     body: data,
@@ -17,7 +19,7 @@ export const addQuiz = async (subSlug, topSlug, data) => {
 };
 
 export const updateQuiz = async (subSlug, topSlug, uuid, data) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = getToken();
   return await apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes/${uuid}`, {
     method: "PUT",
     body: data,
@@ -26,7 +28,7 @@ export const updateQuiz = async (subSlug, topSlug, uuid, data) => {
 };
 
 export const deleteQuiz = async (subSlug, topSlug, uuid) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = getToken();
   return await apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes/${uuid}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
@@ -34,8 +36,20 @@ export const deleteQuiz = async (subSlug, topSlug, uuid) => {
 };
 
 export const getQuizzesByTopic = async (subSlug, topSlug) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = getToken();
   return apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+export const submitQuiz = async (subSlug, topSlug, data) => {
+  const token = getToken();
+  return await apiRequest(`/subjects/${subSlug}/topics/${topSlug}/quizzes/submit`, {
+    method: "POST",
+    body: data,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

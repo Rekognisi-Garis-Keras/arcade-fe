@@ -7,6 +7,7 @@ const QuizFooter = ({
   nextQuestion,
   currentQuizId,
   selected,
+  onSubmit,
   index,
 }) => {
   const isAnswered = selected[currentQuizId];
@@ -17,6 +18,17 @@ const QuizFooter = ({
       nextQuestion(); // langsung ke soal berikutnya
     }
   };
+
+  // handle tombol utama (Selanjutnya/Lihat Hasil)
+  const handlePrimaryClick = () => {
+    if (!isAnswered) return;
+    if (index + 1 < total) {
+      nextQuestion();
+    } else {
+      onSubmit();
+    }
+  };
+
   return (
     <div className="h-30 bg-white border-t-2 w-full flex justify-center">
       <div className="w-5xl h-full flex items-center justify-between px-5">
@@ -33,7 +45,7 @@ const QuizFooter = ({
         <Button
           variant={"primary"}
           className={"w-40 cursor-pointer"}
-          onClick={isAnswered ? nextQuestion : undefined}
+          onClick={handlePrimaryClick}
           disabled={!isAnswered}
         >
           {index + 1 < total ? "Selanjutnya" : "Lihat Hasil"}
