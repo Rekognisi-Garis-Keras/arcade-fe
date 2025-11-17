@@ -35,11 +35,19 @@ const QuizHeader = () => {
               >
                 <div className="w-5 h-5 border-l-2 border-t-2 rotate-45 absolute -top-[11px] left-34 md:left-1/2 -translate-x-1/2 -z-1 bg-white"></div>
                 <div className="w-5 h-5 absolute -top-5 left-34 md:left-1/2 -translate-x-1/2 -z-2 bg-transparent"></div>
-                <ol className="text-xs list-decimal list-inside leading-4">
-                  <li>jawab yang bener</li>
-                  <li>jangan ngasal</li>
-                  <li>kalo nilainya &lt; 40, tak lapor mak mu ya</li>
-                  <li>kalo gabisa jawab skip aja</li>
+                <ol className="text-xs leading-4">
+                  <li className="mb-2">
+                    1️⃣ Baca setiap pertanyaan dengan teliti sebelum menjawab
+                  </li>
+                  <li className="mb-2">
+                    2️⃣ Pilih satu jawaban yang benar dan sesuai pengetahuan kamu
+                  </li>
+                  <li className="mb-2">
+                    3️⃣ Gunakan tombol Skip jika kamu belum yakin menjawab
+                  </li>
+                  <li className="mb-2">
+                    4️⃣ Nilai akhir akan ditampilkan setelah seluruh soal selesai
+                  </li>
                 </ol>
               </motion.div>
             </AnimatePresence>

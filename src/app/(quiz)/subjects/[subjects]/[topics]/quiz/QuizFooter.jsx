@@ -31,20 +31,20 @@ const QuizFooter = ({
 
   return (
     <div className="h-30 bg-white border-t-2 w-full flex justify-center">
-      <div className="w-5xl h-full flex items-center justify-between px-5">
+      <div className="w-5xl h-full flex items-center justify-between px-5 gap-3">
         <Button
           variant={"skip"}
-          className={"w-40 cursor-pointer"}
+          className={"md:w-40 w-35 cursor-pointer"}
           onClick={handleSkip}
         >
           Lewati
         </Button>
-        <span className="text-lg font-bold">{`Soal ${
+        <span className="md:text-lg text-md font-bold text-center">{`Soal ${
           current + 1
         }/${total}`}</span>
         <Button
           variant={"primary"}
-          className={"w-40 cursor-pointer"}
+          className={"md:w-40 w-35 cursor-pointer"}
           onClick={handlePrimaryClick}
           disabled={!isAnswered}
         >

@@ -14,6 +14,7 @@ const QuizOption = ({ option, correctAnswer, selectedOption, onSelect }) => {
       variant={isCorrect ? "optionTrue" : isWrong ? "optionFalse" : "option"}
       className="cursor-pointer"
       onClick={onSelect}
+      size={"optionButton"}
     >
       {option.text}
     </Button>

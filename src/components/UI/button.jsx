@@ -5,7 +5,7 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive uppercase tracking-wide",
+  "inline-flex items-center justify-center gap-2 rounded-xl text-sm font-bold transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive uppercase tracking-wide",
   {
     variants: {
       variant: {
@@ -40,11 +40,11 @@ const buttonVariants = cva(
         delete:
           "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-600 border-b-[5px] active:border-b-0",
         option:
-          "bg-white hover:bg-gray-100/80 min-h-13 border-2 text-gray-800 cursor-pointer border-b-[5px] active:border-b-0 normal-case",
+          "bg-white hover:bg-gray-100/80 border-2 text-gray-800 cursor-pointer border-b-[5px] active:border-b-0 normal-case",
         optionTrue:
-          "bg-lime-200 border-lime-400 border-2 min-h-13 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
+          "bg-lime-200 border-lime-400 border-2 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
         optionFalse:
-          "bg-rose-200 border-rose-400 border-2 min-h-13 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
+          "bg-rose-200 border-rose-400 border-2 text-gray-800 border-b-[5px] active:border-b-0 normal-case cursor-pointer",
         nextLocked: "cursor-not-allowed bg-gray-400 text-gray-700",
         skip: "bg-rose-500 text-primary-foreground hover:bg-rose-500/90 border-rose-700 border-b-[5px] active:border-b-0",
         haveAcc:
@@ -52,6 +52,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",
+        optionButton: "min-h-13 px-4 py-2 has-[>svg]:px-3",
         sm: "h-9 gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-12 px-8 has-[>svg]:px-4",
         rounded: "w-20 h-20 rounded-full",
