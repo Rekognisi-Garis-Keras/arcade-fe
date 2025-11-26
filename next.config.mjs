@@ -2,6 +2,7 @@ import withPWA from "next-pwa";
 
 const pwa = withPWA({
   dest: "public",
+  disable: process.env.NODE_ENV === 'development',
   register: true,
   skipWaiting: true,
 });
@@ -17,6 +18,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },

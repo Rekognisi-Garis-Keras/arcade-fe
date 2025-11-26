@@ -1,7 +1,9 @@
+"use client";
+
 import ContentWrapper from "@/components/Leaderboard/ContentWrapper";
 import StickyWrapper from "@/components/Leaderboard/StickyWrapper";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -15,78 +17,26 @@ import {
 } from "@/components/UI/table";
 import EachUtils from "@/utils/EachUtils";
 import { Avatar, AvatarImage } from "@/components/UI/avatar";
+import { getLeaderboard } from "@/services/leaderboard";
 
 function page() {
-  const leaderboardData = [
-    {
-      position: 1,
-      iconProfile: "https://randomuser.me/api/portraits/men/10.jpg",
-      name: "Oliver Smith",
-      xp: 980,
-    },
-    {
-      position: 2,
-      iconProfile: "https://randomuser.me/api/portraits/women/22.jpg",
-      name: "Emma Johnson",
-      xp: 940,
-    },
-    {
-      position: 3,
-      iconProfile: "https://randomuser.me/api/portraits/men/33.jpg",
-      name: "Liam Williams",
-      xp: 910,
-    },
-    {
-      position: 4,
-      iconProfile: "https://randomuser.me/api/portraits/women/44.jpg",
-      name: "Sophia Brown",
-      xp: 880,
-    },
-    {
-      position: 5,
-      iconProfile: "https://randomuser.me/api/portraits/men/55.jpg",
-      name: "Noah Jones",
-      xp: 850,
-    },
-    {
-      position: 6,
-      iconProfile: "https://randomuser.me/api/portraits/women/66.jpg",
-      name: "Ava Garcia",
-      xp: 820,
-    },
-    {
-      position: 7,
-      iconProfile: "https://randomuser.me/api/portraits/men/77.jpg",
-      name: "Elijah Martinez",
-      xp: 790,
-    },
-    {
-      position: 8,
-      iconProfile: "https://randomuser.me/api/portraits/women/88.jpg",
-      name: "Isabella Rodriguez",
-      xp: 760,
-    },
-    {
-      position: 9,
-      iconProfile: "https://randomuser.me/api/portraits/men/99.jpg",
-      name: "James Davis",
-      xp: 730,
-    },
-    {
-      position: 10,
-      iconProfile: "https://randomuser.me/api/portraits/women/11.jpg",
-      name: "Mia Wilson",
-      xp: 700,
-    },
-  ];
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [myPosition, setMyPosition] = useState({});
 
-  // Current user data (hardcoded)
-  const currentUser = {
-    position: 5,
-    iconProfile: "https://randomuser.me/api/portraits/men/55.jpg",
-    name: "Noah Jones (You)",
-    xp: 850,
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await getLeaderboard();
+      const data = response.data;
+      setLeaderboard(data.top_leaderboard);
+      setMyPosition(data.my_position);
+    } catch (error) {
+      console.error("Failed to fetch leaderboard:", error);
+    }
   };
+
+  useEffect(() => {
+    fetchLeaderboard();
+  }, []);
 
   return (
     <div className="flex flex-row-reverse gap-2 px-6 pb-30 md:pb-0">
@@ -97,7 +47,10 @@ function page() {
             <p className="text-xs text-gray-800 ">
               Sekarang kamu di <br /> posisi ke-
             </p>
-            <h3 className="text-4xl font-bold">{currentUser.position}</h3>
+            <h3 className="text-4xl font-bold">{myPosition.rank}</h3>
+            <p className="text-xs text-gray-800 ">
+              XP kamu saat ini: <span className="font-semibold">{myPosition.xp}</span>
+            </p>
           </div>
         </div>
       </StickyWrapper>
@@ -123,7 +76,7 @@ function page() {
           <Table>
             <TableCaption className="p-5 mt-0 border-t-2">
               Setiap jawaban benar di kuis = +10 XP! 💥 <br /> Yuk terus latihan
-              dannaik ke posisi teratas leaderboard! 🚀
+              dan naik ke posisi teratas leaderboard! 🚀
             </TableCaption>
             <TableHeader>
               <TableRow>
@@ -136,32 +89,32 @@ function page() {
             </TableHeader>
             <TableBody>
               <EachUtils
-                of={leaderboardData}
+                of={leaderboard}
                 render={(item, index) => (
                   <TableRow key={index}>
-                    {item.position === 1 ? (
+                    {item.rank === 1 ? (
                       <TableCell className="font-bold py-5 text-sky-500 text-xl text-center">
-                        {item.position}
+                        {item.rank}
                       </TableCell>
-                    ) : item.position === 2 ? (
+                    ) : item.rank === 2 ? (
                       <TableCell className="font-bold py-5 text-green-500 text-lg text-center">
-                        {item.position}
+                        {item.rank}
                       </TableCell>
-                    ) : item.position === 3 ? (
+                    ) : item.rank === 3 ? (
                       <TableCell className="font-bold py-5 text-yellow-500 text-md text-center">
-                        {item.position}
+                        {item.rank}
                       </TableCell>
                     ) : (
                       <TableCell className="font-semibold py-5 text-center text-gray-800">
-                        {item.position}
+                        {item.rank}
                       </TableCell>
                     )}
                     <TableCell className="flex py-5 text-gray-800 items-center gap-3">
                       <Avatar>
-                        <AvatarImage src={item.iconProfile} alt={item.name} />
+                        <AvatarImage src={`https://randomuser.me/api/portraits/men/10.jpg`} alt={item.name} />
                       </Avatar>
                       <span className="font-medium text-md tracking-wide text-gray-800">
-                        {item.name}
+                        {item.user.name}
                       </span>
                     </TableCell>
                     <TableCell className="py-5 text-gray-800">

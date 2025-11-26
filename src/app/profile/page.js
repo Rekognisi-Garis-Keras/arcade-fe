@@ -16,6 +16,7 @@ import { Upload, SquarePen } from "lucide-react";
 import { apiRequest } from "@/utils/api";
 import SkeletonProfile from "@/components/Profile/Skeleton";
 import AuthGuard from "@/utils/authGuard";
+import UserQuizResult from "@/components/Profile/UserQuizResult";
 
 function ProfileContent() {
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -215,6 +216,8 @@ function ProfileContent() {
         </div>
         <p className="text-gray-500">{user.bio || "-"}</p>
       </div>
+
+      <UserQuizResult />
 
       {/* Edit Informasi Pribadi Dialog */}
       <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>

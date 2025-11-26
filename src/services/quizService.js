@@ -53,3 +53,10 @@ export const submitQuiz = async (subSlug, topSlug, data) => {
     },
   });
 }
+
+export const getResults = async () => {
+  const token = localStorage.getItem("token");
+  return apiRequest("/quiz-results", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
