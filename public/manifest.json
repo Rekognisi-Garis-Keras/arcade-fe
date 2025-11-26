@@ -3,8 +3,8 @@
    "short_name": "ARcade",
    "start_url": "/",
    "display": "standalone",
-   "background_color": "#000000",
-   "theme_color": "#00a6f4",
+   "background_color": "#ffffff",
+   "theme_color": "#000000",
    "description": "Platform Pembelajaran Interaktif Berbasis Augmented Reality dan AI yang Inklusif untuk Semua Gaya Belajar.",
    "icons": [
       {
