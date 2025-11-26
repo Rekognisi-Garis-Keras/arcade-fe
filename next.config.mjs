@@ -1,3 +1,11 @@
+import withPWA from "next-pwa";
+
+const pwa = withPWA({
+  dest: "public",
+  register: true,
+  skipWaiting: true,
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -8,14 +16,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
         hostname: "res.cloudinary.com",
       },
     ],
   },
 };
 
-export default nextConfig;
+export default pwa(nextConfig);
