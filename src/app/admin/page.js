@@ -2,8 +2,9 @@
 import AdminGuard from "@/utils/adminGuard";
 import React, { Suspense } from "react";
 import URLParamToastHandler from "@/components/URLParamToastHandler";
+import SubjectTable from "@/components/Admin/Subjects/SubjectTable";
 
-function page() {
+export default function AdminSubjects() {
   return (
     <AdminGuard>
       <Suspense fallback={null}>
@@ -15,9 +16,7 @@ function page() {
           replacePath="/admin"
         />
       </Suspense>
-      <div>page</div>
+      <SubjectTable />
     </AdminGuard>
   );
 }
-
-export default page;

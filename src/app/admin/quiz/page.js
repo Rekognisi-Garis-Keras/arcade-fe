@@ -1,5 +1,10 @@
 import QuizTable from "@/components/Admin/Quiz/QuizTable";
+import AdminGuard from "@/utils/adminGuard";
 
 export default function AdminQuiz() {
-  return <QuizTable />;
+  return (
+    <AdminGuard>
+      <QuizTable />
+    </AdminGuard>
+  );
 }

@@ -1,6 +1,6 @@
 const LIST_SIDEBAR_ADMIN = [
   {
-    path: "/admin/subjects",
+    path: "/admin",
     icon: "/book-stack.png",
     label: "Subjects",
   },
