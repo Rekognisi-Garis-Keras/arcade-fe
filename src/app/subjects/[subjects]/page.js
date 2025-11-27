@@ -20,6 +20,7 @@ function DetailSubjectContent() {
   const [topics, setTopics] = useState([]);
   const [subjectDetail, setSubjectDetail] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [fact, setFact] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +49,15 @@ function DetailSubjectContent() {
         } else {
           router.push("/not-found");
         }
+
+        const factRes = await apiRequest(`/subjects/${subjectSlug}/fact`, {
+          method: "GET",
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        
+        if (factRes.status === "success" && factRes.data) {
+          setFact(factRes.data.answer);
+        }        
       } catch (err) {
         console.error(err);
         router.push("/not-found");
@@ -69,14 +79,12 @@ function DetailSubjectContent() {
       <StickyWrapper>
         <div className="w-full border-2 rounded-xl flex flex-col gap-3 p-5 shadow-xs mt-5">
           <h1 className="text-lg font-bold text-shadow-gray-800">
-            Tahukah kamu?
+            AI Fact tentang {subjectSlug}
           </h1>
           <div className="flex items-center space-x-5">
             <img src="/dyk.png" width="50px" />
             <p className="text-slate-700 text-sm">
-              🌌 Tahukah kamu, bintang yang paling terang dan paling sering kita
-              lihat di langit malam, Sirius, sebenarnya berjarak sekitar 8,6
-              tahun cahaya dari Bumi? Itu artinya
+              {fact ? fact : "Memuat fakta menarik..."}
             </p>
           </div>
         </div>

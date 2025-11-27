@@ -18,8 +18,9 @@ import {
 import EachUtils from "@/utils/EachUtils";
 import { Avatar, AvatarImage } from "@/components/UI/avatar";
 import { getLeaderboard } from "@/services/leaderboard";
+import AuthGuard from "@/utils/authGuard";
 
-function page() {
+function LeaderboardContent() {
   const [leaderboard, setLeaderboard] = useState([]);
   const [myPosition, setMyPosition] = useState({});
   const tableRef = useRef(null);
@@ -32,7 +33,7 @@ function page() {
       const data = response.data;
       setLeaderboard(data.top_leaderboard);
       setMyPosition(data.my_position);
-      console.log(data.my_position);
+      // console.log(data.my_position);
     } catch (error) {
       console.error("Failed to fetch leaderboard:", error);
     }
@@ -140,8 +141,9 @@ function page() {
                     <TableCell className="flex py-5 text-gray-800 items-center gap-3">
                       <Avatar>
                         <AvatarImage
-                          src={`https://randomuser.me/api/portraits/men/10.jpg`}
+                          src={item.user.avatar ?? `/medium.png`}
                           alt={item.name}
+                          referrerPolicy="no-referrer"
                         />
                       </Avatar>
                       <span className="font-medium text-md tracking-wide text-gray-800">
@@ -191,4 +193,10 @@ function page() {
   );
 }
 
-export default page;
+export default function Leaderboard() {
+  return (
+    <AuthGuard>
+      <LeaderboardContent />
+    </AuthGuard>
+  );
+};
