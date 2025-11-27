@@ -37,6 +37,7 @@ const SubjectTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false); // State untuk loading form
+  const [error, setError] = useState(null);
 
   const fetchSubjects = async () => {
     setLoading(true);
@@ -85,12 +86,14 @@ const SubjectTable = () => {
   const openEdit = (subject) => {
     setDialogMode("edit");
     setFormData(subject);
+    setError(null);
     setSelectedFile(null); // Reset file
   };
 
   const openAdd = () => {
     setDialogMode("add");
     setFormData({ name: "", description: "", iconPath: "" }); // Hapus slug
+    setError(null);
     setSelectedFile(null); // Reset file
   };
 
@@ -116,13 +119,12 @@ const SubjectTable = () => {
         // Refresh data dari server agar sinkron
         await fetchSubjects();
         setDialogMode(null);
+        setError(null); // pastikan error direset jika sukses
       } else {
-        console.error("Failed to add subject:", res.message);
-        // Tampilkan error ke user
+        setError(res?.message || "Terjadi kesalahan saat menambah mata pelajaran.");
       }
     } catch (err) {
-      console.error("Failed to add subject:", err);
-      // Tampilkan error ke user
+      setError(err?.message || "Terjadi kesalahan saat menambah mata pelajaran.");
     } finally {
       setIsSubmitting(false);
     }
@@ -161,8 +163,7 @@ const SubjectTable = () => {
         // Tampilkan error ke user
       }
     } catch (err) {
-      console.error("Failed to edit subject:", err);
-      // Tampilkan error ke user
+      setError(err?.message || "Terjadi kesalahan saat menyimpan mata pelajaran.");
     } finally {
       setIsSubmitting(false);
     }
@@ -214,28 +215,33 @@ const SubjectTable = () => {
         <h1 className="text-3xl font-bold text-left mb-5">Mata Pelajaran</h1>
         <div className="flex flex-col lg:flex-row gap-y-2 lg:justify-between">
           <div className="flex items-center gap-2">
-            <Input
-              placeholder="Cari data..."
-              className={"border border-b-4 border-r-4 h-full lg:w-[300px] "}
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <Button variant="primary" className="cursor-pointer">
-              <Search />
-            </Button>
+            <div className="relative w-full lg:w-[300px]">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <Search size={18} />
+              </span>
+              <Input
+                placeholder="Cari mata pelajaran..."
+                className="border border-b-4 border-r-4 h-full pl-10 w-full"
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+            </div>
           </div>
           <Button
             onClick={openAdd}
             className="gap-2 cursor-pointer"
             variant={"primary"}
           >
-            <Plus size={20} /> Tambah Mata Pelajaran
+            <Plus size={20} /> Mata Pelajaran
           </Button>
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold text-left mb-5">
-        List Mata Pelajaran
+      <h3 className="text-xl font-semibold text-left mb-1">
+        Daftar Mata Pelajaran
       </h3>
+      <p className="text-gray-600 text-sm mb-5">
+        Berikut adalah daftar seluruh mata pelajaran yang tersedia beserta deskripsi dan slug-nya.
+      </p>
 
       <div className="rounded-lg border border-gray-200 shadow-sm overflow-x-auto ">
         <Table className="min-w-[850px] px-4 lg:px-6">
@@ -244,46 +250,57 @@ const SubjectTable = () => {
               <TableHead className="font-bold">Nama</TableHead>
               <TableHead className="font-bold">Deskripsi</TableHead>
               <TableHead className="font-bold">Slug</TableHead>
-              <TableHead className="font-bold">Icon</TableHead>
               <TableHead className="text-center font-bold">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredSubjects.map((s) => (
+            {filteredSubjects.length ? filteredSubjects.map((s) => (
               <TableRow key={s.id} className="hover:bg-gray-50">
-                <TableCell className="font-semibold">{s.name}</TableCell>
-                <TableCell className={"max-w-[250px] truncate"}>
-                  {s.description}
-                </TableCell>
-                <TableCell>{s.slug}</TableCell>
-                <TableCell>
+                <TableCell className="font-semibold flex items-center gap-2">
                   {s.iconPath && (
                     <Avatar>
                       <AvatarImage src={s.iconPath} alt={s.name} />
                       <AvatarFallback>?</AvatarFallback>
                     </Avatar>
                   )}
+                  {s.name}
                 </TableCell>
-                <TableCell className="flex justify-center gap-2">
-                  <Button
-                    size="sm"
-                    variant="editProfile"
-                    onClick={() => openEdit(s)}
-                    className="h-8 w-8 p-0 cursor-pointer"
-                  >
-                    <SquarePen size={16} />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="delete"
-                    onClick={() => setDeleteId(s.id)}
-                    className="h-8 w-8 p-0 cursor-pointer"
-                  >
-                    <Trash size={16} />
-                  </Button>
+                <TableCell className="max-w-[250px] truncate text-sm">
+                  {s.description}
+                </TableCell>
+                <TableCell>
+                  <span className="inline-block rounded px-2 py-1 text-xs font-mono bg-blue-100 text-blue-800">
+                    {s.slug}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center justify-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="editProfile"
+                      onClick={() => openEdit(s)}
+                      className="h-8 w-8 p-0 cursor-pointer"
+                    >
+                      <SquarePen size={16} />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="delete"
+                      onClick={() => setDeleteId(s.id)}
+                      className="h-8 w-8 p-0 cursor-pointer"
+                    >
+                      <Trash size={16} />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
-            ))}
+            )) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center text-gray-500 py-12">
+                  Tidak ada mata pelajaran ditemukan.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
@@ -299,6 +316,7 @@ const SubjectTable = () => {
           onFileChange={setSelectedFile} // Kirim file biner ke state
           onSubmit={dialogMode === "edit" ? saveEdit : saveAdd}
           isSubmitting={isSubmitting} // Kirim state submitting
+          error={error}
         />
       )}
 

@@ -2,17 +2,17 @@ const LIST_SIDEBAR_ADMIN = [
   {
     path: "/admin",
     icon: "/book-stack.png",
-    label: "Subjects",
+    label: "Mata Pelajaran",
   },
   {
     path: "/admin/topics",
     icon: "/topic.png",
-    label: "Topics",
+    label: "Topik",
   },
   {
     path: "/admin/quiz",
     icon: "/quiz.png",
-    label: "Quiz",
+    label: "Kuis",
   },
 ];
 

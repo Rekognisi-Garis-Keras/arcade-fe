@@ -80,10 +80,10 @@ const FileUploadInput = ({ value, onChange, label, onFileSelect }) => {
             />
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-900 truncate">
-                Icon uploaded
+                Ikon berhasil diunggah
               </p>
               <p className="text-xs text-gray-500">
-                Click to change or drag new file
+                Klik untuk mengubah atau seret file baru
               </p>
             </div>
             <Button
@@ -103,10 +103,10 @@ const FileUploadInput = ({ value, onChange, label, onFileSelect }) => {
           <div className="p-8 text-center">
             <Upload className="mx-auto h-12 w-12 text-gray-400" />
             <p className="mt-4 text-sm font-medium text-gray-900">
-              Drop your icon here, or click to browse
+              Seret dan jatuhkan ikon di sini, atau klik untuk memilih
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              SVG, PNG, JPG or GIF (max. 5MB)
+              SVG, PNG, JPG, atau GIF (maks. 5MB)
             </p>
           </div>
         )}

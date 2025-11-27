@@ -33,7 +33,7 @@ const SidebarMore = () => {
           height={25}
           className="lg:mr-2"
         />
-        <span className="hidden lg:inline">More</span>
+        <span className="hidden lg:inline">Lainnya</span>
       </Button>
 
       {open && (
@@ -47,7 +47,7 @@ const SidebarMore = () => {
                 className="py-2 flex gap-x-2 rounded-md -translate-x-[3px]"
               >
                 <CircleQuestionMark strokeWidth={2.5} size={100} />
-                <span>Help</span>
+                <span>Bantuan</span>
               </Link>
             </Button>
             <Button
@@ -56,7 +56,7 @@ const SidebarMore = () => {
               onClick={handleLogout}
             >
               <LogOut strokeWidth={3} size={1} />
-              <span>Log out</span>
+              <span>Keluar</span>
             </Button>
           </div>
         </div>

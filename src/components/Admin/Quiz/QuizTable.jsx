@@ -114,7 +114,7 @@ const QuizTable = () => {
       </h3>
 
       <div className="space-y-6">
-        {quizzes.map((quizGroup, i) => (
+        {quizzes.length ? quizzes.map((quizGroup, i) => (
           <div key={i} className="space-y-3">
             {/* Topic Header */}  
             <div className="flex items-center justify-between mb-2">
@@ -185,7 +185,11 @@ const QuizTable = () => {
               </Table>
             </div>
           </div>
-        ))}
+        )) : (
+          <div className="text-center text-gray-500 py-12">
+            Tidak ada soal ditemukan.
+          </div>
+        )}
       </div>
 
       {/* === MODAL TAMBAH/EDIT === */}
