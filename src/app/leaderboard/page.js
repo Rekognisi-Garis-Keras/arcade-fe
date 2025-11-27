@@ -175,7 +175,7 @@ function LeaderboardContent() {
             <div className="flex py-5 text-gray-800 items-center gap-3 flex-1">
               <Avatar>
                 <AvatarImage
-                  src="https://randomuser.me/api/portraits/women/11.jpg"
+                  src={myPosition?.user?.avatar}
                   alt={myPosition?.user?.name}
                 />
               </Avatar>
