@@ -62,7 +62,7 @@ function DetailSubjectContent() {
   if (loading) return <DetailSubjectsSkeleton />;
   if (!subjectDetail) return null;
 
-  console.log(topics);
+  // console.log(topics);
 
   return (
     <div className="flex flex-row-reverse gap-12 px-6 pb-30 md:pb-0">
@@ -100,16 +100,6 @@ function DetailSubjectContent() {
 
               {/* floating image each topics */}
               <div className="w-2 h-1 relative mx-auto flex gap-x-3">
-                <div
-                  className={`absolute h-25 w-25 top-25 ${
-                    index % 2 == 0 ? "right-25" : "left-30"
-                  }`}
-                >
-                  {/* <img
-                    src="/full-moon.png"
-                    className="h-full w-full drop-shadow-xl "
-                  /> */}
-                </div>
                 <Link
                   href={`/subjects/${subjectSlug}/${topic.slug}`}
                   key={index + 1}
