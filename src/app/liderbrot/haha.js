@@ -35,6 +35,7 @@ function LeaderboardContent() {
       const data = response.data;
       setLeaderboard(data.top_leaderboard);
       setMyPosition(data.my_position);
+      // console.log(data.my_position);
     } catch (error) {
       console.error("Failed to fetch leaderboard:", error);
     } finally {
@@ -44,12 +45,8 @@ function LeaderboardContent() {
 
   useEffect(() => {
     fetchLeaderboard();
-  }, []);
 
-  useEffect(() => {
-    // Wait for data to load before calculating dimensions
-    if (isLoading) return;
-
+    // resize width table
     const updateDimensions = () => {
       if (tableRef.current) {
         const rect = tableRef.current.getBoundingClientRect();
@@ -58,33 +55,15 @@ function LeaderboardContent() {
       }
     };
 
-    // Initial calculation with delay to ensure DOM is ready
-    const initialTimeout = setTimeout(() => {
-      updateDimensions();
-    }, 100);
-
-    // Update on resize and scroll with requestAnimationFrame for smooth updates
-    let rafId = null;
-
-    const handleUpdate = () => {
-      if (rafId) return; // Prevent multiple simultaneous updates
-
-      rafId = requestAnimationFrame(() => {
-        updateDimensions();
-        rafId = null;
-      });
-    };
-
-    window.addEventListener("resize", handleUpdate);
-    window.addEventListener("scroll", handleUpdate, { passive: true });
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    window.addEventListener("scroll", updateDimensions);
 
     return () => {
-      clearTimeout(initialTimeout);
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", handleUpdate);
-      window.removeEventListener("scroll", handleUpdate);
+      window.removeEventListener("resize", updateDimensions);
+      window.removeEventListener("scroll", updateDimensions);
     };
-  }, [isLoading]);
+  }, []);
 
   // Show skeleton while loading
   if (isLoading) {
@@ -96,36 +75,20 @@ function LeaderboardContent() {
       <div className="hidden lg:block w-[300px] sticky top-6 self-end bottom-6">
         <div className="min-h-[calc(100vh-48px)] sticky top-6 flex flex-col gap-y-4">
           <div className="mt-5 border-3 w-full min-h-30 rounded-xl shadow-xs justify-evenly flex items-center p-3">
-            <div className="text-5xl">🏅</div>
+            <Skeleton className="w-15 h-15" />
             <div className="flex flex-col items-start gap-y-1">
-              <p className="text-xs text-gray-800">
-                Sekarang kamu di <br /> posisi ke-
-              </p>
-              <h3 className="text-4xl font-bold">{myPosition.rank}</h3>
-              <p className="text-xs text-gray-800">
-                XP kamu saat ini:{" "}
-                <span className="font-semibold">{myPosition.xp}</span>
-              </p>
+              <Skeleton className="w-16 h-2" />
+              <Skeleton className="h-10 w-10" />
+              <Skeleton className="w-18 h-2" />
             </div>
           </div>
         </div>
       </div>
       <ContentWrapper>
         <div className="w-full flex flex-col justify-center items-center p-5 border-2 mb-5 border-b-4 border-r-4 rounded-xl">
-          <Image
-            src="/leader.png"
-            alt="leaderboard"
-            width={80}
-            height={80}
-            className="mb-3"
-          />
-          <h1 className="font-extrabold text-gray-800 text-2xl uppercase tracking-wide">
-            papan skor
-          </h1>
-          <p className="font-xs text-gray-600">
-            Kumpulin XP sebanyak-banyaknya dan tunjukin siapa bintang kuis
-            sejati! 🌟
-          </p>
+          <Skeleton className="w-15 h-15 rounded-md mb-5" />
+          <Skeleton className="w-50 h-7 rounded-md mb-2" />
+          <Skeleton className="w-90 h-5 rounded-md" />
         </div>
         {/*  */}
         <div
@@ -134,16 +97,20 @@ function LeaderboardContent() {
         >
           <Table>
             <TableCaption className="p-5 mt-0 border-t-2">
-              Setiap jawaban benar di kuis = +10 XP! 💥 <br /> Yuk terus latihan
-              dan naik ke posisi teratas leaderboard! 🚀
+              <Skeleton className="w-70 h-4 mb-2" />
+              <Skeleton className="w-90 h-4" />
             </TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead className="font-bold w-20 py-5 text-center">
-                  No.
+                  <Skeleton className="w-5 h-5 mx-auto rounded-sm" />
                 </TableHead>
-                <TableHead className="font-bold py-5">User</TableHead>
-                <TableHead className="font-bold py-5">XP</TableHead>
+                <TableHead className="font-bold py-5">
+                  <Skeleton className="h-5 w-10" />
+                </TableHead>
+                <TableHead className="font-bold py-5">
+                  <Skeleton className="w-10 h-5" />
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -192,11 +159,10 @@ function LeaderboardContent() {
 
         {/* Fixed bottom bar showing current user position */}
         <div
-          className="fixed md:bottom-5 bottom-25 bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50 will-change-[width,left]"
+          className="fixed md:bottom-5 bottom-25  bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50 transition-all duration-300"
           style={{
             width: tableWidth > 0 ? `${tableWidth}px` : "auto",
             left: tableLeft > 0 ? `${tableLeft}px` : "auto",
-            transition: "none", // Remove transition for instant updates
           }}
         >
           <div className="flex items-center">
@@ -206,7 +172,7 @@ function LeaderboardContent() {
             <div className="flex py-5 text-gray-800 items-center gap-3 flex-1">
               <Avatar>
                 <AvatarImage
-                  src={myPosition?.user?.avatar || "/medium.png"}
+                  src={myPosition?.user?.avatar}
                   alt={myPosition?.user?.name}
                 />
               </Avatar>

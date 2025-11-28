@@ -46,7 +46,7 @@ const SidebarMore = () => {
               className="w-full justify-start cursor-pointer"
             >
               <Link
-                href="/help"
+                href="/faq"
                 className="py-2 flex gap-x-2 rounded-md -translate-x-[3px]"
               >
                 <CircleQuestionMark strokeWidth={2.5} size={100} />

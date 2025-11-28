@@ -5,20 +5,21 @@ import confetti from "canvas-confetti";
 import Link from "next/link";
 import { useEffect } from "react";
 
-export default function QuizResult({ quizzes, selected }) {
+export default function QuizResult({ quizzes, selected, slug }) {
   const correctCount = quizzes.filter(
     (q) => selected[q.id] === q.correct_answer
   ).length;
-  
+
   const skippedCount = quizzes.filter(
     (q) => selected[q.id] === undefined
   ).length;
-  
+
   const wrongCount = quizzes.length - correctCount - skippedCount;
-  
+
   const xp = correctCount * 10;
 
   useEffect(() => {
+    if (correctCount < 4) return;
     const end = Date.now() + 3 * 1000;
     const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
 
@@ -46,7 +47,7 @@ export default function QuizResult({ quizzes, selected }) {
     };
 
     frame();
-  }, []);
+  }, [correctCount]);
 
   return (
     <div className="min-h-screen w-full py-10 px-4 md:px-10">
@@ -91,66 +92,78 @@ export default function QuizResult({ quizzes, selected }) {
           Ringkasan Hasil
         </h1>
         <div className="space-y-3 mb-3">
-        {quizzes.map((quiz, idx) => {
-          const userAnswer = selected[quiz.id];
-          const correctAnswer = quiz.correct_answer;
+          {quizzes.map((quiz, idx) => {
+            const userAnswer = selected[quiz.id];
+            const correctAnswer = quiz.correct_answer;
 
-          const userOption = quiz.options.find((o) => o.id === userAnswer);
-          const correctOption = quiz.options.find((o) => o.id === correctAnswer);
+            const userOption = quiz.options.find((o) => o.id === userAnswer);
+            const correctOption = quiz.options.find(
+              (o) => o.id === correctAnswer
+            );
 
-          const isCorrect = userAnswer === correctAnswer;
-          const isSkipped = userAnswer === undefined;
-          const isWrong = !isCorrect && !isSkipped;
+            const isCorrect = userAnswer === correctAnswer;
+            const isSkipped = userAnswer === undefined;
+            const isWrong = !isCorrect && !isSkipped;
 
-          return (
-            <div
-              key={quiz.id}
-              className={`p-4 rounded-xl border ${
-                isCorrect
-                  ? "border-green-400 bg-green-50"
-                  : isWrong
-                  ? "border-red-400 bg-red-50"
-                  : "border-gray-400 bg-gray-100"
-              }`}
-            >
-              <p className="font-semibold text-gray-800">
-                {idx + 1}. {quiz.question}
-              </p>
-              <p className="text-sm text-gray-700 mt-1">
-                Jawaban kamu:{" "}
-                <span
-                  className={`font-semibold ${
-                    isCorrect
-                      ? "text-green-600"
-                      : isWrong
-                      ? "text-red-600"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {userOption?.text || "-"}
-                </span>
-              </p>
-
-              {!isCorrect && correctOption && (
-                <p className="text-sm text-green-600">
-                  {" "}
-                  ✅ Jawaban yang benar: {correctOption.text}
+            return (
+              <div
+                key={quiz.id}
+                className={`p-4 rounded-xl border ${
+                  isCorrect
+                    ? "border-green-400 bg-green-50"
+                    : isWrong
+                    ? "border-red-400 bg-red-50"
+                    : "border-gray-400 bg-gray-100"
+                }`}
+              >
+                <p className="font-semibold text-gray-800">
+                  {idx + 1}. {quiz.question}
                 </p>
-              )}
-            </div>
-          );
-        })}
+                <p className="text-sm text-gray-700 mt-1">
+                  Jawaban kamu:{" "}
+                  <span
+                    className={`font-semibold ${
+                      isCorrect
+                        ? "text-green-600"
+                        : isWrong
+                        ? "text-red-600"
+                        : "text-gray-600"
+                    }`}
+                  >
+                    {userOption?.text || "-"}
+                  </span>
+                </p>
 
+                {!isCorrect && correctOption && (
+                  <p className="text-sm text-green-600">
+                    {" "}
+                    ✅ Jawaban yang benar: {correctOption.text}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
-        <Link href="/subjects/astronomi">
-          <Button
-            variant={"primary"}
-            size={"lg"}
-            className={"w-full cursor-pointer"}
-          >
-            Kembali ke pelajaran
-          </Button>
-        </Link>
+        <div className="w-full flex flex-col md:flex-row gap-2">
+          <Link href={`/subjects/${slug}`} className="flex-1">
+            <Button
+              variant={"primary"}
+              size={"lg"}
+              className={"cursor-pointer w-full"}
+            >
+              Kembali ke pelajaran
+            </Button>
+          </Link>
+          <Link href="/leaderboard" className="flex-1">
+            <Button
+              variant={"secondary"}
+              size={"lg"}
+              className={"cursor-pointer w-full"}
+            >
+              Lihat Leaderboard
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
