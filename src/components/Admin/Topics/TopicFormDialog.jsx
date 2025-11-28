@@ -110,10 +110,10 @@ const TopicFormDialog = ({
 
           {/* ===== Icon ===== */}
           <FileUploadInput
-            label="Icon"
-            value={formData.iconPath}
-            onChange={(v) => onChange("iconPath", v)}
-            onFileSelect={(file) => onFileChange("icon", file)}
+            label="Ikon"
+            value={formData.icon}
+            onChange={(v) => onChange("icon", v)}
+            onFileSelect={onFileChange}
           />
 
           {/* ===== Model 3D ===== */}
@@ -136,7 +136,7 @@ const TopicFormDialog = ({
 
           {/* ===== Scale Model ===== */}
           <div className="grid gap-2">
-            <Label>Scale Model</Label>
+            <Label>Skala Model</Label>
             <Input
               type="number"
               step="0.1"

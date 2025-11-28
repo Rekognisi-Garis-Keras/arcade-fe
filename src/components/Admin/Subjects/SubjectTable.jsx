@@ -37,6 +37,7 @@ const SubjectTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false); // State untuk loading form
+  const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
 
   const fetchSubjects = async () => {
@@ -119,7 +120,8 @@ const SubjectTable = () => {
         // Refresh data dari server agar sinkron
         await fetchSubjects();
         setDialogMode(null);
-        setError(null); // pastikan error direset jika sukses
+        setError(null); 
+        setSuccess("Mata Pelajaran berhasil ditambah.");
       } else {
         setError(res?.message || "Terjadi kesalahan saat menambah mata pelajaran.");
       }
@@ -158,6 +160,7 @@ const SubjectTable = () => {
         // Refresh data dari server agar sinkron
         await fetchSubjects();
         setDialogMode(null);
+        setSuccess("Mata Pelajaran berhasil diedit.");
       } else {
         console.error("Failed to edit subject:", res.message);
         // Tampilkan error ke user
@@ -193,6 +196,7 @@ const SubjectTable = () => {
         // Refresh list data agar sinkron dengan database
         await fetchSubjects();
         setDeleteId(null);
+        setSuccess("Mata Pelajaran berhasil dihapus.");
       } else {
         console.error("Failed to delete subject:", res.message);
         alert(
@@ -221,7 +225,7 @@ const SubjectTable = () => {
               </span>
               <Input
                 placeholder="Cari mata pelajaran..."
-                className="border border-b-4 border-r-4 h-full pl-10 w-full"
+                className="border border-b-4 border-r-4 h-full pl-10 py-3 w-full"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
             </div>
@@ -235,6 +239,21 @@ const SubjectTable = () => {
           </Button>
         </div>
       </div>
+      
+      {success && (
+        <div className="mb-4">
+          <div className="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded flex items-center gap-2">
+            <span className="font-semibold">Sukses!</span>
+            <span>{success}</span>
+            <button
+              className="ml-auto text-green-700 hover:text-green-900"
+              onClick={() => setSuccess(null)}
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
 
       <h3 className="text-xl font-semibold text-left mb-1">
         Daftar Mata Pelajaran
