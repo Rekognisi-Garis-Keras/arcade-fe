@@ -43,7 +43,7 @@ const SidebarMore = () => {
           <div className="relative w-50 bg-white shadow-lg rounded-2xl border gap-x-2 p-2">
             <Button variant={"sidebar"} className="w-full justify-start">
               <Link
-                href="/help"
+                href="/faq"
                 className="py-2 flex gap-x-2 rounded-md -translate-x-[3px]"
               >
                 <CircleQuestionMark strokeWidth={2.5} size={100} />

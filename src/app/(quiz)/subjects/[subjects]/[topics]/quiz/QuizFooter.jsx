@@ -11,21 +11,27 @@ const QuizFooter = ({
   index,
 }) => {
   const isAnswered = selected[currentQuizId];
+  const isLastQuestion = index + 1 >= total;
 
-  // 🆕 handle tombol skip
+  // Handle skip button
   const handleSkip = () => {
     if (!isAnswered) {
-      nextQuestion(); // langsung ke soal berikutnya
+      // If it's the last question, submit instead of going to next
+      if (isLastQuestion) {
+        onSubmit();
+      } else {
+        nextQuestion();
+      }
     }
   };
 
-  // handle tombol utama (Selanjutnya/Lihat Hasil)
+  // Handle primary button (Selanjutnya/Lihat Hasil)
   const handlePrimaryClick = () => {
     if (!isAnswered) return;
-    if (index + 1 < total) {
-      nextQuestion();
-    } else {
+    if (isLastQuestion) {
       onSubmit();
+    } else {
+      nextQuestion();
     }
   };
 
@@ -36,6 +42,7 @@ const QuizFooter = ({
           variant={"skip"}
           className={"md:w-40 w-35 cursor-pointer"}
           onClick={handleSkip}
+          disabled={isAnswered} // Disable skip if already answered
         >
           Lewati
         </Button>
@@ -48,7 +55,7 @@ const QuizFooter = ({
           onClick={handlePrimaryClick}
           disabled={!isAnswered}
         >
-          {index + 1 < total ? "Selanjutnya" : "Lihat Hasil"}
+          {isLastQuestion ? "Lihat Hasil" : "Selanjutnya"}
         </Button>
       </div>
     </div>

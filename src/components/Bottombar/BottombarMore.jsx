@@ -36,7 +36,7 @@ const BottomMore = () => {
                 className="w-full justify-start rounded-lg cursor-pointer"
               >
                 <Link
-                  href="/help"
+                  href="/faq"
                   className="flex gap-x-2 py-2 rounded-md w-full text-left -translate-x-[3px]"
                 >
                   <CircleQuestionMark />

@@ -1,28 +1,38 @@
 const LIST_FAQ = [
   {
-    question: "Pertanyaan 1",
+    question: "Apa itu ARcade?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pretium vehicula ex, at tincidunt turpis sodales malesuada. Donec pellentesque pulvinar quam a elementum. Mauris at dolor libero. Aliquam ultrices, sapien quis aliquam interdum, lorem orci maximus lacus, a bibendum elit sapien ac urna.",
+      "ARcade adalah platform pembelajaran interaktif yang mengintegrasikan materi pelajaran dengan teknologi Augmented Reality (AR). Aplikasi ini dirancang untuk memvisualisasikan konsep abstrak menjadi objek 3D agar lebih mudah dipahami oleh siswa.",
   },
   {
-    question: "Pertanyaan 2",
+    question: "Bagaimana cara menggunakan fitur AR?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pretium vehicula ex, at tincidunt turpis sodales malesuada. Donec pellentesque pulvinar quam a elementum. Mauris at dolor libero. Aliquam ultrices, sapien quis aliquam interdum, lorem orci maximus lacus, a bibendum elit sapien ac urna.",
+      "Masuk ke topik pelajaran yang diinginkan, lalu pilih mode AR. Izinkan akses kamera pada browser Anda, kemudian arahkan kamera ke Marker yang tersedia. Objek 3D yang relevan dengan materi akan muncul secara otomatis di layar perangkat Anda.",
   },
   {
-    question: "Pertanyaan 3",
+    question: "Apa fungsi fitur Books?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pretium vehicula ex, at tincidunt turpis sodales malesuada. Donec pellentesque pulvinar quam a elementum. Mauris at dolor libero. Aliquam ultrices, sapien quis aliquam interdum, lorem orci maximus lacus, a bibendum elit sapien ac urna.",
+      "Fitur Books menyediakan akses ke buku-buku digital yang telah terintegrasi dengan sistem AR kami. Di dalam buku tersebut terdapat gambar-gambar khusus (Marker) yang dapat dipindai menggunakan kamera ARcade untuk memunculkan visualisasi materi secara interaktif.",
   },
   {
-    question: "Pertanyaan 4",
+    question: "Apa yang dimaksud dengan Marker?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pretium vehicula ex, at tincidunt turpis sodales malesuada. Donec pellentesque pulvinar quam a elementum. Mauris at dolor libero. Aliquam ultrices, sapien quis aliquam interdum, lorem orci maximus lacus, a bibendum elit sapien ac urna.",
+      "Marker adalah gambar visual khusus yang berfungsi sebagai titik referensi bagi kamera ARcade. Saat kamera mendeteksi Marker ini, sistem akan memproses dan menampilkan objek 3D yang sesuai di atasnya. Pastikan Marker terlihat jelas dan pencahayaan cukup saat memindai.",
   },
   {
-    question: "Pertanyaan 1",
+    question: "Bagaimana sistem Leaderboard bekerja?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pretium vehicula ex, at tincidunt turpis sodales malesuada. Donec pellentesque pulvinar quam a elementum. Mauris at dolor libero. Aliquam ultrices, sapien quis aliquam interdum, lorem orci maximus lacus, a bibendum elit sapien ac urna.",
+      "Leaderboard menampilkan peringkat pengguna berdasarkan perolehan XP (Experience Points). Anda bisa mendapatkan XP dengan menyelesaikan kuis di setiap akhir topik pelajaran. Semakin banyak jawaban benar, semakin tinggi akumulasi poin dan peringkat Anda.",
+  },
+  {
+    question: "Mengapa AR tidak muncul saat kamera aktif?",
+    answer:
+      "Hal ini biasanya disebabkan oleh pencahayaan ruangan yang kurang memadai atau lensa kamera yang kotor. Pastikan Anda berada di tempat yang terang dan Marker tidak terhalang bayangan atau objek lain. Jika masalah berlanjut, silakan muat ulang halaman.",
+  },
+  {
+    question: "Apakah perlu mengunduh aplikasi khusus?",
+    answer:
+      "Tidak perlu. ARcade adalah aplikasi berbasis web (Web-based Application). Anda dapat mengakses seluruh fitur pembelajaran dan AR langsung melalui browser di smartphone atau laptop tanpa instalasi tambahan. Tetapi ARcade bisa diinstall dari browser melalui PWA (Progressive Web App)",
   },
 ];
 

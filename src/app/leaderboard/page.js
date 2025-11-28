@@ -35,7 +35,6 @@ function LeaderboardContent() {
       const data = response.data;
       setLeaderboard(data.top_leaderboard);
       setMyPosition(data.my_position);
-      // console.log(data.my_position);
     } catch (error) {
       console.error("Failed to fetch leaderboard:", error);
     } finally {
@@ -45,8 +44,12 @@ function LeaderboardContent() {
 
   useEffect(() => {
     fetchLeaderboard();
+  }, []);
 
-    // resize width table
+  useEffect(() => {
+    // Wait for data to load before calculating dimensions
+    if (isLoading) return;
+
     const updateDimensions = () => {
       if (tableRef.current) {
         const rect = tableRef.current.getBoundingClientRect();
@@ -55,15 +58,33 @@ function LeaderboardContent() {
       }
     };
 
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    window.addEventListener("scroll", updateDimensions);
+    // Initial calculation with delay to ensure DOM is ready
+    const initialTimeout = setTimeout(() => {
+      updateDimensions();
+    }, 100);
+
+    // Update on resize and scroll with requestAnimationFrame for smooth updates
+    let rafId = null;
+
+    const handleUpdate = () => {
+      if (rafId) return; // Prevent multiple simultaneous updates
+
+      rafId = requestAnimationFrame(() => {
+        updateDimensions();
+        rafId = null;
+      });
+    };
+
+    window.addEventListener("resize", handleUpdate);
+    window.addEventListener("scroll", handleUpdate, { passive: true });
 
     return () => {
-      window.removeEventListener("resize", updateDimensions);
-      window.removeEventListener("scroll", updateDimensions);
+      clearTimeout(initialTimeout);
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", handleUpdate);
+      window.removeEventListener("scroll", handleUpdate);
     };
-  }, []);
+  }, [isLoading]);
 
   // Show skeleton while loading
   if (isLoading) {
@@ -171,10 +192,11 @@ function LeaderboardContent() {
 
         {/* Fixed bottom bar showing current user position */}
         <div
-          className="fixed md:bottom-5 bottom-25  bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50 transition-all duration-300"
+          className="fixed md:bottom-5 bottom-25 bg-white border-2 border-b-4 border-r-4 rounded-xl shadow-lg z-50 will-change-[width,left]"
           style={{
             width: tableWidth > 0 ? `${tableWidth}px` : "auto",
             left: tableLeft > 0 ? `${tableLeft}px` : "auto",
+            transition: "none", // Remove transition for instant updates
           }}
         >
           <div className="flex items-center">
@@ -184,7 +206,7 @@ function LeaderboardContent() {
             <div className="flex py-5 text-gray-800 items-center gap-3 flex-1">
               <Avatar>
                 <AvatarImage
-                  src={myPosition?.user?.avatar}
+                  src={myPosition?.user?.avatar || "/medium.png"}
                   alt={myPosition?.user?.name}
                 />
               </Avatar>

@@ -43,7 +43,7 @@ export default function QuizPage() {
     if (quizzes.length === 0) return null;
     const answers = quizzes.map((quiz) => ({
       quiz_id: quiz.id,
-      answer: selected[quiz.id] || null,
+      answer: selected[quiz.id] || "-",
     }));
     return { answers };
   };
