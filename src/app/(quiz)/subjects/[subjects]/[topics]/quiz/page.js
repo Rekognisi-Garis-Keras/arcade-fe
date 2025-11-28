@@ -46,7 +46,7 @@ export default function QuizPage() {
       answer: selected[quiz.id] || null,
     }));
     return { answers };
-  }
+  };
 
   const nextQuestion = () => {
     setCurrent(current + 1);
@@ -64,7 +64,11 @@ export default function QuizPage() {
   };
 
   if (!quizzes.length) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -89,7 +93,7 @@ export default function QuizPage() {
           />
         </>
       ) : (
-        <QuizResult quizzes={quizzes} selected={selected} />
+        <QuizResult slug={subjects} quizzes={quizzes} selected={selected} />
       )}
     </div>
   );
