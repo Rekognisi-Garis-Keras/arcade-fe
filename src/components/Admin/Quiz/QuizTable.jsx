@@ -24,6 +24,9 @@ const QuizTable = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredQuizzes, setFilteredQuizzes] = useState([]);
+  const [deleteId, setDeleteId] = useState(null);
 
   // ====== FETCH QUIZZES ======
   const fetchQuizzes = async () => {
@@ -31,6 +34,7 @@ const QuizTable = () => {
     try {
       const res = await getAllQuizzes();
       setQuizzes(res.data);
+      setFilteredQuizzes(res.data);
     } finally {
       setIsLoading(false);
     }
@@ -39,6 +43,29 @@ const QuizTable = () => {
   useEffect(() => {
     fetchQuizzes();
   }, []);
+  
+  // Filter quizzes based on search input
+  useEffect(() => {
+    if (!searchInput) {
+      setFilteredQuizzes(quizzes);
+      return;
+    }
+
+    const filtered = Array.isArray(quizzes)
+      ? quizzes
+          .map(qg => ({
+            ...qg,
+            quizzes: Array.isArray(qg.quizzes)
+              ? qg.quizzes.filter(quiz =>
+                  quiz.question.toLowerCase().includes(searchInput.toLowerCase())
+                )
+              : [],
+          }))
+          .filter(qg => qg.quizzes.length > 0)
+      : [];
+
+    setFilteredQuizzes(filtered);
+  }, [searchInput, quizzes]);
 
   // ====== HANDLE MODAL ======
   const openCreateModal = () => {
@@ -87,34 +114,40 @@ const QuizTable = () => {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex flex-col mb-6">
-        <h1 className="text-3xl font-bold text-left mb-5">Quiz</h1>
+        <h1 className="text-3xl font-bold text-left mb-5">Kuis</h1>
         <div className="flex flex-col lg:flex-row gap-y-2 lg:justify-between">
           <div className="flex items-center gap-2">
-            <Input
-              placeholder="Cari data..."
-              className={"border border-b-4 border-r-4 h-full lg:w-[300px] "}
-              // onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <Button variant="primary" className="cursor-pointer">
-              <Search />
-            </Button>
+            <div className="relative w-full lg:w-[300px]">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <Search size={18} />
+              </span>
+              <Input
+                placeholder="Cari kuis..."
+                className="border border-b-4 border-r-4 h-full pl-10 py-3 w-full"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+            </div>
           </div>
           <Button
             className="gap-2 cursor-pointer"
             variant={"primary"}
             onClick={openCreateModal}
           >
-            <Plus size={20} /> Tambah Quiz Baru
+            <Plus size={20} /> Quiz
           </Button>
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold text-left mb-5">
-        List Quiz Topic
+      <h3 className="text-xl font-semibold text-left mb-1">
+        Daftar Kuis
       </h3>
+      <p className="text-gray-600 text-sm mb-5">
+        Berikut adalah daftar seluruh kuis yang tersedia beserta detailnya.
+      </p>
 
       <div className="space-y-6">
-        {quizzes.length ? quizzes.map((quizGroup, i) => (
+        {filteredQuizzes.length ? filteredQuizzes.map((quizGroup, i) => (
           <div key={i} className="space-y-3">
             {/* Topic Header */}  
             <div className="flex items-center justify-between mb-2">
@@ -199,6 +232,18 @@ const QuizTable = () => {
         onSuccess={handleSuccess}
         initialData={selected}
       />
+
+      {/* === Confirm Dialog === */}
+      {deleteId && (
+        <ConfirmDeleteDialog
+          open={!!deleteId}
+          onOpenChange={() => setDeleteId(null)}
+          onConfirm={() => handleDeleteTopic(currentSubSlug)}
+          isSubmitting={isSubmitting}
+          title="Hapus Topik"
+          description="Apakah Anda yakin ingin menghapus topik ini? Tindakan ini tidak dapat dibatalkan."
+        />
+      )}
     </div>
   );
 };
