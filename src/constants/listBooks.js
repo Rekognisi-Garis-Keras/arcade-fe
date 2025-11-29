@@ -1,51 +1,51 @@
 const LIST_BOOKS = [
   {
     id: 1,
-    image: "/cover_books.png",
-    title: "Tata Surya",
+    image: "/cover/biologi.png",
+    title: "Biologi",
     description:
-      "Pelajari susunan planet, asteroid, dan komet dalam sistem tata surya kita.",
-    url: "#",
+      "Cari tau cara kerja tubuh sendiri, agar tau cara menyayangnya! 🫀🫁",
+    url: "https://online.fliphtml5.com/jawfg/dguo",
   },
   {
     id: 2,
-    image: "/cover_books.png",
-    title: "Evolusi Makhluk Hidup",
+    image: "/cover/astronomi.png",
+    title: "Astronomi",
     description:
-      "Pahami bagaimana spesies berevolusi dan beradaptasi melalui seleksi alam.",
-    url: "#",
+      "Jelajah luar angkasa dan temukan planet-planet keren! 🚀🌌",
+    url: "https://online.fliphtml5.com/jawfg/abru",
   },
   {
     id: 3,
-    image: "/cover_books.png",
-    title: "Struktur Sel",
+    image: "/cover/geografi.png",
+    title: "Geografi",
     description:
-      "Kenali bagian-bagian sel serta fungsinya dalam menjaga kehidupan organisme.",
-    url: "#",
+      "Kenali bumi tempat kita tinggal dari gunung tinggi sampai lautan luas! 🏔️🌊",
+    url: "https://online.fliphtml5.com/ARcade/rans",
   },
   {
     id: 4,
-    image: "/cover_books.png",
-    title: "Bumi dan Atmosfer",
+    image: "/cover/hewan.png",
+    title: "Hewan",
     description:
-      "Jelajahi lapisan-lapisan bumi dan atmosfer yang melindungi kehidupan.",
-    url: "#",
+      "Temui teman-teman hewan dari seluruh dunia dan pelajari kebiasaannya! 🐘🦒",
+    url: "https://online.fliphtml5.com/ARcade/qitb",
   },
   {
     id: 5,
-    image: "/cover_books.png",
-    title: "Dinosaurus",
+    image: "/cover/tumbuhan.png",
+    title: "Tumbuhan",
     description:
-      "Temukan berbagai jenis dinosaurus dan misteri kepunahan mereka.",
-    url: "#",
+      "Kenali dunia hijau di sekitarmu dan temukan keajaiban alam dari akar hingga bunga! 🌻🌳",
+    url: "https://online.fliphtml5.com/ARcade/drfe",
   },
   {
     id: 6,
-    image: "/cover_books.png",
-    title: "Fotosintesis",
+    image: "/cover/transportasi.png",
+    title: "Transportasi",
     description:
-      "Pelajari bagaimana tumbuhan mengubah cahaya matahari menjadi energi kehidupan.",
-    url: "#",
+      "Lihat berbagai alat transportasi yang membawamu menjelajah dunia! 🚗✈️",
+    url: "https://online.fliphtml5.com/ARcade/hjto",
   },
 ];
 
