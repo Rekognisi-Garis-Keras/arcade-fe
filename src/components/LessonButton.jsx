@@ -7,10 +7,10 @@ const LessonButton = ({ index, locked, buttonType = "lesson", subIndex }) => {
 
   let horizontalShift;
 
-  if (buttonType === "lesson" || buttonType === "quiz") {
+  if (buttonType === "lesson" || buttonType === "quiz" || buttonType === "check") {
     horizontalShift = -30;
   } else {
-    index % 2 == 0 ? (horizontalShift = offset) : (horizontalShift = -100);
+    index % 2 === 0 ? (horizontalShift = offset) : (horizontalShift = -100);
   }
 
   const icons = {
