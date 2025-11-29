@@ -8,7 +8,7 @@ const CardBooks = ({ imgUrl, title, description, btnUrl }) => {
       <img
         src={imgUrl}
         alt={`${title}'s cover`}
-        className="rounded-t-xl object-cover aspect-video"
+        className="rounded-t-xl object-top object-cover aspect-square"
       />
       <div className="flex flex-col items-start p-5 gap-5">
         <div className="flex flex-col gap-1">
@@ -21,6 +21,7 @@ const CardBooks = ({ imgUrl, title, description, btnUrl }) => {
           <Link
             href={btnUrl}
             className="group cursor-pointer flex items-center hover:underline text-sm"
+            target="_blank"
           >
             Akses Buku
             <ChevronRight
