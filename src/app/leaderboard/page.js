@@ -122,7 +122,7 @@ function LeaderboardContent() {
           <h1 className="font-extrabold text-gray-800 text-2xl uppercase tracking-wide">
             papan skor
           </h1>
-          <p className="font-xs text-gray-600">
+          <p className="font-xs text-gray-600 text-center">
             Kumpulin XP sebanyak-banyaknya dan tunjukin siapa bintang kuis
             sejati! 🌟
           </p>

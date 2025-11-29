@@ -7,6 +7,10 @@ import AsideWrapper from "@/components/DetailTopic/AsideWrapper";
 import NavbarTopic from "@/components/DetailTopic/NavbarTopic";
 import AuthGuard from "@/utils/authGuard";
 import { apiRequest } from "@/utils/api";
+import { Button } from "@/components/UI/button";
+import Link from "next/link";
+import { ArrowLeft, Smartphone, MessageCircleQuestionMark } from "lucide-react";
+import DetailTopicSkeleton from "./DetailTopicsSkeleton";
 
 function DetailTopicContent() {
   const router = useRouter();
@@ -57,7 +61,7 @@ function DetailTopicContent() {
         });
 
         setHeadings(extractedHeadings);
-        setHtmlContent(div.innerHTML); // simpan HTML yang sudah dikasih id
+        setHtmlContent(div.innerHTML);
         setTopic(res.data);
       } catch (err) {
         console.error("Failed to fetch topic:", err);
@@ -70,7 +74,6 @@ function DetailTopicContent() {
     fetchTopic();
   }, [subjectSlug, topicSlug, router]);
 
-  // Helper function to get indentation class based on heading level
   const getIndentClass = (level) => {
     switch (level) {
       case 1:
@@ -84,7 +87,6 @@ function DetailTopicContent() {
     }
   };
 
-  // Function to generate numbering for headings
   const getNumberedHeadings = () => {
     const counters = { h1: 0, h2: 0, h3: 0 };
 
@@ -93,12 +95,12 @@ function DetailTopicContent() {
 
       if (heading.level === 1) {
         counters.h1++;
-        counters.h2 = 0; // reset h2 counter
-        counters.h3 = 0; // reset h3 counter
+        counters.h2 = 0;
+        counters.h3 = 0;
         number = `${counters.h1}.`;
       } else if (heading.level === 2) {
         counters.h2++;
-        counters.h3 = 0; // reset h3 counter
+        counters.h3 = 0;
         number = `${counters.h1}.${counters.h2}.`;
       } else if (heading.level === 3) {
         counters.h3++;
@@ -114,13 +116,16 @@ function DetailTopicContent() {
 
   const numberedHeadings = getNumberedHeadings();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <DetailTopicSkeleton />;
   if (!topic) return null;
 
   return (
     <AuthGuard>
       <div className="flex flex-col gap-3 lg:gap-12 px-6">
         <NavbarTopic title={topic.title} slug={subjectSlug} />
+
+        {/* Navigation Buttons */}
+
         <div className="flex gap-6 material">
           <TopicWrapper className="material">
             <div
@@ -128,6 +133,29 @@ function DetailTopicContent() {
               dangerouslySetInnerHTML={{ __html: htmlContent }}
               className="prose max-w-full"
             />
+            <div className="flex flex-col sm:flex-row gap-3 w-full mt-15">
+              <Link href={`/subjects/${subjectSlug}`} className="flex-1">
+                <Button
+                  variant="secondary"
+                  className="w-full gap-2 cursor-pointer"
+                >
+                  <ArrowLeft size={18} />
+                  Kembali ke Topik
+                </Button>
+              </Link>
+              <Link
+                href={`/subjects/${subjectSlug}/${topicSlug}/ar`}
+                className="flex-1"
+              >
+                <Button
+                  variant="primary"
+                  className="w-full gap-2 cursor-pointer"
+                >
+                  <Smartphone size={18} />
+                  AR {topic.title}
+                </Button>
+              </Link>
+            </div>
           </TopicWrapper>
 
           <AsideWrapper>

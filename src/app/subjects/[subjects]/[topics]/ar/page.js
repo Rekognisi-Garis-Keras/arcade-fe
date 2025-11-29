@@ -6,6 +6,10 @@ import MicButton from "@/components/AR/ButtonMic";
 import NavbarTopic from "@/components/DetailTopic/NavbarTopic";
 import ARCamera from "@/components/AR/ARCamera";
 import { apiRequest } from "@/utils/api";
+import { Button } from "@/components/UI/button";
+import Link from "next/link";
+import { ArrowLeft, MessageCircleQuestionMark } from "lucide-react";
+import ARPageSkeleton from "./ARSkeleton";
 
 export default function AR() {
   const router = useRouter();
@@ -25,10 +29,13 @@ export default function AR() {
     const fetchTopic = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await apiRequest(`/subjects/${subjectSlug}/topics/${topicSlug}`, {
-          method: "GET",
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
+        const res = await apiRequest(
+          `/subjects/${subjectSlug}/topics/${topicSlug}`,
+          {
+            method: "GET",
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
 
         if (res.status !== "success" || !res.data) {
           router.push("/not-found");
@@ -97,26 +104,37 @@ export default function AR() {
     fetchAnswer();
   }, [hasAsked, liveText, subjectSlug, topicSlug]);
 
-  if (loadingTopic || !topic) return <p className="p-5">Loading...</p>;
+  if (loadingTopic || !topic) return <ARPageSkeleton />;
 
   return (
     <div className="flex flex-col min-h-screen pb-25 px-5">
       <NavbarTopic title={`AR: ${topic.title}`} slug={subjectSlug} />
 
-      <ARCamera model={topic.model_url} marker={topic.marker_img_url} scale={topic.scale_model} />
+      <ARCamera
+        model={topic.model_url}
+        marker={topic.marker_img_url}
+        scale={topic.scale_model}
+      />
 
       <div className="flex lg:flex-row flex-col-reverse items-center gap-y-3 gap-x-5">
         <div className="grow border-2 p-5 rounded-xl border-steel-200 border-b-4">
-          <h1 className="font-bold text-lg mb-3">{hasAsked ? "Tanya Jawab" : "Deskripsi"}</h1>
+          <h1 className="font-bold text-lg mb-3">
+            {hasAsked ? "Tanya Jawab" : "Deskripsi"}
+          </h1>
 
           {!hasAsked ? (
             <p>{topic.desc}</p>
           ) : (
             <div className="space-y-2">
-              <p><span className="font-bold">Pertanyaan:</span> {liveText || "..."}</p>
+              <p>
+                <span className="font-bold">Pertanyaan:</span>{" "}
+                {liveText || "..."}
+              </p>
               <p>
                 <span className="font-bold">Jawaban:</span>{" "}
-                {loadingAnswer ? "Aku mikir dulu ya..." : answer || "Belum ada jawaban."}
+                {loadingAnswer
+                  ? "Aku mikir dulu ya..."
+                  : answer || "Belum ada jawaban."}
               </p>
             </div>
           )}
@@ -131,6 +149,24 @@ export default function AR() {
             }}
           />
         </div>
+      </div>
+      {/* Navigation Buttons */}
+      <div className="flex flex-col sm:flex-row gap-3 w-full my-5">
+        <Link href={`/subjects/${subjectSlug}/${topicSlug}`} className="flex-1">
+          <Button variant="secondary" className="w-full gap-2 cursor-pointer">
+            <ArrowLeft size={18} />
+            Kembali ke Topik
+          </Button>
+        </Link>
+        <Link
+          href={`/subjects/${subjectSlug}/${topicSlug}/quiz`}
+          className="flex-1"
+        >
+          <Button variant="primary" className="w-full gap-2 cursor-pointer">
+            <MessageCircleQuestionMark size={18} />
+            Quiz {topic.title}
+          </Button>
+        </Link>
       </div>
     </div>
   );
